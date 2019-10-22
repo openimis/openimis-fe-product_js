@@ -9,8 +9,6 @@ const DEFAULT_CONFIG = {
     { key: "product.ProductPicker", ref: ProductPicker },
     { key: "product.ProductPicker.projection", ref: ["id", "code", "name"] },
   ],
-  // OTHER MODULE PARAMETERS:
- // cacheProducts
 }
 
 
