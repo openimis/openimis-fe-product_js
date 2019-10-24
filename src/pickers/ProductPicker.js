@@ -33,7 +33,8 @@ class ProductPicker extends Component {
     onSuggestionSelected = v => this.props.onChange(v, this.formatSuggestion(v));
 
     render() {
-        const { intl, products, withLabel=true, label, withPlaceholder=false, placeholder, value, reset, readOnly = false } = this.props;
+        const { intl, products, withLabel=true, label, withPlaceholder=false, placeholder, value, reset,
+            readOnly = false, required = false } = this.props;
         return <AutoSuggestion
             items={products}
             label={!!withLabel && (label || formatMessage(intl, "product", "Product"))}
@@ -44,6 +45,7 @@ class ProductPicker extends Component {
             value={value}
             reset={reset}
             readOnly={readOnly}
+            required={required}
         />
     }
 }
