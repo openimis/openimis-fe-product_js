@@ -8,14 +8,31 @@ import _debounce from "lodash/debounce";
 
 class ProductPicker extends Component {
 
+    state = {
+        products: [],
+    }
+
     constructor(props) {
         super(props);
         this.cache = props.modulesManager.getConf("fe-product", "cacheProducts", true);
+        this.selectThreshold = props.modulesManager.getConf("fe-product", "ProductPicker.selectThreshold", 10);
     }
 
     componentDidMount() {
-        if (this.cache && !this.props.products) {
-            this.props.fetchProducts(this.props.modulesManager);
+        if (this.cache) {
+            if (!this.props.products) {
+                // prevent loading multiple times the cache when component is
+                // several times on tha page
+                setTimeout(
+                    () => {
+                        !this.props.fetching && this.props.fetchProducts(this.props.modulesManager);
+                    },
+                    Math.floor(Math.random() * 300)
+                );
+                this.props.fetchProducts(this.props.modulesManager);
+            } else {
+                this.setState({ items: this.props.items })
+            }
         }
     }
 
@@ -33,8 +50,10 @@ class ProductPicker extends Component {
     onSuggestionSelected = v => this.props.onChange(v, this.formatSuggestion(v));
 
     render() {
-        const { intl, products, withLabel=true, label, withPlaceholder=false, placeholder, value, reset,
-            readOnly = false, required = false } = this.props;
+        const { intl, products, withLabel = true, label, withPlaceholder = false, placeholder, value, reset,
+            readOnly = false, required = false,
+            withNull = false, nullLabel = null
+        } = this.props;
         return <AutoSuggestion
             items={products}
             label={!!withLabel && (label || formatMessage(intl, "product", "Product"))}
@@ -46,12 +65,16 @@ class ProductPicker extends Component {
             reset={reset}
             readOnly={readOnly}
             required={required}
+            selectThreshold={this.selectThreshold}
+            withNull={withNull}
+            nullLabel={nullLabel || formatMessage(intl, "product", "product.ProductPicker.null")}
         />
     }
 }
 
 const mapStateToProps = state => ({
     products: state.product.products,
+    fetching: state.product.fetchingProducts,
 });
 
 const mapDispatchToProps = dispatch => {
