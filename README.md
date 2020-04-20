@@ -27,3 +27,4 @@ None
 * `cacheProducts`: wherever products picker caches the products or not
 * `debounceTime`: if products picker is not configured to cache products, debounce time (ms) after which search is triggered
 * `productsMinCharLookup`: if products picker is not configured to cache products, minimum number of characters before trigring the search. Default: 2
+* `ProductPicker.selectThreshold`: product picker suggestions count threshold under which the AutoSuggestion switch to a SelectInut (drop down list), default: 10
