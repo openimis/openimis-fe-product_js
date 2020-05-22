@@ -8,10 +8,6 @@ import _debounce from "lodash/debounce";
 
 class ProductPicker extends Component {
 
-    state = {
-        products: [],
-    }
-
     constructor(props) {
         super(props);
         this.cache = props.modulesManager.getConf("fe-product", "cacheProducts", true);
@@ -19,20 +15,16 @@ class ProductPicker extends Component {
     }
 
     componentDidMount() {
-        if (this.cache) {
-            if (!this.props.products) {
-                // prevent loading multiple times the cache when component is
-                // several times on tha page
-                setTimeout(
-                    () => {
-                        !this.props.fetching && this.props.fetchProducts(this.props.modulesManager);
-                    },
-                    Math.floor(Math.random() * 300)
-                );
-                this.props.fetchProducts(this.props.modulesManager);
-            } else {
-                this.setState({ items: this.props.items })
-            }
+        if (this.cache && !this.props.products) {
+            // prevent loading multiple times the cache when component is
+            // several times on tha page
+            setTimeout(
+                () => {
+                    !this.props.fetching && this.props.fetchProducts(this.props.modulesManager);
+                },
+                Math.floor(Math.random() * 300)
+            );
+            this.props.fetchProducts(this.props.modulesManager);
         }
     }
 
