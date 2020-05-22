@@ -30,8 +30,8 @@ class ProductPicker extends Component {
                     Math.floor(Math.random() * 300)
                 );
                 this.props.fetchProducts(this.props.modulesManager);
-            } else {
-                this.setState({ items: this.props.items })
+            } else {                
+                this.setState((state, props) => ({ products: props.items }))
             }
         }
     }
