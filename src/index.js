@@ -8,6 +8,7 @@ const DEFAULT_CONFIG = {
   "refs": [
     { key: "product.ProductPicker", ref: ProductPicker },
     { key: "product.ProductPicker.projection", ref: ["id", "code", "name"] },
+    { key: "product.ProductPicker.sort", ref: 'product__code' },
   ],
 }
 
