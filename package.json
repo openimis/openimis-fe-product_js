@@ -1,6 +1,6 @@
 {
   "name": "@openimis/fe-product",
-  "version": "1.2.0-rc3",
+  "version": "1.2.0-rc4",
   "description": "openIMIS Frontend Product reference module",
   "license": "AGPL-3.0-only",
   "repository": "openimis/openimis-fe-product_js",
