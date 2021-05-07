@@ -8,10 +8,6 @@ import _debounce from "lodash/debounce";
 
 class ProductPicker extends Component {
 
-    state = {
-        products: [],
-    }
-
     constructor(props) {
         super(props);
         this.cache = props.modulesManager.getConf("fe-product", "cacheProducts", true);
@@ -19,20 +15,15 @@ class ProductPicker extends Component {
     }
 
     componentDidMount() {
-        if (this.cache) {
-            if (!this.props.products) {
-                // prevent loading multiple times the cache when component is
-                // several times on tha page
-                setTimeout(
-                    () => {
-                        !this.props.fetching && this.props.fetchProducts(this.props.modulesManager);
-                    },
-                    Math.floor(Math.random() * 300)
-                );
-                this.props.fetchProducts(this.props.modulesManager);
-            } else {
-                this.setState({ items: this.props.items })
-            }
+        if (this.cache && !this.props.products) {
+            // prevent loading multiple times the cache when component is
+            // several times on tha page
+            setTimeout(
+                () => {
+                    !this.props.fetching && this.props.fetchProducts(this.props.modulesManager);
+                },
+                Math.floor(Math.random() * 300)
+            );
         }
     }
 
@@ -52,10 +43,15 @@ class ProductPicker extends Component {
     render() {
         const { intl, products, withLabel = true, label, withPlaceholder = false, placeholder, value, reset,
             readOnly = false, required = false,
-            withNull = false, nullLabel = null
+            withNull = false, nullLabel = null,
+            filter = null
         } = this.props;
+        let items = products
+        if (!!filter) {
+            items = this.props.filter(items)
+        }
         return <AutoSuggestion
-            items={products}
+            items={items}
             label={!!withLabel && (label || formatMessage(intl, "product", "Product"))}
             placeholder={!!withPlaceholder ? placeholder || formatMessage(intl, "product", "ProductPicker.placehoder") : null}
             getSuggestions={this.cache ? null : this.debouncedGetSuggestion}

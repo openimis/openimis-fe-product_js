@@ -7,7 +7,8 @@ const DEFAULT_CONFIG = {
   "reducers": [{ key: 'product', reducer }],
   "refs": [
     { key: "product.ProductPicker", ref: ProductPicker },
-    { key: "product.ProductPicker.projection", ref: ["id", "code", "name"] },
+    { key: "product.ProductPicker.projection", ref: ["id", "code", "name", "location{id}"] },
+    { key: "product.ProductPicker.sort", ref: 'product__code' },
   ],
 }
 
