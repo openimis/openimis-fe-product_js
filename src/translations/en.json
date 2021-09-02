@@ -1,6 +1,6 @@
 {
-    "product.Product": "Product",
-    "product.ProductPicker.placehoder": "Search Product…",
-    "product.ProductPicker.null": "Any",
-    "product.Product.none": "None"
+  "product.Product": "Product",
+  "product.ProductPicker.placehoder": "Search Product…",
+  "product.ProductPicker.null": "Any",
+  "product.Product.none": "None"
 }
