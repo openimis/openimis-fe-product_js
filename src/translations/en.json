@@ -2,5 +2,16 @@
   "product.Product": "Product",
   "product.ProductPicker.placehoder": "Search Product…",
   "product.ProductPicker.null": "Any",
-  "product.Product.none": "None"
+  "product.Product.none": "None",
+  "product.name": "Name",
+  "product.code": "Code",
+  "product.dateFrom": "Date From",
+  "product.dateTo": "Date To",
+  "product.region": "Region",
+  "product.maxMembers": "Max members",
+  "product.district": "District",
+  "product.ProductFilters.showHistory": "Show Historical Values",
+  "product.ProductSearcher.tableTitle": "{count} Products",
+  "product.ProductSearcher.deleteProductTooltip": "Delete product",
+  "product.ProductSearcher.openNewTab": "Open in new tab"
 }
