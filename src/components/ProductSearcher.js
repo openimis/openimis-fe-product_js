@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
-import { useProducts } from "../hooks";
-import { Searcher, useTranslations, useModulesManager } from "@openimis/fe-core";
+import { useProductsQuery } from "../hooks";
+import { Searcher, useTranslations, useModulesManager, ConfirmDialog } from "@openimis/fe-core";
 import ProductFilters from "./ProductFilters";
 import { Tooltip, IconButton } from "@material-ui/core";
 import { Tab as TabIcon, Delete as DeleteIcon } from "@material-ui/icons";
@@ -13,8 +13,8 @@ const ProductSearcher = (props) => {
   const modulesManager = useModulesManager();
   const { formatMessage, formatDateFromISO, formatMessageWithValues } = useTranslations("product", modulesManager);
   const [filters, setFilters] = useState({});
-  const [resetKey, setResetKey] = useState("");
-  const { data, isLoading, error } = useProducts({ filters }, { skip: true, keepStale: true });
+  const [productToDelete, setProductToDelete] = useState(null);
+  const { data, isLoading, error, refetch } = useProductsQuery({ filters }, { skip: true, keepStale: true });
   const filtersToQueryParam = useCallback((state) => {
     const params = {
       first: state.pageSize,
@@ -22,7 +22,6 @@ const ProductSearcher = (props) => {
       before: state.beforeCursor,
     };
     Object.entries(state.filters).forEach(([filterKey, filter]) => {
-      console.log(filter);
       params[filterKey] = filter.filter ?? filter.value;
     });
     return params;
@@ -47,6 +46,14 @@ const ProductSearcher = (props) => {
     return aligns;
   }, []);
 
+  const onDeleteConfirm = (isConfirmed) => {
+    if (isConfirmed) {
+      onDelete(productToDelete);
+      refetch();
+    }
+    setProductToDelete(null);
+  };
+
   const itemFormatters = useCallback((filters) => {
     return [
       (p) => p.code,
@@ -55,7 +62,7 @@ const ProductSearcher = (props) => {
       (p) => formatLocation(p.location?.parent ? p.location : null),
       (p) => formatDateFromISO(p.dateFrom),
       (p) => formatDateFromISO(p.dateTo),
-      (p) => p.memberCount,
+      (p) => p.maxMembers,
 
       (p) =>
         !filters.showHistory?.value ? (
@@ -67,7 +74,7 @@ const ProductSearcher = (props) => {
             </Tooltip>
             {canDelete(p) && (
               <Tooltip title={formatMessage("ProductSearcher.deleteProductTooltip")}>
-                <IconButton onClick={() => onDelete(p)}>
+                <IconButton onClick={() => setProductToDelete(p)}>
                   <DeleteIcon />
                 </IconButton>
               </Tooltip>
@@ -76,11 +83,18 @@ const ProductSearcher = (props) => {
         ) : null,
     ];
   }, []);
-
   return (
     <>
+      {productToDelete && (
+        <ConfirmDialog
+          confirm={{
+            title: formatMessage("deleteProductDialog.title"),
+            message: formatMessageWithValues("deleteProductDialog.message", { name: productToDelete.name }),
+          }}
+          onConfirm={onDeleteConfirm}
+        />
+      )}
       <Searcher
-        reset={resetKey}
         module="product"
         tableTitle={formatMessageWithValues("ProductSearcher.tableTitle", { count: data?.pageInfo?.totalCount ?? 0 })}
         cacheFiltersKey={cacheFiltersKey}

@@ -1,17 +1,21 @@
 import messages_en from "./translations/en.json";
-import reducer from "./reducer";
 import ProductPicker from "./pickers/ProductPicker";
 
 import ProductsPage from "./pages/ProductsPage";
-import ProductPage from "./pages/ProductPage";
-import { GRAPHQL_PRODUCT_FRAGMENT } from "./hooks";
+import ProductDetailsPage from "./pages/ProductDetailsPage";
+import {
+  GRAPHQL_USE_PRODUCTS_PRODUCT_FRAGMENT,
+  GRAPHQL_USE_PRODUCT_PRODUCT_FRAGMENT,
+  useProductsQuery,
+  useProductQuery,
+} from "./hooks";
 
 const DEFAULT_CONFIG = {
   "translations": [{ key: "en", messages: messages_en }],
-  "reducers": [{ key: "product", reducer }],
   "core.Router": [
     { path: "admin/products", component: ProductsPage },
-    { path: "admin/products/:product_id", component: ProductPage },
+    { path: "admin/products/new", component: ProductDetailsPage },
+    { path: "admin/products/:product_id", component: ProductDetailsPage },
   ],
   "refs": [
     { key: "product.ProductPicker", ref: ProductPicker },
@@ -21,9 +25,13 @@ const DEFAULT_CONFIG = {
     // Routes
     { key: "product.productsList", ref: "admin/products" },
     { key: "product.productDetails", ref: "admin/products" },
+    { key: "product.newProduct", ref: "admin/products/new" },
 
-    // Fragments
-    { key: "product.hooks.useProducts.productFragment", ref: GRAPHQL_PRODUCT_FRAGMENT },
+    // Hooks
+    { key: "product.hooks.useProductsQuery", ref: useProductsQuery },
+    { key: "product.hooks.useProductQuery", ref: useProductQuery },
+    { key: "product.hooks.useProductsQuery.productFragment", ref: GRAPHQL_USE_PRODUCTS_PRODUCT_FRAGMENT },
+    { key: "product.hooks.useProductQuery.productFragment", ref: GRAPHQL_USE_PRODUCT_PRODUCT_FRAGMENT },
   ],
 };
 
