@@ -87,7 +87,7 @@ const ItemsTabForm = (props) => {
       limitationTypeR: "FIXED_AMOUNT",
       limitationTypeE: "FIXED_AMOUNT",
     }));
-    onChange(newItems.concat(edited.items));
+    onChange(newItems.concat(edited.items ?? []));
   };
 
   const itemsKeys = useMemo(() => _.map(edited.items, "id"), [edited.items]);

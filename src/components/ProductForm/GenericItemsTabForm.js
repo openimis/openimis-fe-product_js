@@ -94,7 +94,6 @@ const ItemsTabForm = (props) => {
     setDialogOpen(false);
     onAdd(selection);
   };
-
   return (
     <>
       <ProductItemsDialog
