@@ -56,7 +56,7 @@ export const toFormValues = (product) => {
     gracePeriodPayment: product.gracePeriodPayment ?? 1,
     gracePeriodEnrolment: product.gracePeriodEnrolment ?? 0,
     gracePeriodRenewal: product.gracePeriodRenewal ?? 0,
-    ceilingInterpretation: product.ceilingInterpretation ?? "IN_PATIENT",
+    ceilingInterpretation: product.ceilingInterpretation ?? "HEALTH_FACILITY_TYPE",
   };
 };
 

@@ -64,14 +64,13 @@ const DeductiblesCeilingsTabForm = (props) => {
   }, []);
 
   useEffect(() => {}, [isSplit]);
-
   return (
     <Grid container className={className}>
       <Grid item xs={6} className={classes.item}>
         <ConstantBasedPicker
           required
+          withNull
           module="product"
-          withNull={true}
           readOnly={readOnly}
           value={edited.ceilingInterpretation}
           onChange={(ceilingInterpretation) => onEditedChanged({ ...edited, ceilingInterpretation })}

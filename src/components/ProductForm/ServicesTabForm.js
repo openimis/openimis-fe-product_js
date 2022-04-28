@@ -86,7 +86,7 @@ const ServicesTabForm = (props) => {
       limitationTypeR: "FIXED_AMOUNT",
       limitationTypeE: "FIXED_AMOUNT",
     }));
-    onChange(newServices.concat(edited.services));
+    onChange(newServices.concat(edited.services ?? []));
   };
 
   const servicesKeys = useMemo(() => _.map(edited.services, "id"), [edited.services]);
