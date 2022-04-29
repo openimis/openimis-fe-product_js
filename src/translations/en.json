@@ -23,7 +23,7 @@
   "product.startCycle3": "Cycle 3",
   "product.startCycle4": "Cycle 4",
   "product.CycleInput.null": "Any",
-  "product.CycleInput.date": "Date",
+  "product.CycleInput.date": "Day",
   "product.CycleInput.month": "Month",
   "product.registrationLumpSum": "Registration Lump Sum",
   "product.registrationFee": "Registration Fee",
