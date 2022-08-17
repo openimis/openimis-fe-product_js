@@ -86,6 +86,14 @@ const ItemsTabForm = (props) => {
       limitationType: "FIXED_AMOUNT",
       limitationTypeR: "FIXED_AMOUNT",
       limitationTypeE: "FIXED_AMOUNT",
+      limitAdult: 100.00,
+      limitAdultR: 100.00,
+      limitAdultE: 100.00,
+      limitChild: 100.00,
+      limitChildR: 100.00,
+      limitChildE: 100.00,
+      limitNoAdult: 100.00,
+      limitNoChild: 100.00,
     }));
     onChange(newItems.concat(edited.items ?? []));
   };
