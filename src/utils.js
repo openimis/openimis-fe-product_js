@@ -35,14 +35,6 @@ export const validateProductForm = (values) => {
     console.warn(errors);
   }
 
-  if (values.relativePrices?.length > 0) {
-    values.relativePrices.forEach(({ periods }) => {
-      if (_.sum(periods.map((v) => parseFloat(v))) !== 100) {
-        errors.relativePrices = true;
-      }
-    });
-  }
-
   return Object.keys(errors).length === 0;
 };
 
