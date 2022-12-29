@@ -26,7 +26,6 @@ const CycleInput = React.memo((props) => {
   }, [value]);
 
   useEffect(() => {
-    if (currentValue.untouched) return;
     if (currentValue.date && currentValue.month) {
       onChange(
         `${Number(currentValue.date).toString().padStart(2, "0")}-${Number(currentValue.month)

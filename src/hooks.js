@@ -139,7 +139,7 @@ export const GRAPHQL_USE_PRODUCT_PRODUCT_FRAGMENT = `
       careType
       periods
     }
-    
+    administrationPeriod
   }
 `;
 
