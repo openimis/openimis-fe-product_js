@@ -14,6 +14,9 @@ const ItemsTabForm = (props) => {
   const { formatMessage } = useTranslations("product", modulesManager);
   const [isDialogOpen, setDialogOpen] = useState(false);
 
+  const MIN_VALUE = 0
+  const MAX_VALUE = 100
+
   const columns = useMemo(
     () => [
       ...itemColumns,
@@ -62,6 +65,13 @@ const ItemsTabForm = (props) => {
         type: "number",
         disableColumnMenu: true,
         sortable: false,
+        valueGetter: (params) => Number(params.value).toFixed(2),
+        valueParser: (value) => {
+          value = Number(value)
+          if (value > MAX_VALUE) value = MIN_VALUE
+          else if (value < MIN_VALUE) value = MAX_VALUE
+          return value.toFixed(2)
+        },
       })),
       ...["waitingPeriodAdult", "waitingPeriodChild"].map((fieldName) => ({
         field: fieldName,
