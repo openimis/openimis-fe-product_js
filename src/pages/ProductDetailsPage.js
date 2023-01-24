@@ -8,6 +8,7 @@ import {
   combine,
   useModulesManager,
   ProgressOrError,
+  useTranslations,
 } from "@openimis/fe-core";
 import { withStyles, withTheme } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
@@ -25,6 +26,7 @@ const styles = (theme) => ({
 const ProductDetailsPage = (props) => {
   const { classes, match, history } = props;
   const modulesManager = useModulesManager();
+  const { formatMessageWithValues } = useTranslations("product", modulesManager);
   const rights = useSelector((state) => state.core?.user?.i_user?.rights ?? []);
 
   const [resetKey, setResetKey] = useState(0);
@@ -41,9 +43,16 @@ const ProductDetailsPage = (props) => {
   const onSave = () => {
     setLocked(true);
     if (values.uuid) {
-      updateMutation.mutate(toInputValues(values));
+      updateMutation.mutate(
+        {...toInputValues(values),
+          clientMutationLabel: formatMessageWithValues("updateMutation.label", { name: values.name })
+        });
     } else {
-      createMutation.mutate(toInputValues(values));
+      createMutation.mutate(
+        {
+          ...toInputValues(values),
+          clientMutationLabel: formatMessageWithValues("createMutation.label", {name: values.name})
+        });
     }
   };
 
