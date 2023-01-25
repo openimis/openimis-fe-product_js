@@ -160,5 +160,9 @@
   "product.DeductiblesCeilingsTabForm.MaxTable.hopitalizations": "Hospitalizations",
   "product.DeductiblesCeilingsTabForm.MaxTable.antenatal": "Antenatal",
   "product.DeductiblesCeilingsTabForm.MaxTable.visits": "Visits",
-  "product.DeductiblesCeilingsTabForm.splitCeilings": "Split ceilings & deductibles"
+  "product.DeductiblesCeilingsTabForm.splitCeilings": "Split ceilings & deductibles",
+
+  "product.createMutation.label": "Create product {name}",
+  "product.updateMutation.label": "Update product {name}",
+  "product.deleteMutation.label": "Delete product {name}"
 }
