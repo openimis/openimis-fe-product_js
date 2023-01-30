@@ -7,7 +7,7 @@ import {
   GRAPHQL_USE_PRODUCTS_PRODUCT_FRAGMENT,
   GRAPHQL_USE_PRODUCT_PRODUCT_FRAGMENT,
   useProductsQuery,
-  useProductQuery,
+  useProductQuery, usePageDisplayRulesQuery,
 } from "./hooks";
 
 const DEFAULT_CONFIG = {
@@ -30,6 +30,7 @@ const DEFAULT_CONFIG = {
     // Hooks
     { key: "product.hooks.useProductsQuery", ref: useProductsQuery },
     { key: "product.hooks.useProductQuery", ref: useProductQuery },
+    { key: "product.hooks.usePageDisplayRulesQuery", ref: usePageDisplayRulesQuery },
     { key: "product.hooks.useProductsQuery.productFragment", ref: GRAPHQL_USE_PRODUCTS_PRODUCT_FRAGMENT },
     { key: "product.hooks.useProductQuery.productFragment", ref: GRAPHQL_USE_PRODUCT_PRODUCT_FRAGMENT },
   ],

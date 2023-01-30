@@ -14,8 +14,8 @@ import { withStyles, withTheme } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
 import ProductForm from "../components/ProductForm/ProductForm";
 import { RIGHT_PRODUCT_UPDATE } from "../constants";
-import { useProductQuery, useProductCreateMutation, useProductUpdateMutation } from "../hooks";
-import { validateProductForm, toFormValues, toInputValues } from "../utils";
+import {useProductQuery, useProductCreateMutation, useProductUpdateMutation, usePageDisplayRulesQuery} from "../hooks";
+import {validateProductForm, toFormValues, toInputValues, rulesToFormValues} from "../utils";
 
 const styles = (theme) => ({
   page: theme.page,
@@ -32,11 +32,14 @@ const ProductDetailsPage = (props) => {
   const [resetKey, setResetKey] = useState(0);
   const [isLocked, setLocked] = useState(false);
   const [isLoaded, setLoaded] = useState(false);
+  const [isLoadedRules, setLoadedRules] = useState(false);
   const [values, setValues] = useState({});
+  const [valuesRules, setValuesRules] = useState({});
   const { isLoading, error, data, refetch } = useProductQuery(
     { uuid: match.params.product_id },
     { skip: !match.params.product_id },
   );
+  const { isLoadingRules, errorRules, dataRules, refetchRules } = usePageDisplayRulesQuery({skip: true});
   const createMutation = useProductCreateMutation();
   const updateMutation = useProductUpdateMutation();
 
@@ -70,19 +73,23 @@ const ProductDetailsPage = (props) => {
       setValues(toFormValues(data ?? {}));
       setLoaded(true);
     }
-  }, [data, isLoading]);
+    if (!isLoadingRules) {
+      setValuesRules(rulesToFormValues(dataRules.pageDisplayRules ?? {}));
+      setLoadedRules(true);
+    }
+  }, [data, isLoading, dataRules, isLoadingRules]);
 
   return (
     <div className={clsx(classes.page, isLocked && classes.locked)}>
       <ProgressOrError error={error} />
       <ErrorBoundary>
-        {isLoaded && (
+        {(isLoaded && isLoadedRules) && (
           <ProductForm
             readOnly={!rights.includes(RIGHT_PRODUCT_UPDATE) || isLocked || values.validityTo}
             key={resetKey}
             onChange={setValues}
             product={values}
-            canSave={() => validateProductForm(values)}
+            canSave={() => validateProductForm(values, valuesRules)}
             onBack={() => historyPush(modulesManager, history, "product.productsList")}
             onSave={rights.includes(RIGHT_PRODUCT_UPDATE) ? onSave : undefined}
             onReset={onReset}
