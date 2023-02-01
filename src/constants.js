@@ -11,3 +11,14 @@ export const CEILING_DISCRIMINATION = ["HEALTH_FACILITY_TYPE", "CLAIM_TYPE"];
 
 export const CEILING_EXCLUSIONS = ["HOSPITAL", "NON_HOSPITAL", "BOTH"];
 export const CEILING_TYPES = ["TREATMENT", "POLICY", "INSUREE"];
+
+export const LIMIT_COLUMNS = ["limitAdult",
+                              "limitAdultR",
+                              "limitAdultE",
+                              "limitChild",
+                              "limitChildR",
+                              "limitChildE",
+                              "limitNoAdult",
+                              "limitNoChild",]
+
+export const LIMIT_COLUMNS_FIXED = ["limitAdult", "limitChild"]

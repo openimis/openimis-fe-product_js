@@ -5,7 +5,7 @@ import AddIcon from "@material-ui/icons/Add";
 import DataGrid from "./DataGrid";
 import { withTheme, withStyles } from "@material-ui/styles";
 import ProductItemsDialog from "./ProductItemsDialog";
-import { LIMIT_TYPES, PRICE_ORIGINS, CEILING_EXCLUSIONS } from "../../constants";
+import {LIMIT_TYPES, PRICE_ORIGINS, CEILING_EXCLUSIONS, LIMIT_COLUMNS, LIMIT_COLUMNS_FIXED} from "../../constants";
 import _ from "lodash";
 import {rulesToFormValues, toFormValues} from "../../utils";
 import {usePageDisplayRulesQuery} from "../../hooks";
@@ -20,6 +20,15 @@ const ItemsTabForm = (props) => {
   const [isLoadedRules, setLoadedRules] = useState(false);
   const [MIN_VALUE, setMinValue] = useState(0)
   const [MAX_VALUE, setMaxValue] = useState(100)
+
+  const parserLimits= (value, fixed=false) => {
+    value = Number(value)
+    if (value > MAX_VALUE) value = MIN_VALUE
+    else if (value < MIN_VALUE) value = MAX_VALUE
+    return fixed? value.toFixed(2) : parseInt(value)
+  }
+
+  const shouldFieldBeFixed = (value) => LIMIT_COLUMNS_FIXED.includes(value);
 
   useEffect(() => {
     if (!isLoadingRules) {
@@ -61,16 +70,7 @@ const ItemsTabForm = (props) => {
           value: v,
         })),
       })),
-      ...[
-        "limitAdult",
-        "limitAdultR",
-        "limitAdultE",
-        "limitChild",
-        "limitChildR",
-        "limitChildE",
-        "limitNoAdult",
-        "limitNoChild",
-      ].map((fieldName) => ({
+      ...LIMIT_COLUMNS.map((fieldName) => ({
         field: fieldName,
         headerName: formatMessage(`ItemsOrServicesGrid.${fieldName}`),
         width: 90,
@@ -78,13 +78,8 @@ const ItemsTabForm = (props) => {
         type: "number",
         disableColumnMenu: true,
         sortable: false,
-        valueGetter: (params) => Number(params.value).toFixed(2),
-        valueParser: (value) => {
-          value = Number(value)
-          if (value > MAX_VALUE) value = MIN_VALUE
-          else if (value < MIN_VALUE) value = MAX_VALUE
-          return value.toFixed(2)
-        },
+        valueGetter: (params) => shouldFieldBeFixed(fieldName)? Number(params.value).toFixed(2) : parseInt(params.value),
+        valueParser: (value) => shouldFieldBeFixed(fieldName)? parserLimits(value, true) : parserLimits(value),
       })),
       ...["waitingPeriodAdult", "waitingPeriodChild"].map((fieldName) => ({
         field: fieldName,
