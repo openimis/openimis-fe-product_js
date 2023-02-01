@@ -53,6 +53,15 @@ const ItemsTabForm = (props) => {
     })
   }
 
+  const parserLimits= (value, fixed=false) => {
+    value = Number(value)
+    if (value > MAX_VALUE) value = MIN_VALUE
+    else if (value < MIN_VALUE) value = MAX_VALUE
+    return fixed? value.toFixed(2) : parseInt(value)
+  }
+
+  const shouldFieldBeFixed = (value) => LIMIT_COLUMNS_FIXED.includes(value);
+
   useEffect(() => {
     if (!isLoadingRules && !isLoadedRules) {
       setValuesRules(rulesToFormValues(dataRules.pageDisplayRules ?? {}));
