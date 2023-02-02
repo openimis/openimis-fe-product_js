@@ -7,12 +7,12 @@ import {
   formatMessage as globalFormatMessage,
   PublishedComponent,
 } from "@openimis/fe-core";
-import { loadProductServices } from "../../utils";
+import {getLimitType, getPriceOrigin, loadProductServices} from "../../utils";
 import _ from "lodash";
 import GenericItemsTabForm from "./GenericItemsTabForm";
 
 const ServicesTabForm = (props) => {
-  const { edited, edited_id, onEditedChanged } = props;
+  const { edited, edited_id, onEditedChanged, limitType, priceOrigin, getLimitValueSwitch } = props;
   const modulesManager = useModulesManager();
   const intl = useIntl();
   const dispatch = useDispatch();
@@ -81,18 +81,18 @@ const ServicesTabForm = (props) => {
     const newServices = selection.map((service) => ({
       id: service.id,
       service,
-      priceOrigin: "PRICELIST",
-      limitationType: "CO_INSURANCE",
-      limitationTypeR: "CO_INSURANCE",
-      limitationTypeE: "CO_INSURANCE",
-      limitAdult: 100.00,
-      limitAdultR: 100.00,
-      limitAdultE: 100.00,
-      limitChild: 100.00,
-      limitChildR: 100.00,
-      limitChildE: 100.00,
-      limitNoAdult: 100.00,
-      limitNoChild: 100.00,
+      priceOrigin: getPriceOrigin(priceOrigin),
+      limitationType: getLimitType(limitType),
+      limitationTypeR: getLimitType(limitType),
+      limitationTypeE: getLimitType(limitType),
+      limitAdult: getLimitValueSwitch(limitType),
+      limitAdultR: getLimitValueSwitch(limitType),
+      limitAdultE: getLimitValueSwitch(limitType),
+      limitChild: getLimitValueSwitch(limitType),
+      limitChildR: getLimitValueSwitch(limitType),
+      limitChildE: getLimitValueSwitch(limitType),
+      limitNoAdult: getLimitValueSwitch(limitType),
+      limitNoChild: getLimitValueSwitch(limitType),
     }));
     onChange(newServices.concat(edited.services ?? []));
   };

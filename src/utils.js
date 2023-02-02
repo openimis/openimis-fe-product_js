@@ -1,6 +1,6 @@
 import { graphqlWithVariables, toISODate } from "@openimis/fe-core";
 import _ from "lodash";
-import {LIMIT_COLUMNS, LIMIT_COLUMNS_FIXED} from "./constants";
+import {LIMIT_COLUMNS, LIMIT_COLUMNS_FIXED, LIMIT_TYPES, PRICE_ORIGINS} from "./constants";
 
 export const validateProductForm = (values, rules) => {
   values = { ...values };
@@ -54,6 +54,14 @@ export const validateProductForm = (values, rules) => {
 
   return Object.keys(errors).length === 0;
 };
+
+export const getLimitType = (limitType) => {
+  return LIMIT_TYPES[limitType] ?? LIMIT_TYPES.C
+}
+
+export const getPriceOrigin= (priceOrigin) => {
+  return PRICE_ORIGINS[priceOrigin] ?? PRICE_ORIGINS.P
+}
 
 export const validateItemOrService = (itemOrService, field, rules) => {
   if (LIMIT_COLUMNS_FIXED.includes(field) && !/^\d+(?:\.\d{0,2})?$/.test(itemOrService[field].toString())) return false //check if up to two decimal points

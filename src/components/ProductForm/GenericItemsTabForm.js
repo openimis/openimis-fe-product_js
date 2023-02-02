@@ -51,7 +51,7 @@ const ItemsTabForm = (props) => {
         sortable: false,
         disableColumnMenu: true,
         valueFormatter: (params) => params.value && formatMessage(`ItemsOrServicesGrid.priceOrigin.${params.value}`),
-        valueOptions: PRICE_ORIGINS.map((v) => ({
+        valueOptions: Object.values(PRICE_ORIGINS).map((v) => ({
           label: v && formatMessage(`ItemsOrServicesGrid.priceOrigin.${v}`),
           value: v,
         })),
@@ -65,7 +65,7 @@ const ItemsTabForm = (props) => {
         sortable: false,
         disableColumnMenu: true,
         valueFormatter: (params) => params.value && formatMessage(`ItemsOrServicesGrid.limitTypes.${params.value}`),
-        valueOptions: LIMIT_TYPES.map((v) => ({
+        valueOptions: Object.values(LIMIT_TYPES).map((v) => ({
           label: v && formatMessage(`ItemsOrServicesGrid.limitTypes.${v}`),
           value: v,
         })),
