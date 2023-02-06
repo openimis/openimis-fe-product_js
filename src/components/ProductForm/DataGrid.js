@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, {useState, useMemo, useRef} from "react";
 import { DataGrid as MuiDataGrid } from "@mui/x-data-grid";
 import { ErrorBoundary, useTranslations, useModulesManager } from "@openimis/fe-core";
 import { makeStyles } from "@material-ui/styles";
@@ -85,7 +85,7 @@ const CellActions = (props) => {
 };
 
 const DataGrid = (props) => {
-  const { className, onChange, error, isLoading, density, rows = [] } = props;
+  const { className, onChange, error, isLoading, density, rows = [], bindLimitTypesWithDefaultValues } = props;
   const [editRowsModel, setEditRowsModel] = useState({});
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product.DataGrid", modulesManager);
@@ -124,6 +124,13 @@ const DataGrid = (props) => {
     [props.columns, rows],
   );
 
+  const handleEditRowsModel = (rows) => {
+    Object.values(rows).forEach(column => {
+      bindLimitTypesWithDefaultValues(column)
+    })
+    setEditRowsModel(rows)
+  }
+
   return (
     <ErrorBoundary>
       <MuiDataGrid
@@ -136,7 +143,7 @@ const DataGrid = (props) => {
         density={density}
         editMode="row"
         editRowsModel={editRowsModel}
-        onEditRowsModelChange={setEditRowsModel}
+        onEditRowsModelChange={handleEditRowsModel}
         className={className}
         rows={rows}
       />

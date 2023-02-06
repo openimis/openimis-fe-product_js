@@ -108,6 +108,7 @@ const ItemsTabForm = (props) => {
       rows={edited.items ?? []}
       onChange={onChange}
       onAdd={onAdd}
+      getLimitValueSwitch={getLimitValueSwitch}
       Picker={(props) => (
         <PublishedComponent
           filterOptions={filterDialogOptions}

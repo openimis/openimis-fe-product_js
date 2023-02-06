@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import { Tab, Tabs, Paper } from "@material-ui/core";
 import { withTheme, withStyles } from "@material-ui/styles";
 import { useTranslations, combine } from "@openimis/fe-core";
@@ -8,7 +8,6 @@ import PoolingManagementTabForm from "./PoolingManagementTabForm";
 import ServicesTabForm from "./ServicesTabForm";
 import DeductiblesCeilingsTabForm from "./DeductiblesCeilingsTabForm";
 import {useLimitDefaultsQuery} from "../../hooks";
-import {defaultsToFormValues, rulesToFormValues} from "../../utils";
 import {LIMIT_TYPES, PRICE_ORIGINS} from "../../constants";
 
 const CurrentTab = (props) => {
@@ -42,7 +41,7 @@ const TabsForm = (props) => {
   const [priceOrigin, setPriceOrigin] = useState('P')
 
   useEffect(() => {
-    if (!isLoadingLimitDefaults) {
+    if (!isLoadingLimitDefaults && !isLoadedLimitDefaults) {
       setPriceOrigin(dataLimitDefaults.limitDefaults.priceOrigin?? 'P')
       setLimitType(dataLimitDefaults.limitDefaults.limitType?? 'C')
       setCoInsuranceDefaultValue(dataLimitDefaults.limitDefaults.defaultLimitCoInsuranceValue?? 100)

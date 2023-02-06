@@ -11,15 +11,15 @@ import {rulesToFormValues, toFormValues} from "../../utils";
 import {usePageDisplayRulesQuery} from "../../hooks";
 
 const ItemsTabForm = (props) => {
-  const { classes, className, isLoading, onChange, onAdd, rows = [], itemColumns, Picker} = props;
+  const { classes, className, isLoading, onChange, onAdd, rows = [], itemColumns, Picker, getLimitValueSwitch} = props;
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product", modulesManager);
   const [isDialogOpen, setDialogOpen] = useState(false);
   const { isLoadingRules, errorRules, dataRules, refetchRules } = usePageDisplayRulesQuery({skip: true});
   const [valuesRules, setValuesRules] = useState({});
   const [isLoadedRules, setLoadedRules] = useState(false);
-  const [MIN_VALUE, setMinValue] = useState(0)
-  const [MAX_VALUE, setMaxValue] = useState(100)
+  const [MIN_VALUE, setMinValue] = useState(0);
+  const [MAX_VALUE, setMaxValue] = useState(100);
 
   const parserLimits= (value, fixed=false) => {
     value = Number(value)
@@ -30,8 +30,34 @@ const ItemsTabForm = (props) => {
 
   const shouldFieldBeFixed = (value) => LIMIT_COLUMNS_FIXED.includes(value);
 
+  const bindLimitTypesWithDefaultValues = (item) => {
+    if (item.limitationType.value === "FIXED_AMOUNT") {
+      item.limitAdult.value = getLimitValueSwitch('F')
+      item.limitChild.value = getLimitValueSwitch('F')
+    } else if (item.limitationType.value === "CO_INSURANCE"){
+      item.limitAdult.value = getLimitValueSwitch('C')
+      item.limitChild.value = getLimitValueSwitch('C')
+    }
+
+    if (item.limitationTypeE.value === "FIXED_AMOUNT") {
+      item.limitAdultE.value = getLimitValueSwitch('F')
+      item.limitChildE.value = getLimitValueSwitch('F')
+    } else if (item.limitationTypeE.value === "CO_INSURANCE"){
+      item.limitAdultE.value = getLimitValueSwitch('C')
+      item.limitChildE.value = getLimitValueSwitch('C')
+    }
+
+    if (item.limitationTypeR.value === "FIXED_AMOUNT") {
+      item.limitAdultR.value = getLimitValueSwitch('F')
+      item.limitChildR.value = getLimitValueSwitch('F')
+    } else if (item.limitationTypeR.value === "CO_INSURANCE"){
+      item.limitAdultR.value = getLimitValueSwitch('C')
+      item.limitChildR.value = getLimitValueSwitch('C')
+    }
+  }
+
   useEffect(() => {
-    if (!isLoadingRules) {
+    if (!isLoadingRules && !isLoadedRules) {
       setValuesRules(rulesToFormValues(dataRules.pageDisplayRules ?? {}));
       setMinValue(valuesRules.minLimitValue)
       setMaxValue(valuesRules.maxLimitValue)
@@ -137,6 +163,7 @@ const ItemsTabForm = (props) => {
                 columns={columns}
                 density="compact"
                 rows={rows}
+                bindLimitTypesWithDefaultValues={bindLimitTypesWithDefaultValues}
               />
             )}
           </ErrorBoundary>
