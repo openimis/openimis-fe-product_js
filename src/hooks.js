@@ -22,11 +22,11 @@ export const useProductsQuery = ({ filters }, config) => {
   const { isLoading, error, data, refetch } = useGraphqlQuery(
     `
   query (
-    $first: Int, $last: Int, $before: String, $after: String, $code: String, $name: String,
+    $search: String, $first: Int, $last: Int, $before: String, $after: String, $code: String, $name: String, 
     $dateFrom: DateTime, $dateTo: DateTime, $location: Int, $showHistory: Boolean
     ) {
     products (
-      first: $first, last: $last, before: $before, after: $after, code_Icontains: $code, showHistory: $showHistory,
+      search: $search, first: $first, last: $last, before: $before, after: $after, code_Icontains: $code, showHistory: $showHistory,
       name_Icontains: $name, dateFrom_Gte: $dateFrom, dateTo_Lte: $dateTo, location: $location
       ) {
       edges {
