@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, {useState, useMemo, useEffect} from "react";
 import { combine, useTranslations, useModulesManager, ErrorBoundary } from "@openimis/fe-core";
 import { Grid, Button } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
@@ -7,12 +7,28 @@ import { withTheme, withStyles } from "@material-ui/styles";
 import ProductItemsDialog from "./ProductItemsDialog";
 import { LIMIT_TYPES, PRICE_ORIGINS, CEILING_EXCLUSIONS } from "../../constants";
 import _ from "lodash";
+import {rulesToFormValues, toFormValues} from "../../utils";
+import {usePageDisplayRulesQuery} from "../../hooks";
 
 const ItemsTabForm = (props) => {
-  const { classes, className, isLoading, onChange, onAdd, rows = [], itemColumns, Picker } = props;
+  const { classes, className, isLoading, onChange, onAdd, rows = [], itemColumns, Picker} = props;
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product", modulesManager);
   const [isDialogOpen, setDialogOpen] = useState(false);
+  const { isLoadingRules, errorRules, dataRules, refetchRules } = usePageDisplayRulesQuery({skip: true});
+  const [valuesRules, setValuesRules] = useState({});
+  const [isLoadedRules, setLoadedRules] = useState(false);
+  const [MIN_VALUE, setMinValue] = useState(0)
+  const [MAX_VALUE, setMaxValue] = useState(100)
+
+  useEffect(() => {
+    if (!isLoadingRules) {
+      setValuesRules(rulesToFormValues(dataRules.pageDisplayRules ?? {}));
+      setMinValue(valuesRules.minLimitValue)
+      setMaxValue(valuesRules.maxLimitValue)
+      setLoadedRules(true)
+    }
+  }, [dataRules, isLoadingRules]);
 
   const columns = useMemo(
     () => [
@@ -62,6 +78,13 @@ const ItemsTabForm = (props) => {
         type: "number",
         disableColumnMenu: true,
         sortable: false,
+        valueGetter: (params) => Number(params.value).toFixed(2),
+        valueParser: (value) => {
+          value = Number(value)
+          if (value > MAX_VALUE) value = MIN_VALUE
+          else if (value < MIN_VALUE) value = MAX_VALUE
+          return value.toFixed(2)
+        },
       })),
       ...["waitingPeriodAdult", "waitingPeriodChild"].map((fieldName) => ({
         field: fieldName,
@@ -111,14 +134,16 @@ const ItemsTabForm = (props) => {
         </Grid>
         <Grid item xs={12} className={classes.dataGridWrapper}>
           <ErrorBoundary>
-            <DataGrid
-              className={classes.dataGrid}
-              onChange={onChange}
-              isLoading={isLoading}
-              columns={columns}
-              density="compact"
-              rows={rows}
-            />
+            { isLoadedRules && (
+              <DataGrid
+                className={classes.dataGrid}
+                onChange={onChange}
+                isLoading={isLoading}
+                columns={columns}
+                density="compact"
+                rows={rows}
+              />
+            )}
           </ErrorBoundary>
         </Grid>
       </Grid>

@@ -19,10 +19,14 @@ const ProductsPage = (props) => {
   const modulesManager = useModulesManager();
   const rights = useSelector((state) => state.core.user?.i_user?.rights ?? []);
   const { formatMessage } = useTranslations("product");
+  const { formatMessageWithValues } = useTranslations("product", modulesManager);
   const deleteMutation = useProductDeleteMutation();
 
   const onDelete = async (product) => {
-    await deleteMutation.mutate({ uuids: [product.uuid] });
+    await deleteMutation.mutate({
+      uuids: [product.uuid],
+      clientMutationLabel: formatMessageWithValues("deleteMutation.label", {name: product.name})
+  });
   };
 
   const canDelete = (product) => rights.includes(RIGHT_PRODUCT_DELETE) && !product.validityTo;

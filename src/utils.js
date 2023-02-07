@@ -1,7 +1,7 @@
 import { graphqlWithVariables, toISODate } from "@openimis/fe-core";
 import _ from "lodash";
 
-export const validateProductForm = (values) => {
+export const validateProductForm = (values, rules) => {
   values = { ...values };
 
   delete values.validityTo;
@@ -17,6 +17,16 @@ export const validateProductForm = (values) => {
     "dateFrom",
     "dateTo",
     "ceilingInterpretation",
+  ];
+  const LIMIT_FIELDS = [
+    "limitAdult",
+    "limitAdultR",
+    "limitAdultE",
+    "limitChild",
+    "limitChildR",
+    "limitChildE",
+    "limitNoAdult",
+    "limitNoChild",
   ];
   const errors = {};
 
@@ -43,6 +53,22 @@ export const validateProductForm = (values) => {
     });
   }
 
+  if (values.items?.length > 0) {
+    values.items.forEach(item => {
+      if (!LIMIT_FIELDS.every(field => item[field] >= rules.minLimitValue && item[field] <= rules.maxLimitValue)) {
+        errors.items = false
+      }
+    })
+  }
+
+  if (values.services?.length > 0) {
+    values.services.forEach(service => {
+      if (!LIMIT_FIELDS.every(field => service[field] >= rules.minLimitValue && service[field] <= rules.maxLimitValue)) {
+        errors.service = false
+      }
+    })
+  }
+
   return Object.keys(errors).length === 0;
 };
 
@@ -57,6 +83,14 @@ export const toFormValues = (product) => {
     gracePeriodEnrolment: product.gracePeriodEnrolment ?? 0,
     gracePeriodRenewal: product.gracePeriodRenewal ?? 0,
     ceilingInterpretation: product.ceilingInterpretation ?? "HEALTH_FACILITY_TYPE",
+  };
+};
+
+export const rulesToFormValues = (rules) => {
+  return {
+    ...rules,
+    minLimitValue: Number(rules.minLimitValue) ?? 0.00,
+    maxLimitValue: Number(rules.maxLimitValue) ?? 100.00,
   };
 };
 
@@ -129,11 +163,11 @@ export const loadProductItems = async (uuid, dispatch) => {
               priceOrigin
               waitingPeriodAdult
               waitingPeriodChild
-              
+
               limitationType
               limitationTypeR
               limitationTypeE
-              
+
               limitAdult
               limitChild
               limitAdultR
@@ -142,7 +176,7 @@ export const loadProductItems = async (uuid, dispatch) => {
               limitChildE
               limitNoAdult
               limitNoChild
-              
+
               ceilingExclusionAdult
               ceilingExclusionChild
               item {
@@ -190,11 +224,11 @@ export const loadProductServices = async (uuid, dispatch) => {
               priceOrigin
               waitingPeriodAdult
               waitingPeriodChild
-              
+
               limitationType
               limitationTypeR
               limitationTypeE
-              
+
               limitAdult
               limitChild
               limitAdultR
@@ -203,7 +237,7 @@ export const loadProductServices = async (uuid, dispatch) => {
               limitChildE
               limitNoAdult
               limitNoChild
-              
+
               ceilingExclusionAdult
               ceilingExclusionChild
               service {

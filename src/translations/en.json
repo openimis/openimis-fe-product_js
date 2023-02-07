@@ -7,9 +7,9 @@
   "product.region": "Region",
   "product.dateFrom": "Date From",
   "product.dateTo": "Date To",
-  "product.memberTreshold": "Treshold",
+  "product.memberTreshold": "Threshold",
   "product.dedTreatment": "Treatment",
-  "product.dedInsuree": "Treshold",
+  "product.dedInsuree": "Threshold",
   "product.lumpSum": "Lump Sum",
   "product.premiumAdult": "Adult Contribution",
   "product.premiumChild": "Child Contribution",
@@ -160,5 +160,9 @@
   "product.DeductiblesCeilingsTabForm.MaxTable.hopitalizations": "Hospitalizations",
   "product.DeductiblesCeilingsTabForm.MaxTable.antenatal": "Antenatal",
   "product.DeductiblesCeilingsTabForm.MaxTable.visits": "Visits",
-  "product.DeductiblesCeilingsTabForm.splitCeilings": "Split ceilings & deductibles"
+  "product.DeductiblesCeilingsTabForm.splitCeilings": "Split ceilings & deductibles",
+
+  "product.createMutation.label": "Create product {name}",
+  "product.updateMutation.label": "Update product {name}",
+  "product.deleteMutation.label": "Delete product {name}"
 }
