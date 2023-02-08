@@ -45,28 +45,22 @@ export const validateProductForm = (values, rules) => {
     console.warn(errors);
   }
 
-  if (values.relativePrices?.length > 0) {
-    values.relativePrices.forEach(({ periods }) => {
-      if (_.sum(periods.map((v) => parseFloat(v))) !== 100) {
-        errors.relativePrices = true;
+  if (values.items?.length > 0) {
+    values.items.forEach((item) => {
+      if (!LIMIT_FIELDS.every((field) => item[field] >= rules.minLimitValue && item[field] <= rules.maxLimitValue)) {
+        errors.items = false;
       }
     });
   }
 
-  if (values.items?.length > 0) {
-    values.items.forEach(item => {
-      if (!LIMIT_FIELDS.every(field => item[field] >= rules.minLimitValue && item[field] <= rules.maxLimitValue)) {
-        errors.items = false
-      }
-    })
-  }
-
   if (values.services?.length > 0) {
-    values.services.forEach(service => {
-      if (!LIMIT_FIELDS.every(field => service[field] >= rules.minLimitValue && service[field] <= rules.maxLimitValue)) {
-        errors.service = false
+    values.services.forEach((service) => {
+      if (
+        !LIMIT_FIELDS.every((field) => service[field] >= rules.minLimitValue && service[field] <= rules.maxLimitValue)
+      ) {
+        errors.service = false;
       }
-    })
+    });
   }
 
   return Object.keys(errors).length === 0;
@@ -89,8 +83,8 @@ export const toFormValues = (product) => {
 export const rulesToFormValues = (rules) => {
   return {
     ...rules,
-    minLimitValue: Number(rules.minLimitValue) ?? 0.00,
-    maxLimitValue: Number(rules.maxLimitValue) ?? 100.00,
+    minLimitValue: Number(rules.minLimitValue) ?? 0.0,
+    maxLimitValue: Number(rules.maxLimitValue) ?? 100.0,
   };
 };
 
