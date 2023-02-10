@@ -107,6 +107,7 @@ const ServicesTabForm = (props) => {
       rows={edited.services ?? []}
       onChange={onChange}
       onAdd={onAdd}
+      getLimitValueSwitch={getLimitValueSwitch}
       Picker={(props) => (
         <PublishedComponent
           filterOptions={filterDialogOptions}
