@@ -51,10 +51,10 @@ const TabsForm = (props) => {
   }, [dataLimitDefaults, isLoadingLimitDefaults]);
 
   const getLimitValueSwitch = (limitType) => {
-    switch (limitType) {
-      case 'F' || LIMIT_TYPES.F:
+      if (limitType === 'F' || limitType === LIMIT_TYPES.F) {
         return fixedDefaultValue;
-      default:
+      }
+      else {
         return coInsuranceDefaultValue;
     }
   }

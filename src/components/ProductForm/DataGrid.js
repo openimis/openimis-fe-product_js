@@ -89,6 +89,7 @@ const DataGrid = (props) => {
   const [editRowsModel, setEditRowsModel] = useState({});
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product.DataGrid", modulesManager);
+  const prevItemsOrServicesRef = useRef()
 
   const preventRowEdit = (_, event) => (event.defaultMuiPrevented = true);
   const onRowEditCommit = (id, event) => {
@@ -124,11 +125,10 @@ const DataGrid = (props) => {
     [props.columns, rows],
   );
 
-  const handleEditRowsModel = (rows) => {
-    Object.values(rows).forEach(column => {
-      bindLimitTypesWithDefaultValues(column)
-    })
-    setEditRowsModel(rows)
+  const handleEditRowsModel = (itemsOrServices) => {
+    bindLimitTypesWithDefaultValues(itemsOrServices, prevItemsOrServicesRef.current)
+    setEditRowsModel(itemsOrServices)
+    prevItemsOrServicesRef.current = itemsOrServices
   }
 
   return (

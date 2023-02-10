@@ -30,30 +30,27 @@ const ItemsTabForm = (props) => {
 
   const shouldFieldBeFixed = (value) => LIMIT_COLUMNS_FIXED.includes(value);
 
-  const bindLimitTypesWithDefaultValues = (item) => {
-    if (item.limitationType.value === "FIXED_AMOUNT") {
-      item.limitAdult.value = getLimitValueSwitch('F')
-      item.limitChild.value = getLimitValueSwitch('F')
-    } else if (item.limitationType.value === "CO_INSURANCE"){
-      item.limitAdult.value = getLimitValueSwitch('C')
-      item.limitChild.value = getLimitValueSwitch('C')
-    }
-
-    if (item.limitationTypeE.value === "FIXED_AMOUNT") {
-      item.limitAdultE.value = getLimitValueSwitch('F')
-      item.limitChildE.value = getLimitValueSwitch('F')
-    } else if (item.limitationTypeE.value === "CO_INSURANCE"){
-      item.limitAdultE.value = getLimitValueSwitch('C')
-      item.limitChildE.value = getLimitValueSwitch('C')
-    }
-
-    if (item.limitationTypeR.value === "FIXED_AMOUNT") {
-      item.limitAdultR.value = getLimitValueSwitch('F')
-      item.limitChildR.value = getLimitValueSwitch('F')
-    } else if (item.limitationTypeR.value === "CO_INSURANCE"){
-      item.limitAdultR.value = getLimitValueSwitch('C')
-      item.limitChildR.value = getLimitValueSwitch('C')
-    }
+  const bindLimitTypesWithDefaultValues = (itemsOrServices, prevItemsOrServices) => {
+    Object.keys(itemsOrServices).forEach(key => {
+      for (const prop in itemsOrServices[key]) {
+        if (prevItemsOrServices && prevItemsOrServices.hasOwnProperty(key) && prevItemsOrServices[key].hasOwnProperty(prop)) {
+          if ((!prevItemsOrServices[key].hasOwnProperty(prop) || itemsOrServices[key][prop] !== prevItemsOrServices[key][prop])) {
+            if (prop === "limitationType") {
+              itemsOrServices[key].limitAdult.value = getLimitValueSwitch(itemsOrServices[key][prop].value)
+              itemsOrServices[key].limitChild.value = getLimitValueSwitch(itemsOrServices[key][prop].value)
+            }
+            else if (prop === "limitationTypeE") {
+              itemsOrServices[key].limitAdultE.value = getLimitValueSwitch(itemsOrServices[key][prop].value)
+              itemsOrServices[key].limitChildE.value = getLimitValueSwitch(itemsOrServices[key][prop].value)
+            }
+            else if (prop === "limitationTypeR") {
+              itemsOrServices[key].limitAdultR.value = getLimitValueSwitch(itemsOrServices[key][prop].value)
+              itemsOrServices[key].limitChildR.value = getLimitValueSwitch(itemsOrServices[key][prop].value)
+            }
+          }
+        }
+      }
+    })
   }
 
   useEffect(() => {
