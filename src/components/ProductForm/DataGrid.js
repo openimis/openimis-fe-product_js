@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, {useState, useMemo, useRef} from "react";
 import { DataGrid as MuiDataGrid } from "@mui/x-data-grid";
 import { ErrorBoundary, useTranslations, useModulesManager } from "@openimis/fe-core";
 import { makeStyles } from "@material-ui/styles";
@@ -85,10 +85,11 @@ const CellActions = (props) => {
 };
 
 const DataGrid = (props) => {
-  const { className, onChange, error, isLoading, density, rows = [] } = props;
+  const { className, onChange, error, isLoading, density, rows = [], bindLimitTypesWithDefaultValues } = props;
   const [editRowsModel, setEditRowsModel] = useState({});
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product.DataGrid", modulesManager);
+  const prevItemsOrServicesRef = useRef()
 
   const preventRowEdit = (_, event) => (event.defaultMuiPrevented = true);
   const onRowEditCommit = (id, event) => {
@@ -124,6 +125,12 @@ const DataGrid = (props) => {
     [props.columns, rows],
   );
 
+  const handleEditRowsModel = (itemsOrServices) => {
+    bindLimitTypesWithDefaultValues(itemsOrServices, prevItemsOrServicesRef.current)
+    setEditRowsModel(itemsOrServices)
+    prevItemsOrServicesRef.current = itemsOrServices
+  }
+
   return (
     <ErrorBoundary>
       <MuiDataGrid
@@ -136,7 +143,7 @@ const DataGrid = (props) => {
         density={density}
         editMode="row"
         editRowsModel={editRowsModel}
-        onEditRowsModelChange={setEditRowsModel}
+        onEditRowsModelChange={handleEditRowsModel}
         className={className}
         rows={rows}
       />
