@@ -22,3 +22,9 @@ export const LIMIT_COLUMNS = ["limitAdult",
                               "limitNoChild",]
 
 export const LIMIT_COLUMNS_FIXED = ["limitAdult", "limitChild"]
+export const LIMIT_COLUMNS_INTEGER = ["limitAdult",
+                                      "limitAdultR",
+                                      "limitAdultE",
+                                      "limitChild",
+                                      "limitChildR",
+                                      "limitChildE",]
