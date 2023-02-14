@@ -1,6 +1,6 @@
 import { graphqlWithVariables, toISODate } from "@openimis/fe-core";
 import _ from "lodash";
-import {LIMIT_COLUMNS, LIMIT_COLUMNS_FIXED, LIMIT_TYPES, PRICE_ORIGINS} from "./constants";
+import {LIMIT_COLUMNS, LIMIT_COLUMNS_FIXED, LIMIT_COLUMNS_INTEGER, LIMIT_TYPES, PRICE_ORIGINS} from "./constants";
 
 export const validateProductForm = (values, rules) => {
   values = { ...values };
@@ -32,10 +32,6 @@ export const validateProductForm = (values, rules) => {
     errors.dateTo = true;
   }
 
-  if (Object.keys(errors).length > 0) {
-    console.warn(errors);
-  }
-
   if (values.items?.length > 0) {
     values.items.forEach(item => {
       if (!LIMIT_COLUMNS.every(field => validateItemOrService(item, field, rules))) {
@@ -47,10 +43,15 @@ export const validateProductForm = (values, rules) => {
   if (values.services?.length > 0) {
     values.services.forEach(service => {
       if (!LIMIT_COLUMNS.every(field => validateItemOrService(service, field, rules))) {
-        errors.items = true;
+        errors.services = true;
       }
     });
   }
+
+  if (Object.keys(errors).length > 0) {
+    console.warn(errors);
+  }
+
 
   return Object.keys(errors).length === 0;
 };
@@ -65,8 +66,9 @@ export const getPriceOrigin= (priceOrigin) => {
 
 export const validateItemOrService = (itemOrService, field, rules) => {
   if (LIMIT_COLUMNS_FIXED.includes(field) && !/^\d+(?:\.\d{0,2})?$/.test(itemOrService[field].toString())) return false //check if up to two decimal points
-  if (!LIMIT_COLUMNS_FIXED.includes(field) && itemOrService[field] !== parseInt(itemOrService[field])) return false //check if integer
-  return itemOrService[field] >= rules.minLimitValue && itemOrService[field] <= rules.maxLimitValue
+  if (LIMIT_COLUMNS_INTEGER.includes(field) && Number(itemOrService[field]) !== parseInt(itemOrService[field])) return false //check if integer
+  return !(itemOrService[field] < rules.minLimitValue && itemOrService[field] > rules.maxLimitValue);
+
 }
 
 export const toFormValues = (product) => {
