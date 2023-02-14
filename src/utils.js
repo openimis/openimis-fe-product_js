@@ -1,5 +1,6 @@
 import { graphqlWithVariables, toISODate } from "@openimis/fe-core";
 import _ from "lodash";
+import {LIMIT_COLUMNS, LIMIT_COLUMNS_FIXED, LIMIT_COLUMNS_INTEGER, LIMIT_TYPES, PRICE_ORIGINS} from "./constants";
 
 export const validateProductForm = (values, rules, isProductCodeValid) => {
   values = { ...values };
@@ -17,16 +18,6 @@ export const validateProductForm = (values, rules, isProductCodeValid) => {
     "dateFrom",
     "dateTo",
     "ceilingInterpretation",
-  ];
-  const LIMIT_FIELDS = [
-    "limitAdult",
-    "limitAdultR",
-    "limitAdultE",
-    "limitChild",
-    "limitChildR",
-    "limitChildE",
-    "limitNoAdult",
-    "limitNoChild",
   ];
   const errors = {};
 
@@ -50,25 +41,43 @@ export const validateProductForm = (values, rules, isProductCodeValid) => {
   }
 
   if (values.items?.length > 0) {
-    values.items.forEach((item) => {
-      if (!LIMIT_FIELDS.every((field) => item[field] >= rules.minLimitValue && item[field] <= rules.maxLimitValue)) {
-        errors.items = false;
+    values.items.forEach(item => {
+      if (!LIMIT_COLUMNS.every(field => validateItemOrService(item, field, rules))) {
+        errors.items = true;
       }
     });
   }
 
   if (values.services?.length > 0) {
-    values.services.forEach((service) => {
-      if (
-        !LIMIT_FIELDS.every((field) => service[field] >= rules.minLimitValue && service[field] <= rules.maxLimitValue)
-      ) {
-        errors.service = false;
+    values.services.forEach(service => {
+      if (!LIMIT_COLUMNS.every(field => validateItemOrService(service, field, rules))) {
+        errors.services = true;
       }
     });
   }
 
+  if (Object.keys(errors).length > 0) {
+    console.warn(errors);
+  }
+
+
   return Object.keys(errors).length === 0;
 };
+
+export const getLimitType = (limitType) => {
+  return LIMIT_TYPES[limitType] ?? LIMIT_TYPES.C
+}
+
+export const getPriceOrigin= (priceOrigin) => {
+  return PRICE_ORIGINS[priceOrigin] ?? PRICE_ORIGINS.P
+}
+
+export const validateItemOrService = (itemOrService, field, rules) => {
+  if (LIMIT_COLUMNS_FIXED.includes(field) && !/^\d+(?:\.\d{0,2})?$/.test(itemOrService[field].toString())) return false //check if up to two decimal points
+  if (LIMIT_COLUMNS_INTEGER.includes(field) && Number(itemOrService[field]) !== parseInt(itemOrService[field])) return false //check if integer
+  return !(itemOrService[field] < rules.minLimitValue && itemOrService[field] > rules.maxLimitValue);
+
+}
 
 export const toFormValues = (product) => {
   return {

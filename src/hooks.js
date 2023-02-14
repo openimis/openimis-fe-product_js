@@ -188,6 +188,29 @@ export const usePageDisplayRulesQuery = (config) => {
   };
 };
 
+export const useLimitDefaultsQuery = (config) => {
+  const { isLoading, error, data, refetch } = useGraphqlQuery(
+    `
+    query {
+      limitDefaults {
+        defaultPriceOrigin
+        defaultLimit
+        defaultLimitCoInsuranceValue
+        defaultLimitFixedValue
+    }
+  }
+  `,
+    config
+  );
+
+  return {
+    isLoadingLimitDefaults: isLoading,
+    errorLimitDefaults: error,
+    refetchLimitDefaults: refetch,
+    dataLimitDefaults: data,
+  };
+};
+
 export const useProductCreateMutation = () => {
   const mutation = useGraphqlMutation(
     `

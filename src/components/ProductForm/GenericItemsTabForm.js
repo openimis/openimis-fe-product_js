@@ -5,24 +5,56 @@ import AddIcon from "@material-ui/icons/Add";
 import DataGrid from "./DataGrid";
 import { withTheme, withStyles } from "@material-ui/styles";
 import ProductItemsDialog from "./ProductItemsDialog";
-import { LIMIT_TYPES, PRICE_ORIGINS, CEILING_EXCLUSIONS } from "../../constants";
+import {LIMIT_TYPES, PRICE_ORIGINS, CEILING_EXCLUSIONS, LIMIT_COLUMNS, LIMIT_COLUMNS_FIXED} from "../../constants";
 import _ from "lodash";
 import {rulesToFormValues, toFormValues} from "../../utils";
 import {usePageDisplayRulesQuery} from "../../hooks";
 
 const ItemsTabForm = (props) => {
-  const { classes, className, isLoading, onChange, onAdd, rows = [], itemColumns, Picker} = props;
+  const { classes, className, isLoading, onChange, onAdd, rows = [], itemColumns, Picker, getLimitValueSwitch} = props;
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product", modulesManager);
   const [isDialogOpen, setDialogOpen] = useState(false);
   const { isLoadingRules, errorRules, dataRules, refetchRules } = usePageDisplayRulesQuery({skip: true});
   const [valuesRules, setValuesRules] = useState({});
   const [isLoadedRules, setLoadedRules] = useState(false);
-  const [MIN_VALUE, setMinValue] = useState(0)
-  const [MAX_VALUE, setMaxValue] = useState(100)
+  const [MIN_VALUE, setMinValue] = useState(0);
+  const [MAX_VALUE, setMaxValue] = useState(100);
+
+  const parserLimits= (value, fixed=false) => {
+    value = Number(value)
+    if (value > MAX_VALUE) value = MIN_VALUE
+    else if (value < MIN_VALUE) value = MAX_VALUE
+    return fixed? value.toFixed(2) : parseInt(value)
+  }
+
+  const shouldFieldBeFixed = (value) => LIMIT_COLUMNS_FIXED.includes(value);
+
+  const bindLimitTypesWithDefaultValues = (itemsOrServices, prevItemsOrServices) => {
+    Object.keys(itemsOrServices).forEach(key => {
+      for (const prop in itemsOrServices[key]) {
+        if (prevItemsOrServices && prevItemsOrServices.hasOwnProperty(key) && prevItemsOrServices[key].hasOwnProperty(prop)) {
+          if ((!prevItemsOrServices[key].hasOwnProperty(prop) || itemsOrServices[key][prop] !== prevItemsOrServices[key][prop])) {
+            if (prop === "limitationType") {
+              itemsOrServices[key].limitAdult.value = getLimitValueSwitch(itemsOrServices[key][prop].value)
+              itemsOrServices[key].limitChild.value = getLimitValueSwitch(itemsOrServices[key][prop].value)
+            }
+            else if (prop === "limitationTypeE") {
+              itemsOrServices[key].limitAdultE.value = getLimitValueSwitch(itemsOrServices[key][prop].value)
+              itemsOrServices[key].limitChildE.value = getLimitValueSwitch(itemsOrServices[key][prop].value)
+            }
+            else if (prop === "limitationTypeR") {
+              itemsOrServices[key].limitAdultR.value = getLimitValueSwitch(itemsOrServices[key][prop].value)
+              itemsOrServices[key].limitChildR.value = getLimitValueSwitch(itemsOrServices[key][prop].value)
+            }
+          }
+        }
+      }
+    })
+  }
 
   useEffect(() => {
-    if (!isLoadingRules) {
+    if (!isLoadingRules && !isLoadedRules) {
       setValuesRules(rulesToFormValues(dataRules.pageDisplayRules ?? {}));
       setMinValue(valuesRules.minLimitValue)
       setMaxValue(valuesRules.maxLimitValue)
@@ -42,7 +74,7 @@ const ItemsTabForm = (props) => {
         sortable: false,
         disableColumnMenu: true,
         valueFormatter: (params) => params.value && formatMessage(`ItemsOrServicesGrid.priceOrigin.${params.value}`),
-        valueOptions: PRICE_ORIGINS.map((v) => ({
+        valueOptions: Object.values(PRICE_ORIGINS).map((v) => ({
           label: v && formatMessage(`ItemsOrServicesGrid.priceOrigin.${v}`),
           value: v,
         })),
@@ -56,21 +88,12 @@ const ItemsTabForm = (props) => {
         sortable: false,
         disableColumnMenu: true,
         valueFormatter: (params) => params.value && formatMessage(`ItemsOrServicesGrid.limitTypes.${params.value}`),
-        valueOptions: LIMIT_TYPES.map((v) => ({
+        valueOptions: Object.values(LIMIT_TYPES).map((v) => ({
           label: v && formatMessage(`ItemsOrServicesGrid.limitTypes.${v}`),
           value: v,
         })),
       })),
-      ...[
-        "limitAdult",
-        "limitAdultR",
-        "limitAdultE",
-        "limitChild",
-        "limitChildR",
-        "limitChildE",
-        "limitNoAdult",
-        "limitNoChild",
-      ].map((fieldName) => ({
+      ...LIMIT_COLUMNS.map((fieldName) => ({
         field: fieldName,
         headerName: formatMessage(`ItemsOrServicesGrid.${fieldName}`),
         width: 90,
@@ -78,13 +101,8 @@ const ItemsTabForm = (props) => {
         type: "number",
         disableColumnMenu: true,
         sortable: false,
-        valueGetter: (params) => Number(params.value).toFixed(2),
-        valueParser: (value) => {
-          value = Number(value)
-          if (value > MAX_VALUE) value = MIN_VALUE
-          else if (value < MIN_VALUE) value = MAX_VALUE
-          return value.toFixed(2)
-        },
+        valueGetter: (params) => shouldFieldBeFixed(fieldName)? Number(params.value).toFixed(2) : parseInt(params.value),
+        valueParser: (value) => shouldFieldBeFixed(fieldName)? parserLimits(value, true) : parserLimits(value),
       })),
       ...["waitingPeriodAdult", "waitingPeriodChild"].map((fieldName) => ({
         field: fieldName,
@@ -142,6 +160,7 @@ const ItemsTabForm = (props) => {
                 columns={columns}
                 density="compact"
                 rows={rows}
+                bindLimitTypesWithDefaultValues={bindLimitTypesWithDefaultValues}
               />
             )}
           </ErrorBoundary>
