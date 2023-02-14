@@ -1,7 +1,7 @@
 import { graphqlWithVariables, toISODate } from "@openimis/fe-core";
 import _ from "lodash";
 
-export const validateProductForm = (values, rules) => {
+export const validateProductForm = (values, rules, isProductCodeValid) => {
   values = { ...values };
 
   delete values.validityTo;
@@ -39,6 +39,10 @@ export const validateProductForm = (values, rules) => {
   if (values.dateFrom > values.dateTo) {
     errors.dateFrom = true;
     errors.dateTo = true;
+  }
+
+  if (!isProductCodeValid) {
+    errors.isProductCodeInvalid = true;
   }
 
   if (Object.keys(errors).length > 0) {

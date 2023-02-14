@@ -43,6 +43,7 @@
   "product.insurancePeriod": "Insurance Period (months)",
   "product.administrationPeriod": "Administration Period (months)",
   "product.district": "District",
+  "product.alreadyTaken": "Product code already in use",
   "product.ProductFilters.showHistory": "Show Historical Values",
   "product.ProductSearcher.tableTitle": "{count} Products",
   "product.ProductSearcher.deleteProductTooltip": "Delete product",
