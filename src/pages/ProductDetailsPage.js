@@ -1,6 +1,9 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import clsx from "clsx";
+
+import { withStyles, withTheme } from "@material-ui/core/styles";
+
 import {
   ErrorBoundary,
   withHistory,
@@ -10,12 +13,15 @@ import {
   ProgressOrError,
   useTranslations,
 } from "@openimis/fe-core";
-import { withStyles, withTheme } from "@material-ui/core/styles";
-import { useSelector } from "react-redux";
-import ProductForm from "../components/ProductForm/ProductForm";
 import { RIGHT_PRODUCT_UPDATE } from "../constants";
-import {useProductQuery, useProductCreateMutation, useProductUpdateMutation, usePageDisplayRulesQuery} from "../hooks";
-import {validateProductForm, toFormValues, toInputValues, rulesToFormValues} from "../utils";
+import {
+  useProductQuery,
+  useProductCreateMutation,
+  useProductUpdateMutation,
+  usePageDisplayRulesQuery,
+} from "../hooks";
+import { validateProductForm, toFormValues, toInputValues, rulesToFormValues } from "../utils";
+import ProductForm from "../components/ProductForm/ProductForm";
 
 const styles = (theme) => ({
   page: theme.page,
@@ -28,6 +34,7 @@ const ProductDetailsPage = (props) => {
   const modulesManager = useModulesManager();
   const { formatMessageWithValues } = useTranslations("product", modulesManager);
   const rights = useSelector((state) => state.core?.user?.i_user?.rights ?? []);
+  const isProductCodeValid = useSelector((store) => store.product.validationFields?.productCode?.isValid);
 
   const [resetKey, setResetKey] = useState(0);
   const [isLocked, setLocked] = useState(false);
@@ -39,23 +46,22 @@ const ProductDetailsPage = (props) => {
     { uuid: match.params.product_id },
     { skip: !match.params.product_id },
   );
-  const { isLoadingRules, errorRules, dataRules, refetchRules } = usePageDisplayRulesQuery({skip: true});
+  const { isLoadingRules, errorRules, dataRules, refetchRules } = usePageDisplayRulesQuery({ skip: true });
   const createMutation = useProductCreateMutation();
   const updateMutation = useProductUpdateMutation();
 
   const onSave = () => {
     setLocked(true);
     if (values.uuid) {
-      updateMutation.mutate(
-        {...toInputValues(values),
-          clientMutationLabel: formatMessageWithValues("updateMutation.label", { name: values.name })
-        });
+      updateMutation.mutate({
+        ...toInputValues(values),
+        clientMutationLabel: formatMessageWithValues("updateMutation.label", { name: values.name }),
+      });
     } else {
-      createMutation.mutate(
-        {
-          ...toInputValues(values),
-          clientMutationLabel: formatMessageWithValues("createMutation.label", {name: values.name})
-        });
+      createMutation.mutate({
+        ...toInputValues(values),
+        clientMutationLabel: formatMessageWithValues("createMutation.label", { name: values.name }),
+      });
     }
   };
 
@@ -83,13 +89,13 @@ const ProductDetailsPage = (props) => {
     <div className={clsx(classes.page, isLocked && classes.locked)}>
       <ProgressOrError error={error} />
       <ErrorBoundary>
-        {(isLoaded && isLoadedRules) && (
+        {isLoaded && isLoadedRules && (
           <ProductForm
             readOnly={!rights.includes(RIGHT_PRODUCT_UPDATE) || isLocked || values.validityTo}
             key={resetKey}
             onChange={setValues}
             product={values}
-            canSave={() => validateProductForm(values, valuesRules)}
+            canSave={() => validateProductForm(values, valuesRules, isProductCodeValid)}
             onBack={() => historyPush(modulesManager, history, "product.productsList")}
             onSave={rights.includes(RIGHT_PRODUCT_UPDATE) ? onSave : undefined}
             onReset={onReset}

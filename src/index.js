@@ -1,5 +1,6 @@
 import messages_en from "./translations/en.json";
 import ProductPicker from "./pickers/ProductPicker";
+import { reducer } from "./reducer";
 
 import ProductsPage from "./pages/ProductsPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
@@ -7,11 +8,13 @@ import {
   GRAPHQL_USE_PRODUCTS_PRODUCT_FRAGMENT,
   GRAPHQL_USE_PRODUCT_PRODUCT_FRAGMENT,
   useProductsQuery,
-  useProductQuery, usePageDisplayRulesQuery,
+  useProductQuery,
+  usePageDisplayRulesQuery,
 } from "./hooks";
 
 const DEFAULT_CONFIG = {
   "translations": [{ key: "en", messages: messages_en }],
+  "reducers": [{ key: "product", reducer }],
   "core.Router": [
     { path: "admin/products", component: ProductsPage },
     { path: "admin/products/new", component: ProductDetailsPage },
