@@ -125,7 +125,8 @@ const MainPanelForm = (props) => {
           required
           module="product"
           label="dateFrom"
-          readOnly={readOnly}
+          disablePast={!Boolean(edited?.uuid)}
+          readOnly={Boolean(edited?.uuid) || readOnly}
           onChange={(dateFrom) => onEditedChanged({ ...edited, dateFrom })}
         />
       </Grid>
