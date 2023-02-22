@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useTranslations, useModulesManager, NumberInput, ConstantBasedPicker } from "@openimis/fe-core";
 import {
   Grid,
@@ -28,6 +29,8 @@ const isInitialSplit = (product) =>
 
 const DeductiblesCeilingsTabForm = (props) => {
   const { edited, onEditedChanged, className, readOnly } = props;
+  const product = useSelector((state) => state.product.product ?? {});
+
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product", modulesManager);
   const [isSplit, _setSplit] = useState(isInitialSplit(edited));
@@ -57,11 +60,11 @@ const DeductiblesCeilingsTabForm = (props) => {
     onEditedChanged({ ...edited, [fieldName]: value });
   };
 
-  useEffect(() => {
-    if (!edited.ceilingType) {
-      onEditedChanged({ ...edited, ceilingType: "INSUREE" });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!edited.ceilingType) {
+  //     onEditedChanged({ ...edited, ceilingType: "INSUREE" });
+  //   }
+  // }, []);
 
   useEffect(() => {}, [isSplit]);
   return (
@@ -83,13 +86,13 @@ const DeductiblesCeilingsTabForm = (props) => {
       </Grid>
       <Grid item xs={4} className={classes.item}>
         <ConstantBasedPicker
-          withNull
+          withNull = {false}
           module="product"
           readOnly={readOnly}
-          value={edited.ceilingType}
+          value={ edited?.ceilingType || product?.ceilingType  || " "}
+          onChange={(ceilingType) => onEditedChanged({ ...edited, ceilingType })}
           constants={CEILING_TYPES}
           label="ceilingType"
-          onChange={(ceilingType) => onEditedChanged({ ...edited, ceilingType })}
         />
       </Grid>
       <Grid item xs={4} className={classes.item}>
@@ -452,4 +455,9 @@ const DeductiblesCeilingsTabForm = (props) => {
     </Grid>
   );
 };
+
+const mapStateToProps = (state) => ({
+  product: state.product.product ?? {},
+});
+
 export default DeductiblesCeilingsTabForm;
