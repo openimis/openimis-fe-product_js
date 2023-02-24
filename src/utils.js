@@ -133,7 +133,7 @@ export const toInputValues = (values) => {
     services: hasEditedServices ? services.map(formatService) : undefined,
     items: hasEditedItems ? items.map(formatItem) : undefined,
     uuid,
-    code: code,
+    code: uuid ? undefined : code,
     dateFrom: toISODate(values.dateFrom),
     dateTo: toISODate(values.dateTo),
     locationUuid: location?.uuid,
