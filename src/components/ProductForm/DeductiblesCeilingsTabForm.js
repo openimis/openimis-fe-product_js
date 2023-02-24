@@ -30,12 +30,10 @@ const isInitialSplit = (product) =>
 const DeductiblesCeilingsTabForm = (props) => {
   const { edited, onEditedChanged, className, readOnly } = props;
   const product = useSelector((state) => state.product.product ?? {});
-
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product", modulesManager);
   const [isSplit, _setSplit] = useState(isInitialSplit(edited));
   const classes = useStyles();
-
   const setSplit = (event) => {
     const isChecked = event.target.checked;
     onEditedChanged({
@@ -60,11 +58,11 @@ const DeductiblesCeilingsTabForm = (props) => {
     onEditedChanged({ ...edited, [fieldName]: value });
   };
 
-  // useEffect(() => {
-  //   if (!edited.ceilingType) {
-  //     onEditedChanged({ ...edited, ceilingType: "INSUREE" });
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (!edited.ceilingType) {
+      onEditedChanged({ ...edited, ceilingType: product?.ceilingType || "INSUREE"});
+    }
+  }, []);
 
   useEffect(() => {}, [isSplit]);
   return (
@@ -89,7 +87,7 @@ const DeductiblesCeilingsTabForm = (props) => {
           withNull = {false}
           module="product"
           readOnly={readOnly}
-          value={ edited?.ceilingType || product?.ceilingType  || " "}
+          value={ edited?.ceilingType }
           onChange={(ceilingType) => onEditedChanged({ ...edited, ceilingType })}
           constants={CEILING_TYPES}
           label="ceilingType"
@@ -456,8 +454,5 @@ const DeductiblesCeilingsTabForm = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  product: state.product.product ?? {},
-});
 
 export default DeductiblesCeilingsTabForm;
