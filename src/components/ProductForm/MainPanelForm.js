@@ -63,6 +63,7 @@ const MainPanelForm = (props) => {
           setValidAction={productCodeSetValid}
           shouldValidate={shouldValidate}
           codeTakenLabel="product.alreadyTaken"
+          readOnly={readOnly}
           isValid={isProductCodeValid}
           isValidating={isProductCodeValidating}
           validationError={productCodeValidationError}
