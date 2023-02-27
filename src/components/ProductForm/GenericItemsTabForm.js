@@ -101,7 +101,7 @@ const ItemsTabForm = (props) => {
         type: "number",
         disableColumnMenu: true,
         sortable: false,
-        valueGetter: (params) => shouldFieldBeFixed(fieldName)? Number(params.value).toFixed(2) : parseInt(params.value),
+        valueGetter: (params) => params.value? Number(params.value).toFixed(2) : Number(params.value).toFixed(0),
         valueParser: (value) => shouldFieldBeFixed(fieldName)? parserLimits(value, true) : parserLimits(value),
       })),
       ...["waitingPeriodAdult", "waitingPeriodChild"].map((fieldName) => ({
