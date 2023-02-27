@@ -74,9 +74,7 @@ export const getPriceOrigin= (priceOrigin) => {
 
 export const validateItemOrService = (itemOrService, field, rules) => {
   if (LIMIT_COLUMNS_FIXED.includes(field) && !/^\d+(?:\.\d{0,2})?$/.test(itemOrService[field].toString())) return false //check if up to two decimal points
-  if (LIMIT_COLUMNS_INTEGER.includes(field) && Number(itemOrService[field]) !== parseInt(itemOrService[field])) return false //check if integer
   return !(itemOrService[field] < rules.minLimitValue && itemOrService[field] > rules.maxLimitValue);
-
 }
 
 export const toFormValues = (product) => {
