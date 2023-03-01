@@ -37,6 +37,7 @@ export const fetchProduct = (mm, variables) => {
               uuid
               code
               name
+              ceilingType
             }
           }
         }

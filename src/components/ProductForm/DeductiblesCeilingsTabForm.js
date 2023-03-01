@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import _ from "lodash";
-
+import { useSelector } from "react-redux";
+import { useTranslations, useModulesManager, NumberInput, ConstantBasedPicker } from "@openimis/fe-core";
 import {
   Grid,
   Table,
@@ -30,11 +31,11 @@ const isInitialSplit = (product) =>
 
 const DeductiblesCeilingsTabForm = (props) => {
   const { edited, onEditedChanged, className, readOnly } = props;
+  const product = useSelector((state) => state.product.product ?? {});
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product", modulesManager);
   const [isSplit, _setSplit] = useState(isInitialSplit(edited));
   const classes = useStyles();
-
   const setSplit = (event) => {
     const isChecked = event.target.checked;
     onEditedChanged({
@@ -61,7 +62,7 @@ const DeductiblesCeilingsTabForm = (props) => {
 
   useEffect(() => {
     if (!edited.ceilingType) {
-      onEditedChanged({ ...edited, ceilingType: "INSUREE" });
+      onEditedChanged({ ...edited, ceilingType: product?.ceilingType || "INSUREE"});
     }
   }, []);
 
@@ -85,13 +86,13 @@ const DeductiblesCeilingsTabForm = (props) => {
       </Grid>
       <Grid item xs={4} className={classes.item}>
         <ConstantBasedPicker
-          withNull
+          withNull = {false}
           module="product"
           readOnly={readOnly}
-          value={edited.ceilingType}
+          value={ edited?.ceilingType }
+          onChange={(ceilingType) => onEditedChanged({ ...edited, ceilingType })}
           constants={CEILING_TYPES}
           label="ceilingType"
-          onChange={(ceilingType) => onEditedChanged({ ...edited, ceilingType })}
         />
       </Grid>
       <Grid item xs={4} className={classes.item}>
@@ -455,4 +456,5 @@ const DeductiblesCeilingsTabForm = (props) => {
     </Grid>
   );
 };
+
 export default DeductiblesCeilingsTabForm;

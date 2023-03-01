@@ -10,7 +10,7 @@ export const LIMIT_TYPES = {F: "FIXED_AMOUNT", C: "CO_INSURANCE"};
 export const CEILING_DISCRIMINATION = ["HEALTH_FACILITY_TYPE", "CLAIM_TYPE"];
 
 export const CEILING_EXCLUSIONS = ["HOSPITAL", "NON_HOSPITAL", "BOTH"];
-export const CEILING_TYPES = ["TREATMENT", "POLICY", "INSUREE"];
+export const CEILING_TYPES = ["INSUREE", "TREATMENT", "POLICY"];
 
 export const LIMIT_COLUMNS = ["limitAdult",
                               "limitAdultR",

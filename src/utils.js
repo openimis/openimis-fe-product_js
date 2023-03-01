@@ -74,9 +74,7 @@ export const getPriceOrigin= (priceOrigin) => {
 
 export const validateItemOrService = (itemOrService, field, rules) => {
   if (LIMIT_COLUMNS_FIXED.includes(field) && !/^\d+(?:\.\d{0,2})?$/.test(itemOrService[field].toString())) return false //check if up to two decimal points
-  if (LIMIT_COLUMNS_INTEGER.includes(field) && Number(itemOrService[field]) !== parseInt(itemOrService[field])) return false //check if integer
   return !(itemOrService[field] < rules.minLimitValue && itemOrService[field] > rules.maxLimitValue);
-
 }
 
 export const toFormValues = (product) => {
@@ -114,6 +112,7 @@ export const toInputValues = (values) => {
     hasEditedItems,
     items,
     services,
+    ceilingType,
     ...inputValues
   } = values;
 
@@ -132,11 +131,12 @@ export const toInputValues = (values) => {
     services: hasEditedServices ? services.map(formatService) : undefined,
     items: hasEditedItems ? items.map(formatItem) : undefined,
     uuid,
-    code: uuid ? undefined : code,
+    code: code,
     dateFrom: toISODate(values.dateFrom),
     dateTo: toISODate(values.dateTo),
     locationUuid: location?.uuid,
     conversionProductUuid: conversionProduct?.uuid,
+    ceilingType: ceilingType,
   };
 };
 
