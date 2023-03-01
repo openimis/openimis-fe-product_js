@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Autocomplete, useModulesManager, useTranslations } from "@openimis/fe-core";
 import { useProductsQuery } from "../hooks";
-import _debounce from "lodash/debounce";
 
 const ProductPicker = (props) => {
   const {

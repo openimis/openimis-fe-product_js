@@ -35,7 +35,7 @@ const TabsForm = (props) => {
   const { formatMessage } = useTranslations("product.TabsForm");
   const { isLoadingLimitDefaults, dataLimitDefaults} = useLimitDefaultsQuery({skip: true});
   const [isLoadedLimitDefaults, setLoadedLimitDefaults] = useState(false);
-  const [limitType, setLimitType] = useState('C')
+  const [limitType, setLimitType] = useState('C');
   const [coInsuranceDefaultValue, setCoInsuranceDefaultValue] = useState(100);
   const [fixedDefaultValue, setFixedDefaultValue] = useState(0);
   const [priceOrigin, setPriceOrigin] = useState('P')
