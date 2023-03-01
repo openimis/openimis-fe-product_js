@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import _ from "lodash";
 import { useSelector } from "react-redux";
 import { useTranslations, useModulesManager, NumberInput, ConstantBasedPicker } from "@openimis/fe-core";
 import {
@@ -13,7 +14,8 @@ import {
   TableCell,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import _ from "lodash";
+
+import { useTranslations, useModulesManager, NumberInput, ConstantBasedPicker } from "@openimis/fe-core";
 import { CEILING_DISCRIMINATION, CEILING_TYPES } from "../../constants";
 import SectionTitle from "../SectionTitle";
 
@@ -426,6 +428,7 @@ const DeductiblesCeilingsTabForm = (props) => {
                 <NumberInput
                   min={0}
                   module="product"
+                  readOnly={readOnly}
                   value={edited.maxAmountAntenatal}
                   displayZero
                   onChange={handleInputChange("maxAmountAntenatal")}
