@@ -15,7 +15,6 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 
-import { useTranslations, useModulesManager, NumberInput, ConstantBasedPicker } from "@openimis/fe-core";
 import { CEILING_DISCRIMINATION, CEILING_TYPES } from "../../constants";
 import SectionTitle from "../SectionTitle";
 
