@@ -3,13 +3,13 @@ import { useProductsQuery } from "../hooks";
 import { Searcher, useTranslations, useModulesManager, ConfirmDialog } from "@openimis/fe-core";
 import ProductFilters from "./ProductFilters";
 import { Tooltip, IconButton } from "@material-ui/core";
-import { Tab as TabIcon, Delete as DeleteIcon } from "@material-ui/icons";
+import { Tab as TabIcon, Delete as DeleteIcon, Replay as ReplayIcon } from "@material-ui/icons";
 
 const isRowDisabled = (_, row) => Boolean(row.validityTo);
 const formatLocation = (location) => (location ? `${location.code} - ${location.name}` : null);
 
 const ProductSearcher = (props) => {
-  const { cacheFiltersKey, onDelete, canDelete, onDoubleClick } = props;
+  const { cacheFiltersKey, onDelete, canDelete, onDoubleClick, onDuplicate } = props;
   const modulesManager = useModulesManager();
   const { formatMessage, formatDateFromISO, formatMessageWithValues } = useTranslations("product", modulesManager);
   const [filters, setFilters] = useState({});
@@ -55,6 +55,7 @@ const ProductSearcher = (props) => {
   };
 
   const itemFormatters = useCallback((filters) => {
+    console.log("filters", filters);
     return [
       (p) => p.code,
       (p) => p.name,
@@ -67,6 +68,11 @@ const ProductSearcher = (props) => {
       (p) =>
         !filters.showHistory?.value ? (
           <>
+            <Tooltip title={formatMessage("ProductSearcher.duplicateProductTooltip")}>
+              <IconButton onClick={() => onDuplicate(p, true)}>
+                <ReplayIcon />
+              </IconButton>
+            </Tooltip>
             <Tooltip title={formatMessage("ProductSearcher.openNewTab")}>
               <IconButton onClick={() => onDoubleClick(p, true)}>
                 <TabIcon />

@@ -25,8 +25,8 @@ const ProductsPage = (props) => {
   const onDelete = async (product) => {
     await deleteMutation.mutate({
       uuids: [product.uuid],
-      clientMutationLabel: formatMessageWithValues("deleteMutation.label", {name: product.name})
-  });
+      clientMutationLabel: formatMessageWithValues("deleteMutation.label", { name: product.name }),
+    });
   };
 
   const canDelete = (product) => rights.includes(RIGHT_PRODUCT_DELETE) && !product.validityTo;
@@ -34,9 +34,19 @@ const ProductsPage = (props) => {
     historyPush(modulesManager, history, "product.productDetails", [product.uuid], newTab);
   };
 
+  const onDuplicate = (product, newTab = false) => {
+    console.log(product);
+    historyPush(modulesManager, history, "product.newProduct");
+  };
+
   return (
     <div className={classes.page}>
-      <ProductSearcher onDelete={onDelete} canDelete={canDelete} onDoubleClick={onDoubleClick} />
+      <ProductSearcher
+        onDelete={onDelete}
+        canDelete={canDelete}
+        onDoubleClick={onDoubleClick}
+        onDuplicate={onDuplicate}
+      />
       {rights.includes(RIGHT_PRODUCT_ADD) &&
         withTooltip(
           <div className={classes.fab}>
