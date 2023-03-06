@@ -9,7 +9,7 @@ const isRowDisabled = (_, row) => Boolean(row.validityTo);
 const formatLocation = (location) => (location ? `${location.code} - ${location.name}` : null);
 
 const ProductSearcher = (props) => {
-  const { cacheFiltersKey, onDelete, canDelete, onDoubleClick, onDuplicate } = props;
+  const { cacheFiltersKey, onDelete, canDelete, onDoubleClick, onDuplicate, canDuplicate } = props;
   const modulesManager = useModulesManager();
   const { formatMessage, formatDateFromISO, formatMessageWithValues } = useTranslations("product", modulesManager);
   const [filters, setFilters] = useState({});
@@ -55,7 +55,6 @@ const ProductSearcher = (props) => {
   };
 
   const itemFormatters = useCallback((filters) => {
-    console.log("filters", filters);
     return [
       (p) => p.code,
       (p) => p.name,
@@ -68,16 +67,18 @@ const ProductSearcher = (props) => {
       (p) =>
         !filters.showHistory?.value ? (
           <>
-            <Tooltip title={formatMessage("ProductSearcher.duplicateProductTooltip")}>
-              <IconButton onClick={() => onDuplicate(p, true)}>
-                <ReplayIcon />
-              </IconButton>
-            </Tooltip>
             <Tooltip title={formatMessage("ProductSearcher.openNewTab")}>
               <IconButton onClick={() => onDoubleClick(p, true)}>
                 <TabIcon />
               </IconButton>
             </Tooltip>
+            {canDuplicate(p) && (
+              <Tooltip title={formatMessage("ProductSearcher.duplicateProductTooltip")}>
+                <IconButton onClick={() => onDuplicate(p)}>
+                  <ReplayIcon />
+                </IconButton>
+              </Tooltip>
+            )}
             {canDelete(p) && (
               <Tooltip title={formatMessage("ProductSearcher.deleteProductTooltip")}>
                 <IconButton onClick={() => setProductToDelete(p)}>

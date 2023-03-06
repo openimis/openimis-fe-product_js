@@ -78,8 +78,10 @@ export const validateItemOrService = (itemOrService, field, rules) => {
 }
 
 export const toFormValues = (product) => {
+  console.log(product);
   return {
     ...product,
+    code: product.code ?? "",
     lumpSum: product.lumpSum ?? 0,
     maxMembers: product.maxMembers ?? 0,
     insurancePeriod: product.insurancePeriod ?? 12,

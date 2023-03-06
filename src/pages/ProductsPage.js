@@ -6,7 +6,7 @@ import { combine, withTooltip, useTranslations, withHistory, historyPush, useMod
 import AddIcon from "@material-ui/icons/Add";
 
 import { useSelector } from "react-redux";
-import { RIGHT_PRODUCT_DELETE, RIGHT_PRODUCT_ADD } from "../constants";
+import { RIGHT_PRODUCT_DELETE, RIGHT_PRODUCT_ADD, RIGHT_PRODUCT_DUPLICATE } from "../constants";
 import { useProductDeleteMutation } from "../hooks";
 
 const styles = (theme) => ({
@@ -30,13 +30,12 @@ const ProductsPage = (props) => {
   };
 
   const canDelete = (product) => rights.includes(RIGHT_PRODUCT_DELETE) && !product.validityTo;
+  const canDuplicate = (product) => rights.includes(RIGHT_PRODUCT_DUPLICATE) && !product.validityTo;
   const onDoubleClick = (product, newTab = false) => {
     historyPush(modulesManager, history, "product.productDetails", [product.uuid], newTab);
   };
-
-  const onDuplicate = (product, newTab = false) => {
-    console.log(product);
-    historyPush(modulesManager, history, "product.newProduct");
+  const onDuplicate = (product) => {
+    historyPush(modulesManager, history, "product.duplicateProduct", [product.uuid]);
   };
 
   return (
@@ -45,6 +44,7 @@ const ProductsPage = (props) => {
         onDelete={onDelete}
         canDelete={canDelete}
         onDoubleClick={onDoubleClick}
+        canDuplicate={canDuplicate}
         onDuplicate={onDuplicate}
       />
       {rights.includes(RIGHT_PRODUCT_ADD) &&
