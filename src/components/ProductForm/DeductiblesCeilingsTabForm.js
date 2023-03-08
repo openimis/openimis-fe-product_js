@@ -39,9 +39,9 @@ const DeductiblesCeilingsTabForm = (props) => {
     const isChecked = event.target.checked;
     onEditedChanged({
       ...edited,
-      deductible: 0,
-      deductibleIp: 0,
-      deductibleOp: 0,
+      deductible: "",
+      deductibleIp: "",
+      deductibleOp: "",
       ceilingIp: 0,
       ceilingOp: 0,
       ceiling: 0,
