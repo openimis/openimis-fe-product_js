@@ -53,8 +53,6 @@ const MainPanelForm = (props) => {
     return true;
   };
 
-  console.log(edited, edited?.threshold)
-
   return (
     <Grid container direction="row">
       <Grid item xs={3} className={classes.item}>
