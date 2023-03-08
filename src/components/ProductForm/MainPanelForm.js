@@ -53,6 +53,8 @@ const MainPanelForm = (props) => {
     return true;
   };
 
+  console.log(edited, edited?.threshold)
+
   return (
     <Grid container direction="row">
       <Grid item xs={3} className={classes.item}>
@@ -118,7 +120,6 @@ const MainPanelForm = (props) => {
         <NumberInput
           module="product"
           min={0}
-          displayZero
           label="memberTreshold"
           readOnly={readOnly}
           value={edited?.threshold ?? ""}
