@@ -12,6 +12,7 @@ import {
   useModulesManager,
   ProgressOrError,
   useTranslations,
+  useLocation,
 } from "@openimis/fe-core";
 import { RIGHT_PRODUCT_UPDATE } from "../constants";
 import {
@@ -19,6 +20,7 @@ import {
   useProductCreateMutation,
   useProductUpdateMutation,
   usePageDisplayRulesQuery,
+  useProductDuplicateMutation,
 } from "../hooks";
 import { validateProductForm, toFormValues, toInputValues, rulesToFormValues } from "../utils";
 import ProductForm from "../components/ProductForm/ProductForm";
@@ -35,6 +37,7 @@ const ProductDetailsPage = (props) => {
   const { formatMessageWithValues } = useTranslations("product", modulesManager);
   const rights = useSelector((state) => state.core?.user?.i_user?.rights ?? []);
   const isProductCodeValid = useSelector((store) => store.product.validationFields?.productCode?.isValid);
+  const location = useLocation();
 
   const [resetKey, setResetKey] = useState(0);
   const [isLocked, setLocked] = useState(false);
@@ -49,17 +52,30 @@ const ProductDetailsPage = (props) => {
   const { isLoadingRules, errorRules, dataRules, refetchRules } = usePageDisplayRulesQuery({ skip: true });
   const createMutation = useProductCreateMutation();
   const updateMutation = useProductUpdateMutation();
+  const duplicateMutation = useProductDuplicateMutation();
+
+  const shouldDuplicate = (location) => {
+    const { pathname } = location;
+    const shouldDuplicate = pathname.includes("duplicate");
+
+    return shouldDuplicate;
+  };
 
   const onSave = () => {
     setLocked(true);
     if (values.uuid) {
-      updateMutation.mutate({
-        ...toInputValues(values),
-        clientMutationLabel: formatMessageWithValues("updateMutation.label", { name: values.name }),
-      });
+      shouldDuplicate(location)
+        ? duplicateMutation.mutate({
+            ...toInputValues(values),
+            clientMutationLabel: formatMessageWithValues("duplicateMutation.label", { name: values.name }),
+          })
+        : updateMutation.mutate({
+            ...toInputValues(values),
+            clientMutationLabel: formatMessageWithValues("updateMutation.label", { name: values.name }),
+          });
     } else {
       createMutation.mutate({
-        ...toInputValues(values),
+        ...toInputValues(values, shouldDuplicate(location)),
         clientMutationLabel: formatMessageWithValues("createMutation.label", { name: values.name }),
       });
     }

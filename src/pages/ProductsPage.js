@@ -34,8 +34,8 @@ const ProductsPage = (props) => {
   const onDoubleClick = (product, newTab = false) => {
     historyPush(modulesManager, history, "product.productDetails", [product.uuid], newTab);
   };
-  const onDuplicate = (product) => {
-    historyPush(modulesManager, history, "product.duplicateProduct", [product.uuid]);
+  const onDuplicate = (product, newTab = false) => {
+    historyPush(modulesManager, history, "product.duplicateProduct", [product.uuid], newTab);
   };
 
   return (

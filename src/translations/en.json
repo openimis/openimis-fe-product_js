@@ -166,5 +166,6 @@
 
   "product.createMutation.label": "Create product {name}",
   "product.updateMutation.label": "Update product {name}",
+  "product.duplicateMutation.label": "Duplicate product {name}",
   "product.deleteMutation.label": "Delete product {name}"
 }

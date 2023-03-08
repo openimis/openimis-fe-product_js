@@ -4,6 +4,7 @@ import { Searcher, useTranslations, useModulesManager, ConfirmDialog } from "@op
 import ProductFilters from "./ProductFilters";
 import { Tooltip, IconButton } from "@material-ui/core";
 import { Tab as TabIcon, Delete as DeleteIcon, Replay as ReplayIcon } from "@material-ui/icons";
+import SupervisedUserCircleIcon from "@material-ui/icons/SupervisedUserCircle";
 
 const isRowDisabled = (_, row) => Boolean(row.validityTo);
 const formatLocation = (location) => (location ? `${location.code} - ${location.name}` : null);
@@ -74,8 +75,8 @@ const ProductSearcher = (props) => {
             </Tooltip>
             {canDuplicate(p) && (
               <Tooltip title={formatMessage("ProductSearcher.duplicateProductTooltip")}>
-                <IconButton onClick={() => onDuplicate(p)}>
-                  <ReplayIcon />
+                <IconButton onClick={() => onDuplicate(p, true)}>
+                  <SupervisedUserCircleIcon />
                 </IconButton>
               </Tooltip>
             )}
