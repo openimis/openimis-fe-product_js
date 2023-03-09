@@ -5,7 +5,7 @@ import AddIcon from "@material-ui/icons/Add";
 import DataGrid from "./DataGrid";
 import { withTheme, withStyles } from "@material-ui/styles";
 import ProductItemsDialog from "./ProductItemsDialog";
-import {LIMIT_TYPES, PRICE_ORIGINS, CEILING_EXCLUSIONS, LIMIT_COLUMNS, LIMIT_COLUMNS_FIXED} from "../../constants";
+import {LIMIT_TYPES, PRICE_ORIGINS, CEILING_EXCLUSIONS, LIMIT_COLUMNS} from "../../constants";
 import _ from "lodash";
 import {rulesToFormValues, toFormValues} from "../../utils";
 import {usePageDisplayRulesQuery} from "../../hooks";
@@ -21,14 +21,13 @@ const ItemsTabForm = (props) => {
   const [MIN_VALUE, setMinValue] = useState(0);
   const [MAX_VALUE, setMaxValue] = useState(100);
 
-  const parserLimits= (value, fixed=false) => {
+  const parserLimits= (value,) => {
     value = Number(value)
     if (value > MAX_VALUE) value = MIN_VALUE
     else if (value < MIN_VALUE) value = MAX_VALUE
-    return fixed? value.toFixed(2) : parseInt(value)
+    return value.toFixed(2)
   }
 
-  const shouldFieldBeFixed = (value) => LIMIT_COLUMNS_FIXED.includes(value);
 
   const bindLimitTypesWithDefaultValues = (itemsOrServices, prevItemsOrServices) => {
     Object.keys(itemsOrServices).forEach(key => {
@@ -101,8 +100,8 @@ const ItemsTabForm = (props) => {
         type: "number",
         disableColumnMenu: true,
         sortable: false,
-        valueGetter: (params) => params.value ? Number(params.value).toFixed(2) : Number(params.value).toFixed(0),
-        valueParser: (value) => shouldFieldBeFixed(fieldName)? parserLimits(value, true) : parserLimits(value),
+        valueGetter: (params) => Number(params.value).toFixed(2),
+        valueParser: (value) => parserLimits(value),
       })),
       ...["waitingPeriodAdult", "waitingPeriodChild"].map((fieldName) => ({
         field: fieldName,
@@ -121,7 +120,9 @@ const ItemsTabForm = (props) => {
         type: "singleSelect",
         sortable: false,
         disableColumnMenu: true,
-        valueFormatter: (params) => formatMessage(`ItemsOrServicesGrid.ceilingExclusion.${params.value ?? null}`),
+        valueFormatter: (params) => {
+          return params.value ? formatMessage(`ItemsOrServicesGrid.ceilingExclusion.${params.value}`) : "";
+        },
         valueOptions: [null].concat(CEILING_EXCLUSIONS).map((v) => ({
           label: formatMessage(`ItemsOrServicesGrid.ceilingExclusion.${v ?? null}`),
           value: v,
