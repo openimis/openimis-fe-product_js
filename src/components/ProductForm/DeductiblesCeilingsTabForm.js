@@ -197,7 +197,7 @@ const DeductiblesCeilingsTabForm = (props) => {
                       readOnly={readOnly}
                       value={edited?.ceilingIp ?? "N/A"}
                       onChange={handleInputChange("ceilingIp")}
-                      onBlur={(event) => handleCeilingBlur("ceilingOp", event)}
+                      onBlur={(event) => handleCeilingBlur("ceilingIp", event)}
                     />
                   </TableCell>
                   <TableCell>
@@ -237,7 +237,7 @@ const DeductiblesCeilingsTabForm = (props) => {
                       readOnly={readOnly}
                       value={edited?.maxPolicyExtraMemberIp ?? "N/A"}
                       onChange={handleInputChange("maxPolicyExtraMemberIp")}
-                      onBlur={(event) => handleCeilingBlur("maxPolicyExtraMember", event)}
+                      onBlur={(event) => handleCeilingBlur("maxPolicyExtraMemberIp", event)}
                     />
                   </TableCell>
                   <TableCell>
@@ -247,7 +247,7 @@ const DeductiblesCeilingsTabForm = (props) => {
                       readOnly={readOnly}
                       value={edited?.maxPolicyExtraMemberOp ?? "N/A"}
                       onChange={handleInputChange("maxPolicyExtraMemberOp")}
-                      onBlur={(event) => handleCeilingBlur("maxPolicyExtraMember", event)}
+                      onBlur={(event) => handleCeilingBlur("maxPolicyExtraMemberOp", event)}
                     />
                   </TableCell>
                 </>
@@ -287,7 +287,7 @@ const DeductiblesCeilingsTabForm = (props) => {
                       readOnly={readOnly}
                       value={edited?.maxCeilingPolicyOp ?? "N/A"}
                       onChange={handleInputChange("maxCeilingPolicyOp")}
-                      onBlur={(event) => handleCeilingBlur("maxCeilingPolicyIp", event)}
+                      onBlur={(event) => handleCeilingBlur("maxCeilingPolicyOp", event)}
                     />
                   </TableCell>
                 </>
@@ -299,7 +299,7 @@ const DeductiblesCeilingsTabForm = (props) => {
                     readOnly={readOnly}
                     value={edited?.maxCeilingPolicy ?? "N/A"}
                     onChange={handleInputChange("maxCeilingPolicy")}
-                    onBlur={(event) => handleCeilingBlur("maxCeilingPolicyIp", event)}
+                    onBlur={(event) => handleCeilingBlur("maxCeilingPolicy", event)}
                   />
                 </TableCell>
               )}
