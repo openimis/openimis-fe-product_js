@@ -76,10 +76,10 @@ export const validateItemOrService = (itemOrService, field, rules) => {
   return !(itemOrService[field] < rules.minLimitValue && itemOrService[field] > rules.maxLimitValue);
 };
 
-export const toFormValues = (product) => {
+export const toFormValues = (product, shouldDuplicate) => {
   return {
     ...product,
-    code: product.code ?? "",
+    code: shouldDuplicate ? "" : product.code ?? "",
     lumpSum: product.lumpSum ?? 0,
     maxMembers: product.maxMembers ?? 0,
     insurancePeriod: product.insurancePeriod ?? 12,
@@ -99,7 +99,7 @@ export const rulesToFormValues = (rules) => {
   };
 };
 
-export const toInputValues = (values, shouldDuplicate) => {
+export const toInputValues = (values) => {
   const {
     uuid,
     id,

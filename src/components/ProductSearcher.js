@@ -3,8 +3,8 @@ import { useProductsQuery } from "../hooks";
 import { Searcher, useTranslations, useModulesManager, ConfirmDialog } from "@openimis/fe-core";
 import ProductFilters from "./ProductFilters";
 import { Tooltip, IconButton } from "@material-ui/core";
-import { Tab as TabIcon, Delete as DeleteIcon, Replay as ReplayIcon } from "@material-ui/icons";
-import SupervisedUserCircleIcon from "@material-ui/icons/SupervisedUserCircle";
+import { Tab as TabIcon, Delete as DeleteIcon } from "@material-ui/icons";
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 const isRowDisabled = (_, row) => Boolean(row.validityTo);
 const formatLocation = (location) => (location ? `${location.code} - ${location.name}` : null);
@@ -76,7 +76,7 @@ const ProductSearcher = (props) => {
             {canDuplicate(p) && (
               <Tooltip title={formatMessage("ProductSearcher.duplicateProductTooltip")}>
                 <IconButton onClick={() => onDuplicate(p, true)}>
-                  <SupervisedUserCircleIcon />
+                  <FileCopyIcon />
                 </IconButton>
               </Tooltip>
             )}

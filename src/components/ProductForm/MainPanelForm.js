@@ -29,6 +29,7 @@ const styles = (theme) => ({
 
 const MainPanelForm = (props) => {
   const {
+    autoFocus,
     classes,
     edited,
     onEditedChanged,
@@ -59,6 +60,7 @@ const MainPanelForm = (props) => {
         <ValidatedTextInput
           itemQueryIdentifier="productCode"
           action={productCodeValidationCheck}
+          autoFocus={autoFocus}
           clearAction={productCodeValidationClear}
           setValidAction={productCodeSetValid}
           shouldValidate={shouldValidate}

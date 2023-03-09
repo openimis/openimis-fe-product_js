@@ -69,7 +69,7 @@ const ItemsTabForm = (props) => {
       setLoading(true);
       loadProductItems(edited_id, dispatch).then((items) => {
         setLoading(false);
-        onEditedChanged({ ...edited, items });
+        onEditedChanged({ ...edited, items, hasEditedItems: true });
       });
     }
   }, []);

@@ -12,7 +12,6 @@ import {
   useModulesManager,
   ProgressOrError,
   useTranslations,
-  useLocation,
 } from "@openimis/fe-core";
 import { RIGHT_PRODUCT_UPDATE } from "../constants";
 import {
@@ -32,13 +31,11 @@ const styles = (theme) => ({
 });
 
 const ProductDetailsPage = (props) => {
-  const { classes, match, history } = props;
+  const { classes, match, history, location } = props;
   const modulesManager = useModulesManager();
   const { formatMessageWithValues } = useTranslations("product", modulesManager);
   const rights = useSelector((state) => state.core?.user?.i_user?.rights ?? []);
   const isProductCodeValid = useSelector((store) => store.product.validationFields?.productCode?.isValid);
-  const location = useLocation();
-
   const [resetKey, setResetKey] = useState(0);
   const [isLocked, setLocked] = useState(false);
   const [isLoaded, setLoaded] = useState(false);
@@ -53,18 +50,16 @@ const ProductDetailsPage = (props) => {
   const createMutation = useProductCreateMutation();
   const updateMutation = useProductUpdateMutation();
   const duplicateMutation = useProductDuplicateMutation();
-
   const shouldDuplicate = (location) => {
     const { pathname } = location;
-    const shouldDuplicate = pathname.includes("duplicate");
-
-    return shouldDuplicate;
+    return pathname.includes("duplicate");
   };
+  const shouldBeDuplicated = shouldDuplicate(location);
 
   const onSave = () => {
     setLocked(true);
     if (values.uuid) {
-      shouldDuplicate(location)
+      shouldBeDuplicated
         ? duplicateMutation.mutate({
             ...toInputValues(values),
             clientMutationLabel: formatMessageWithValues("duplicateMutation.label", { name: values.name }),
@@ -75,7 +70,7 @@ const ProductDetailsPage = (props) => {
           });
     } else {
       createMutation.mutate({
-        ...toInputValues(values, shouldDuplicate(location)),
+        ...toInputValues(values, shouldBeDuplicated),
         clientMutationLabel: formatMessageWithValues("createMutation.label", { name: values.name }),
       });
     }
@@ -83,7 +78,7 @@ const ProductDetailsPage = (props) => {
 
   const onReset = () => {
     setResetKey(Date.now());
-    setValues(toFormValues(data ?? {}));
+    setValues(toFormValues(data ?? {}, shouldBeDuplicated));
     if (match.params.product_id) {
       refetch();
     }
@@ -92,7 +87,7 @@ const ProductDetailsPage = (props) => {
 
   useEffect(() => {
     if (!isLoading) {
-      setValues(toFormValues(data ?? {}));
+      setValues(toFormValues(data ?? {}, shouldBeDuplicated));
       setLoaded(true);
     }
     if (!isLoadingRules) {
@@ -115,6 +110,7 @@ const ProductDetailsPage = (props) => {
             onBack={() => historyPush(modulesManager, history, "product.productsList")}
             onSave={rights.includes(RIGHT_PRODUCT_UPDATE) ? onSave : undefined}
             onReset={onReset}
+            autoFocus={shouldBeDuplicated}
           />
         )}
       </ErrorBoundary>

@@ -69,7 +69,7 @@ const ServicesTabForm = (props) => {
       setLoading(true);
       loadProductServices(edited_id, dispatch).then((services) => {
         setLoading(false);
-        onEditedChanged({ ...edited, services });
+        onEditedChanged({ ...edited, services, hasEditedServices: true });
       });
     }
   }, []);
