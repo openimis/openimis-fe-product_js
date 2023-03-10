@@ -118,7 +118,6 @@ const MainPanelForm = (props) => {
         <NumberInput
           module="product"
           min={0}
-          displayZero
           label="memberTreshold"
           readOnly={readOnly}
           value={edited?.threshold ?? ""}
