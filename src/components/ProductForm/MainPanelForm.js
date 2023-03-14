@@ -177,6 +177,7 @@ const MainPanelForm = (props) => {
           required
           module="product"
           label="dateTo"
+          disablePast={!Boolean(edited?.uuid)}
           readOnly={readOnly}
           onChange={(dateTo) => onEditedChanged({ ...edited, dateTo })}
         />
