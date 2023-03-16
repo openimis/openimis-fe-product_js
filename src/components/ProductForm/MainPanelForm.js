@@ -53,7 +53,6 @@ const MainPanelForm = (props) => {
     return true;
   };
 
-  const today = new Date().getDate();
   return (
     <Grid container direction="row">
       <Grid item xs={3} className={classes.item}>
@@ -181,7 +180,7 @@ const MainPanelForm = (props) => {
           disablePast={!Boolean(edited?.uuid)}
           readOnly={readOnly}
           onChange={(dateTo) => onEditedChanged({ ...edited, dateTo })}
-          minDate={props?.edited?.dateFrom || today}  
+          minDate={props?.edited?.dateFrom || new Date().getDate()}  
         />
       </Grid>
       <Grid item xs={4} className={classes.item}>
