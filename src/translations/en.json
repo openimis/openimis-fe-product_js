@@ -146,6 +146,8 @@
   "product.DeductiblesCeilingsTabForm.all": "All",
   "product.DeductiblesCeilingsTabForm.hospitals": "Hospitals",
   "product.DeductiblesCeilingsTabForm.non_hospitals": "Non-Hospitals",
+  "product.DeductiblesCeilingsTabForm.in_patient": "In-Patient",
+  "product.DeductiblesCeilingsTabForm.out_patient": "Out-Patient",
   "product.DeductiblesCeilingsTabForm.DeductiblesTable.treatment": "Treatment",
   "product.DeductiblesCeilingsTabForm.DeductiblesTable.insuree": "Insuree",
   "product.DeductiblesCeilingsTabForm.DeductiblesTable.policy": "Policy",
