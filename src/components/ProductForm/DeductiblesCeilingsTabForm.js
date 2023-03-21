@@ -185,13 +185,13 @@ const DeductiblesCeilingsTabForm = (props) => {
               {isSplit && edited.ceilingInterpretation === HEALTH_FACILITY_TYPE && (
                 <>
                   <TableCell>{formatMessage("DeductiblesCeilingsTabForm.hospitals")}</TableCell>
-                  <TableCell>{formatMessage("DeductiblesCeilingsTabForm.non_hospitals")}</TableCell>
+                  <TableCell>{formatMessage("DeductiblesCeilingsTabForm.nonHospitals")}</TableCell>
                 </>
               )}
               {isSplit && edited.ceilingInterpretation === CLAIM_TYPE && (
                 <>
-                  <TableCell>{formatMessage("DeductiblesCeilingsTabForm.in_patient")}</TableCell>
-                  <TableCell>{formatMessage("DeductiblesCeilingsTabForm.out_patient")}</TableCell>
+                  <TableCell>{formatMessage("DeductiblesCeilingsTabForm.inPatient")}</TableCell>
+                  <TableCell>{formatMessage("DeductiblesCeilingsTabForm.outPatient")}</TableCell>
                 </>
               )}
             </TableRow>
