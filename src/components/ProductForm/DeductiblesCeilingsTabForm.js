@@ -15,7 +15,12 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 
-import { CEILING_DISCRIMINATION, CEILING_TYPES } from "../../constants";
+import {
+  CEILING_DISCRIMINATION,
+  CEILING_TYPES,
+  HEALTH_FACILITY_TYPE,
+  CLAIM_TYPE
+} from "../../constants";
 import SectionTitle from "../SectionTitle";
 
 const useStyles = makeStyles((theme) => ({
