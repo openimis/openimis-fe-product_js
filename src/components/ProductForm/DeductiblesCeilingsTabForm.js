@@ -120,16 +120,16 @@ const DeductiblesCeilingsTabForm = (props) => {
             <TableRow className={classes.tableTitle}>
               <TableCell width="200" />
               {!isSplit && <TableCell>{formatMessage("DeductiblesCeilingsTabForm.all")}</TableCell>}
-              {isSplit && edited.ceilingInterpretation == "HEALTH_FACILITY_TYPE" && (
+              {isSplit && edited.ceilingInterpretation === CEILING_DISCRIMINATION[0] && (
                 <>
                   <TableCell>{formatMessage("DeductiblesCeilingsTabForm.hospitals")}</TableCell>
-                  <TableCell>{formatMessage("DeductiblesCeilingsTabForm.non_hospitals")}</TableCell>
+                  <TableCell>{formatMessage("DeductiblesCeilingsTabForm.nonHospitals")}</TableCell>
                 </>
               )}
-              {isSplit && edited.ceilingInterpretation == "CLAIM_TYPE" && (
+              {isSplit && edited.ceilingInterpretation === CEILING_DISCRIMINATION[1] && (
                 <>
-                  <TableCell>{formatMessage("DeductiblesCeilingsTabForm.in_patient")}</TableCell>
-                  <TableCell>{formatMessage("DeductiblesCeilingsTabForm.out_patient")}</TableCell>
+                  <TableCell>{formatMessage("DeductiblesCeilingsTabForm.inPatient")}</TableCell>
+                  <TableCell>{formatMessage("DeductiblesCeilingsTabForm.outPatient")}</TableCell>
                 </>
               )}
             </TableRow>
