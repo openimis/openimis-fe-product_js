@@ -1,13 +1,22 @@
-import React from "react";
-import ProductSearcher from "../components/ProductSearcher";
-import { withTheme, withStyles } from "@material-ui/styles";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 import { Fab } from "@material-ui/core";
-import { combine, withTooltip, useTranslations, withHistory, historyPush, useModulesManager } from "@openimis/fe-core";
+import { withTheme, withStyles } from "@material-ui/styles";
 import AddIcon from "@material-ui/icons/Add";
 
-import { useSelector } from "react-redux";
+import {
+  combine,
+  withTooltip,
+  useTranslations,
+  withHistory,
+  historyPush,
+  useModulesManager,
+  clearCurrentPaginationPage,
+} from "@openimis/fe-core";
 import { RIGHT_PRODUCT_DELETE, RIGHT_PRODUCT_ADD } from "../constants";
 import { useProductDeleteMutation } from "../hooks";
+import ProductSearcher from "../components/ProductSearcher";
 
 const styles = (theme) => ({
   page: theme.page,
@@ -17,16 +26,23 @@ const styles = (theme) => ({
 const ProductsPage = (props) => {
   const { classes, history } = props;
   const modulesManager = useModulesManager();
+  const dispatch = useDispatch();
   const rights = useSelector((state) => state.core.user?.i_user?.rights ?? []);
+  const module = useSelector((state) => state.core?.savedPagination?.module);
   const { formatMessage } = useTranslations("product");
   const { formatMessageWithValues } = useTranslations("product", modulesManager);
   const deleteMutation = useProductDeleteMutation();
 
+  useEffect(() => {
+    const moduleName = "product";
+    if (module !== moduleName) dispatch(clearCurrentPaginationPage());
+  }, [module]);
+
   const onDelete = async (product) => {
     await deleteMutation.mutate({
       uuids: [product.uuid],
-      clientMutationLabel: formatMessageWithValues("deleteMutation.label", {name: product.name})
-  });
+      clientMutationLabel: formatMessageWithValues("deleteMutation.label", { name: product.name }),
+    });
   };
 
   const canDelete = (product) => rights.includes(RIGHT_PRODUCT_DELETE) && !product.validityTo;
