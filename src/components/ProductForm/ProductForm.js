@@ -21,6 +21,7 @@ const ProductForm = (props) => {
       Panels={[TabsForm]}
       save={onSave}
       back={onBack}
+      openDirty={onSave}
       actions={[
         {
           doIt: onReset,
