@@ -22,6 +22,7 @@ const ProductForm = (props) => {
       save={onSave}
       autoFocus={autoFocus}
       back={onBack}
+      openDirty={onSave}
       actions={[
         {
           doIt: onReset,
