@@ -1,6 +1,6 @@
 import { graphqlWithVariables, toISODate } from "@openimis/fe-core";
 import _ from "lodash";
-import {LIMIT_COLUMNS, LIMIT_TYPES, PRICE_ORIGINS} from "./constants";
+import { LIMIT_COLUMNS, LIMIT_TYPES, PRICE_ORIGINS } from "./constants";
 
 export const validateProductForm = (values, rules, isProductCodeValid) => {
   values = { ...values };
@@ -41,16 +41,16 @@ export const validateProductForm = (values, rules, isProductCodeValid) => {
   }
 
   if (values.items?.length > 0) {
-    values.items.forEach(item => {
-      if (!LIMIT_COLUMNS.every(field => validateItemOrService(item, field, rules))) {
+    values.items.forEach((item) => {
+      if (!LIMIT_COLUMNS.every((field) => validateItemOrService(item, field, rules))) {
         errors.items = true;
       }
     });
   }
 
   if (values.services?.length > 0) {
-    values.services.forEach(service => {
-      if (!LIMIT_COLUMNS.every(field => validateItemOrService(service, field, rules))) {
+    values.services.forEach((service) => {
+      if (!LIMIT_COLUMNS.every((field) => validateItemOrService(service, field, rules))) {
         errors.services = true;
       }
     });
@@ -60,26 +60,26 @@ export const validateProductForm = (values, rules, isProductCodeValid) => {
     console.warn(errors);
   }
 
-
   return Object.keys(errors).length === 0;
 };
 
 export const getLimitType = (limitType) => {
-  return LIMIT_TYPES[limitType] ?? LIMIT_TYPES.C
-}
+  return LIMIT_TYPES[limitType] ?? LIMIT_TYPES.C;
+};
 
-export const getPriceOrigin= (priceOrigin) => {
-  return PRICE_ORIGINS[priceOrigin] ?? PRICE_ORIGINS.P
-}
+export const getPriceOrigin = (priceOrigin) => {
+  return PRICE_ORIGINS[priceOrigin] ?? PRICE_ORIGINS.P;
+};
 
 export const validateItemOrService = (itemOrService, field, rules) => {
-  if (!/^\d+(?:\.\d{0,2})?$/.test(itemOrService[field]?.toString())) return false //check if up to two decimal points
+  if (!/^\d+(?:\.\d{0,2})?$/.test(itemOrService[field].toString())) return false; //check if up to two decimal points
   return !(itemOrService[field] < rules.minLimitValue && itemOrService[field] > rules.maxLimitValue);
-}
+};
 
-export const toFormValues = (product) => {
+export const toFormValues = (product, shouldDuplicate) => {
   return {
     ...product,
+    code: shouldDuplicate ? "" : product.code ?? "",
     lumpSum: product.lumpSum ?? 0,
     maxMembers: product.maxMembers ?? 0,
     insurancePeriod: product.insurancePeriod ?? 12,
@@ -126,7 +126,7 @@ export const toInputValues = (values) => {
     ...params,
   });
 
-  return {
+  const val = {
     ...inputValues,
     services: hasEditedServices ? services.map(formatService) : undefined,
     items: hasEditedItems ? items.map(formatItem) : undefined,
@@ -138,6 +138,8 @@ export const toInputValues = (values) => {
     conversionProductUuid: conversionProduct?.uuid,
     ceilingType: ceilingType,
   };
+
+  return val;
 };
 
 export const fetchConnection = (fetchFn) => {

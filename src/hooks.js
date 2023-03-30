@@ -177,7 +177,7 @@ export const usePageDisplayRulesQuery = (config) => {
     }
   }
   `,
-    config
+    config,
   );
 
   return {
@@ -200,7 +200,7 @@ export const useLimitDefaultsQuery = (config) => {
     }
   }
   `,
-    config
+    config,
   );
 
   return {
@@ -238,6 +238,22 @@ export const useProductUpdateMutation = () => {
     }
   `,
     { onSuccess: (data) => data?.updateProduct },
+  );
+
+  return mutation;
+};
+
+export const useProductDuplicateMutation = () => {
+  const mutation = useGraphqlMutation(
+    `
+    mutation ($input: DuplicateProductMutationInput!) {
+      duplicateProduct(input: $input) {
+        internalId
+        clientMutationId
+      }
+    }
+  `,
+    { onSuccess: (data) => data?.duplicateProduct },
   );
 
   return mutation;

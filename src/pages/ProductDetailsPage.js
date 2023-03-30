@@ -19,6 +19,7 @@ import {
   useProductCreateMutation,
   useProductUpdateMutation,
   usePageDisplayRulesQuery,
+  useProductDuplicateMutation,
 } from "../hooks";
 import { validateProductForm, toFormValues, toInputValues, rulesToFormValues } from "../utils";
 import ProductForm from "../components/ProductForm/ProductForm";
@@ -30,12 +31,11 @@ const styles = (theme) => ({
 });
 
 const ProductDetailsPage = (props) => {
-  const { classes, match, history } = props;
+  const { classes, match, history, location } = props;
   const modulesManager = useModulesManager();
   const { formatMessageWithValues } = useTranslations("product", modulesManager);
   const rights = useSelector((state) => state.core?.user?.i_user?.rights ?? []);
   const isProductCodeValid = useSelector((store) => store.product.validationFields?.productCode?.isValid);
-
   const [resetKey, setResetKey] = useState(0);
   const [isLocked, setLocked] = useState(false);
   const [isLoaded, setLoaded] = useState(false);
@@ -49,17 +49,28 @@ const ProductDetailsPage = (props) => {
   const { isLoadingRules, errorRules, dataRules, refetchRules } = usePageDisplayRulesQuery({ skip: true });
   const createMutation = useProductCreateMutation();
   const updateMutation = useProductUpdateMutation();
+  const duplicateMutation = useProductDuplicateMutation();
+  const shouldDuplicate = (location) => {
+    const { pathname } = location;
+    return pathname.includes("duplicate");
+  };
+  const shouldBeDuplicated = shouldDuplicate(location);
 
   const onSave = () => {
     setLocked(true);
     if (values.uuid) {
-      updateMutation.mutate({
-        ...toInputValues(values),
-        clientMutationLabel: formatMessageWithValues("updateMutation.label", { name: values.name }),
-      });
+      shouldBeDuplicated
+        ? duplicateMutation.mutate({
+            ...toInputValues(values),
+            clientMutationLabel: formatMessageWithValues("duplicateMutation.label", { name: values.name }),
+          })
+        : updateMutation.mutate({
+            ...toInputValues(values),
+            clientMutationLabel: formatMessageWithValues("updateMutation.label", { name: values.name }),
+          });
     } else {
       createMutation.mutate({
-        ...toInputValues(values),
+        ...toInputValues(values, shouldBeDuplicated),
         clientMutationLabel: formatMessageWithValues("createMutation.label", { name: values.name }),
       });
     }
@@ -67,7 +78,7 @@ const ProductDetailsPage = (props) => {
 
   const onReset = () => {
     setResetKey(Date.now());
-    setValues(toFormValues(data ?? {}));
+    setValues(toFormValues(data ?? {}, shouldBeDuplicated));
     if (match.params.product_id) {
       refetch();
     }
@@ -76,7 +87,7 @@ const ProductDetailsPage = (props) => {
 
   useEffect(() => {
     if (!isLoading) {
-      setValues(toFormValues(data ?? {}));
+      setValues(toFormValues(data ?? {}, shouldBeDuplicated));
       setLoaded(true);
     }
     if (!isLoadingRules) {
@@ -99,6 +110,7 @@ const ProductDetailsPage = (props) => {
             onBack={() => historyPush(modulesManager, history, "product.productsList")}
             onSave={rights.includes(RIGHT_PRODUCT_UPDATE) ? onSave : undefined}
             onReset={onReset}
+            autoFocus={shouldBeDuplicated}
           />
         )}
       </ErrorBoundary>

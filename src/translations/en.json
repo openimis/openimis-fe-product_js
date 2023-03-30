@@ -47,6 +47,7 @@
   "product.ProductFilters.showHistory": "Show Historical Values",
   "product.ProductSearcher.tableTitle": "{count} Products",
   "product.ProductSearcher.deleteProductTooltip": "Delete product",
+  "product.ProductSearcher.duplicateProductTooltip": "Duplicate product",
   "product.ProductSearcher.openNewTab": "Open in new tab",
 
   "product.ProductForm.title": "Product {label}",
@@ -165,5 +166,6 @@
 
   "product.createMutation.label": "Create product {name}",
   "product.updateMutation.label": "Update product {name}",
+  "product.duplicateMutation.label": "Duplicate product {name}",
   "product.deleteMutation.label": "Delete product {name}"
 }
