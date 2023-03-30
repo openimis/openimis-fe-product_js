@@ -14,7 +14,7 @@ import {
   useModulesManager,
   clearCurrentPaginationPage,
 } from "@openimis/fe-core";
-import { RIGHT_PRODUCT_DELETE, RIGHT_PRODUCT_ADD } from "../constants";
+import { RIGHT_PRODUCT_DELETE, RIGHT_PRODUCT_ADD, RIGHT_PRODUCT_DUPLICATE} from "../constants";
 import { useProductDeleteMutation } from "../hooks";
 import ProductSearcher from "../components/ProductSearcher";
 
