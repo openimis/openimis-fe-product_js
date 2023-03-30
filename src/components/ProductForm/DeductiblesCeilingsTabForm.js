@@ -15,7 +15,12 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 
-import { CEILING_DISCRIMINATION, CEILING_TYPES } from "../../constants";
+import {
+  CEILING_DISCRIMINATION,
+  CEILING_TYPES,
+  HEALTH_FACILITY_TYPE,
+  CLAIM_TYPE
+} from "../../constants";
 import SectionTitle from "../SectionTitle";
 
 const useStyles = makeStyles((theme) => ({
@@ -54,18 +59,17 @@ const DeductiblesCeilingsTabForm = (props) => {
     });
     _setSplit(isChecked);
   };
-
   const handleInputChange = (fieldName) => (value) => {
     onEditedChanged({ ...edited, [fieldName]: value });
   };
 
   useEffect(() => {
     if (!edited.ceilingType) {
-      onEditedChanged({ ...edited, ceilingType: product?.ceilingType || "INSUREE"});
+      onEditedChanged({ ...edited, ceilingType: product?.ceilingType || "INSUREE" });
     }
   }, []);
 
-  useEffect(() => {}, [isSplit]);
+  useEffect(() => { }, [isSplit]);
   return (
     <Grid container className={className}>
       <Grid item xs={6} className={classes.item}>
@@ -85,10 +89,10 @@ const DeductiblesCeilingsTabForm = (props) => {
       </Grid>
       <Grid item xs={4} className={classes.item}>
         <ConstantBasedPicker
-          withNull = {false}
+          withNull={false}
           module="product"
           readOnly={readOnly}
-          value={ edited?.ceilingType }
+          value={edited?.ceilingType}
           onChange={(ceilingType) => onEditedChanged({ ...edited, ceilingType })}
           constants={CEILING_TYPES}
           label="ceilingType"
@@ -110,10 +114,16 @@ const DeductiblesCeilingsTabForm = (props) => {
             <TableRow className={classes.tableTitle}>
               <TableCell width="200" />
               {!isSplit && <TableCell>{formatMessage("DeductiblesCeilingsTabForm.all")}</TableCell>}
-              {isSplit && (
+              {isSplit && edited.ceilingInterpretation === HEALTH_FACILITY_TYPE && (
                 <>
                   <TableCell>{formatMessage("DeductiblesCeilingsTabForm.hospitals")}</TableCell>
-                  <TableCell>{formatMessage("DeductiblesCeilingsTabForm.non_hospitals")}</TableCell>
+                  <TableCell>{formatMessage("DeductiblesCeilingsTabForm.nonHospitals")}</TableCell>
+                </>
+              )}
+              {isSplit && edited.ceilingInterpretation === CLAIM_TYPE && (
+                <>
+                  <TableCell>{formatMessage("DeductiblesCeilingsTabForm.inPatient")}</TableCell>
+                  <TableCell>{formatMessage("DeductiblesCeilingsTabForm.outPatient")}</TableCell>
                 </>
               )}
             </TableRow>
@@ -166,10 +176,16 @@ const DeductiblesCeilingsTabForm = (props) => {
             <TableRow className={classes.tableTitle}>
               <TableCell width="200" />
               {!isSplit && <TableCell>{formatMessage("DeductiblesCeilingsTabForm.all")}</TableCell>}
-              {isSplit && (
+              {isSplit && edited.ceilingInterpretation === HEALTH_FACILITY_TYPE && (
                 <>
                   <TableCell>{formatMessage("DeductiblesCeilingsTabForm.hospitals")}</TableCell>
-                  <TableCell>{formatMessage("DeductiblesCeilingsTabForm.non_hospitals")}</TableCell>
+                  <TableCell>{formatMessage("DeductiblesCeilingsTabForm.nonHospitals")}</TableCell>
+                </>
+              )}
+              {isSplit && edited.ceilingInterpretation === CLAIM_TYPE && (
+                <>
+                  <TableCell>{formatMessage("DeductiblesCeilingsTabForm.inPatient")}</TableCell>
+                  <TableCell>{formatMessage("DeductiblesCeilingsTabForm.outPatient")}</TableCell>
                 </>
               )}
             </TableRow>
