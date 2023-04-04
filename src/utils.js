@@ -72,7 +72,7 @@ export const getPriceOrigin = (priceOrigin) => {
 };
 
 export const validateItemOrService = (itemOrService, field, rules) => {
-  if (!/^\d+(?:\.\d{0,2})?$/.test(itemOrService[field].toString())) return false; //check if up to two decimal points
+  if (!/^\d+(?:\.\d{0,2})?$/.test(itemOrService[field]?.toString())) return false; //check if up to two decimal points
   return !(itemOrService[field] < rules.minLimitValue && itemOrService[field] > rules.maxLimitValue);
 };
 
