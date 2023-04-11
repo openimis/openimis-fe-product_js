@@ -16,16 +16,8 @@ export const CEILING_EXCLUSIONS = ["HOSPITAL", "NON_HOSPITAL", "BOTH"];
 export const CEILING_TYPES = ["INSUREE", "TREATMENT", "POLICY"];
 
 export const LIMIT_COLUMNS = ["limitAdult",
-                              "limitAdultR",
-                              "limitAdultE",
-                              "limitChild",
-                              "limitChildR",
-                              "limitChildE",
-                              "limitNoAdult",
-                              "limitNoChild",]
-export const LIMIT_COLUMNS_INTEGER = ["limitAdult",
                                       "limitAdultR",
                                       "limitAdultE",
                                       "limitChild",
                                       "limitChildR",
-                                      "limitChildE",]
+                                      "limitChildE"]

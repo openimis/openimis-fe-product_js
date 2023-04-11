@@ -91,8 +91,6 @@ const ServicesTabForm = (props) => {
       limitChild: getLimitValueSwitch(limitType),
       limitChildR: getLimitValueSwitch(limitType),
       limitChildE: getLimitValueSwitch(limitType),
-      limitNoAdult: getLimitValueSwitch(limitType),
-      limitNoChild: getLimitValueSwitch(limitType),
     }));
     onChange(newServices.concat(edited.services ?? []));
   };
