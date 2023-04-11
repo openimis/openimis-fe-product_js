@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { TextField } from "@material-ui/core";
 import { Autocomplete, useModulesManager, useTranslations } from "@openimis/fe-core";
 import { useProductsQuery } from "../hooks";
 
@@ -6,10 +7,11 @@ const ProductPicker = (props) => {
   const {
     multiple,
     required,
-    placeholder,
     label,
-    withLabel,
-    withPlaceholder,
+    nullLabel,
+    withLabel = false,
+    placeholder,
+    withPlaceholder = false,
     readOnly,
     value,
     onChange,
@@ -30,12 +32,7 @@ const ProductPicker = (props) => {
   return (
     <Autocomplete
       multiple={multiple}
-      required={required}
       error={error}
-      placeholder={placeholder ?? formatMessage("ProductPicker.placeholder")}
-      label={label ?? formatMessage("Product")}
-      withLabel={withLabel}
-      withPlaceholder={withPlaceholder}
       readOnly={readOnly}
       options={data.products ?? []}
       isLoading={isLoading}
@@ -46,6 +43,14 @@ const ProductPicker = (props) => {
       filterOptions={filter}
       filterSelectedOptions={filterSelectedOptions}
       onInputChange={(search) => setFilters({ first: 15, search, location: locationId })}
+      renderInput={(inputProps) => (
+        <TextField
+          {...inputProps}
+          required={required}
+          label={withLabel && (label || nullLabel)}
+          placeholder={withPlaceholder && (placeholder || formatMessage("Search..."))}
+        />
+      )}
     />
   );
 };
