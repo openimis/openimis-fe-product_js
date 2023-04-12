@@ -6,7 +6,8 @@ import TabsForm from "./TabsForm";
 import ReplayIcon from "@material-ui/icons/Replay";
 
 const ProductForm = (props) => {
-  const { readOnly, onBack, onSave, product, canSave, onReset, onChange, autoFocus } = props;
+  const { readOnly, onBack, onSave, product, canSave, onReset, onChange, autoFocus, isDuplicate } = props;
+
   return (
     <Form
       module="product"
@@ -16,6 +17,7 @@ const ProductForm = (props) => {
       canSave={canSave}
       onEditedChanged={onChange}
       edited={product}
+      isDuplicate={isDuplicate}
       edited_id={product.uuid}
       HeadPanel={MainPanelForm}
       Panels={[TabsForm]}
