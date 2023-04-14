@@ -114,6 +114,7 @@ const ItemsTabForm = (props) => {
         sortable: false,
         valueParser: (value) => {
           if (value < 0) return null;
+          return value;
         }
       })),
       ...["ceilingExclusionAdult", "ceilingExclusionChild"].map((fieldName) => ({
