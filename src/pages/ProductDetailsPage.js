@@ -111,6 +111,7 @@ const ProductDetailsPage = (props) => {
             onSave={rights.includes(RIGHT_PRODUCT_UPDATE) ? onSave : undefined}
             onReset={onReset}
             autoFocus={shouldBeDuplicated}
+            isDuplicate={shouldBeDuplicated}
           />
         )}
       </ErrorBoundary>

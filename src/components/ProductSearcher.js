@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { useProductsQuery } from "../hooks";
-import { Searcher, useTranslations, useModulesManager, ConfirmDialog } from "@openimis/fe-core";
+import { withTheme, withStyles } from "@material-ui/core/styles";
+import { Searcher, useTranslations, combine, useModulesManager, ConfirmDialog } from "@openimis/fe-core";
 import ProductFilters from "./ProductFilters";
 import { Tooltip, IconButton } from "@material-ui/core";
 import { Tab as TabIcon, Delete as DeleteIcon } from "@material-ui/icons";
@@ -9,8 +10,12 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 const isRowDisabled = (_, row) => Boolean(row.validityTo);
 const formatLocation = (location) => (location ? `${location.code} - ${location.name}` : null);
 
+const styles = (theme) => ({
+  horizontalButtonContainer: theme.buttonContainer.horizontal,
+});
+
 const ProductSearcher = (props) => {
-  const { cacheFiltersKey, onDelete, canDelete, onDoubleClick, onDuplicate, canDuplicate } = props;
+  const { cacheFiltersKey, classes, onDelete, canDelete, onDoubleClick, onDuplicate, canDuplicate } = props;
   const modulesManager = useModulesManager();
   const { formatMessage, formatDateFromISO, formatMessageWithValues } = useTranslations("product", modulesManager);
   const [filters, setFilters] = useState({});
@@ -78,7 +83,7 @@ const ProductSearcher = (props) => {
 
       (p) =>
         !filters.showHistory?.value ? (
-          <>
+          <div className={classes.horizontalButtonContainer}>
             <Tooltip title={formatMessage("ProductSearcher.openNewTab")}>
               <IconButton onClick={() => onDoubleClick(p, true)}>
                 <TabIcon />
@@ -98,7 +103,7 @@ const ProductSearcher = (props) => {
                 </IconButton>
               </Tooltip>
             )}
-          </>
+          </div>
         ) : null,
     ];
   }, []);
@@ -137,4 +142,6 @@ const ProductSearcher = (props) => {
   );
 };
 
-export default ProductSearcher;
+const enhance = combine(withTheme, withStyles(styles));
+
+export default enhance(ProductSearcher);

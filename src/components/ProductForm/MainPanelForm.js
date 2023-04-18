@@ -37,6 +37,7 @@ const MainPanelForm = (props) => {
     isProductCodeValid,
     isProductCodeValidating,
     productCodeValidationError,
+    isDuplicate,
   } = props;
 
   const dispatch = useDispatch();
@@ -168,7 +169,7 @@ const MainPanelForm = (props) => {
           module="product"
           label="dateFrom"
           disablePast={!Boolean(edited?.uuid)}
-          readOnly={Boolean(edited?.uuid) || readOnly}
+          readOnly={(Boolean(edited?.uuid) && !isDuplicate) || readOnly}
           onChange={(dateFrom) => onEditedChanged({ ...edited, dateFrom })}
         />
       </Grid>
