@@ -84,7 +84,7 @@ export const toFormValues = (product, shouldDuplicate) => {
     maxMembers: product.maxMembers ?? 0,
     insurancePeriod: product.insurancePeriod ?? 12,
     maxInstallments: product.maxInstallments ?? 1,
-    gracePeriodPayment: product.gracePeriodPayment ?? 1,
+    gracePeriodPayment: product.gracePeriodPayment ?? 0,
     gracePeriodEnrolment: product.gracePeriodEnrolment ?? 0,
     gracePeriodRenewal: product.gracePeriodRenewal ?? 0,
     ceilingInterpretation: product.ceilingInterpretation ?? "HEALTH_FACILITY_TYPE",
