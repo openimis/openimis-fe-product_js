@@ -153,7 +153,7 @@ const ProductFilters = (props) => {
           module="product"
           id="showHistory"
           field={
-            <Grid item xs={12} className={classes.item}>
+            <Grid item xs={3} className={classes.item}>
               <FormControlLabel
                 control={
                   <Checkbox
