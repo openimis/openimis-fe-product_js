@@ -29,6 +29,7 @@ const styles = (theme) => ({
 
 const MainPanelForm = (props) => {
   const {
+    autoFocus,
     classes,
     edited,
     onEditedChanged,
@@ -36,6 +37,7 @@ const MainPanelForm = (props) => {
     isProductCodeValid,
     isProductCodeValidating,
     productCodeValidationError,
+    isDuplicate,
   } = props;
 
   const dispatch = useDispatch();
@@ -59,6 +61,7 @@ const MainPanelForm = (props) => {
         <ValidatedTextInput
           itemQueryIdentifier="productCode"
           action={productCodeValidationCheck}
+          autoFocus={autoFocus}
           clearAction={productCodeValidationClear}
           setValidAction={productCodeSetValid}
           shouldValidate={shouldValidate}
@@ -166,7 +169,7 @@ const MainPanelForm = (props) => {
           module="product"
           label="dateFrom"
           disablePast={!Boolean(edited?.uuid)}
-          readOnly={Boolean(edited?.uuid) || readOnly}
+          readOnly={(Boolean(edited?.uuid) && !isDuplicate) || readOnly}
           onChange={(dateFrom) => onEditedChanged({ ...edited, dateFrom })}
         />
       </Grid>
@@ -177,8 +180,10 @@ const MainPanelForm = (props) => {
           required
           module="product"
           label="dateTo"
+          disablePast={!Boolean(edited?.uuid)}
           readOnly={readOnly}
           onChange={(dateTo) => onEditedChanged({ ...edited, dateTo })}
+          minDate={props?.edited?.dateFrom || new Date().getDate()}  
         />
       </Grid>
       <Grid item xs={4} className={classes.item}>

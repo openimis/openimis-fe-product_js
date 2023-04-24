@@ -1,5 +1,5 @@
 import React, {useState, useMemo, useEffect} from "react";
-import { combine, useTranslations, useModulesManager, ErrorBoundary } from "@openimis/fe-core";
+import { combine, useTranslations, useModulesManager, ErrorBoundary, NumberInput } from "@openimis/fe-core";
 import { Grid, Button } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import DataGrid from "./DataGrid";
@@ -9,6 +9,7 @@ import {LIMIT_TYPES, PRICE_ORIGINS, CEILING_EXCLUSIONS, LIMIT_COLUMNS} from "../
 import _ from "lodash";
 import {rulesToFormValues, toFormValues} from "../../utils";
 import {usePageDisplayRulesQuery} from "../../hooks";
+import {GridRenderCellParams} from "@mui/x-data-grid";
 
 const ItemsTabForm = (props) => {
   const { classes, className, isLoading, onChange, onAdd, rows = [], itemColumns, Picker, getLimitValueSwitch} = props;
@@ -103,7 +104,7 @@ const ItemsTabForm = (props) => {
         valueGetter: (params) => Number(params.value).toFixed(2),
         valueParser: (value) => parserLimits(value),
       })),
-      ...["waitingPeriodAdult", "waitingPeriodChild"].map((fieldName) => ({
+      ...["limitNoAdult", "limitNoChild", "waitingPeriodAdult", "waitingPeriodChild"].map((fieldName) => ({
         field: fieldName,
         headerName: formatMessage(`ItemsOrServicesGrid.${fieldName}`),
         width: 100,
@@ -111,6 +112,10 @@ const ItemsTabForm = (props) => {
         editable: true,
         disableColumnMenu: true,
         sortable: false,
+        valueParser: (value) => {
+          if (value < 0) return null;
+          return value;
+        }
       })),
       ...["ceilingExclusionAdult", "ceilingExclusionChild"].map((fieldName) => ({
         field: fieldName,

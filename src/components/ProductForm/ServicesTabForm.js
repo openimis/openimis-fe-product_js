@@ -69,7 +69,7 @@ const ServicesTabForm = (props) => {
       setLoading(true);
       loadProductServices(edited_id, dispatch).then((services) => {
         setLoading(false);
-        onEditedChanged({ ...edited, services });
+        onEditedChanged({ ...edited, services, hasEditedServices: true });
       });
     }
   }, []);
@@ -91,8 +91,6 @@ const ServicesTabForm = (props) => {
       limitChild: getLimitValueSwitch(limitType),
       limitChildR: getLimitValueSwitch(limitType),
       limitChildE: getLimitValueSwitch(limitType),
-      limitNoAdult: getLimitValueSwitch(limitType),
-      limitNoChild: getLimitValueSwitch(limitType),
     }));
     onChange(newServices.concat(edited.services ?? []));
   };

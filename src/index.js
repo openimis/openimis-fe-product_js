@@ -19,6 +19,7 @@ const DEFAULT_CONFIG = {
     { path: "admin/products", component: ProductsPage },
     { path: "admin/products/new", component: ProductDetailsPage },
     { path: "admin/products/:product_id", component: ProductDetailsPage },
+    { path: "admin/products/duplicate/:product_id", component: ProductDetailsPage },
   ],
   "refs": [
     { key: "product.ProductPicker", ref: ProductPicker },
@@ -29,6 +30,7 @@ const DEFAULT_CONFIG = {
     { key: "product.productsList", ref: "admin/products" },
     { key: "product.productDetails", ref: "admin/products" },
     { key: "product.newProduct", ref: "admin/products/new" },
+    { key: "product.duplicateProduct", ref: "admin/products/duplicate" },
 
     // Hooks
     { key: "product.hooks.useProductsQuery", ref: useProductsQuery },

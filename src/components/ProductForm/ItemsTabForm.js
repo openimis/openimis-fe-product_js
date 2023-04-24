@@ -69,7 +69,7 @@ const ItemsTabForm = (props) => {
       setLoading(true);
       loadProductItems(edited_id, dispatch).then((items) => {
         setLoading(false);
-        onEditedChanged({ ...edited, items });
+        onEditedChanged({ ...edited, items, hasEditedItems: true });
       });
     }
   }, []);
@@ -92,8 +92,6 @@ const ItemsTabForm = (props) => {
       limitChild: getLimitValueSwitch(limitType),
       limitChildR: getLimitValueSwitch(limitType),
       limitChildE: getLimitValueSwitch(limitType),
-      limitNoAdult: getLimitValueSwitch(limitType),
-      limitNoChild: getLimitValueSwitch(limitType),
     }));
     onChange(newItems.concat(edited.items ?? []));
   };
