@@ -85,7 +85,7 @@ const CellActions = (props) => {
 };
 
 const DataGrid = (props) => {
-  const { className, onChange, error, isLoading, density, rows = [], bindLimitTypesWithDefaultValues } = props;
+  const { className, onChange, error, isLoading, density, readOnly, rows = [], bindLimitTypesWithDefaultValues } = props;
   const [editRowsModel, setEditRowsModel] = useState({});
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product.DataGrid", modulesManager);
@@ -110,8 +110,10 @@ const DataGrid = (props) => {
 
   const renderCellActions = (props) => <CellActions {...props} onRowDelete={onRowDelete} />;
 
-  const columns = useMemo(
-    () => [
+  const columns = useMemo(() => {
+    const baseColumns = props.columns;
+    if (readOnly) return baseColumns;
+    return [
       {
         field: "actions",
         headerName: formatMessage("actions"),
@@ -120,10 +122,10 @@ const DataGrid = (props) => {
         disableColumnMenu: true,
         width: 100,
       },
-      ...props.columns,
-    ],
-    [props.columns, rows],
-  );
+      ...baseColumns,
+    ];
+  }, [props.columns, readOnly]);
+
 
   const handleEditRowsModel = (itemsOrServices) => {
     bindLimitTypesWithDefaultValues(itemsOrServices, prevItemsOrServicesRef.current)

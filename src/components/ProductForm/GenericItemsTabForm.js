@@ -12,7 +12,8 @@ import {usePageDisplayRulesQuery} from "../../hooks";
 import {GridRenderCellParams} from "@mui/x-data-grid";
 
 const ItemsTabForm = (props) => {
-  const { classes, className, isLoading, onChange, onAdd, rows = [], itemColumns, Picker, getLimitValueSwitch} = props;
+  const { classes, className, isLoading, onChange, onAdd, readOnly, rows = [],
+          itemColumns, Picker, getLimitValueSwitch} = props;
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product", modulesManager);
   const [isDialogOpen, setDialogOpen] = useState(false);
@@ -151,11 +152,13 @@ const ItemsTabForm = (props) => {
         Picker={Picker}
       />
       <Grid container className={className}>
-        <Grid item container xs={4} className={classes.item}>
-          <Button startIcon={<AddIcon />} variant="contained" onClick={() => setDialogOpen(true)}>
-            {formatMessage("ItemsOrServicesGrid.addItemsButton")}
-          </Button>
-        </Grid>
+        {!readOnly && (
+          <Grid item container xs={4} className={classes.item}>
+            <Button startIcon={<AddIcon />} variant="contained" onClick={() => setDialogOpen(true)}>
+              {formatMessage("ItemsOrServicesGrid.addItemsButton")}
+            </Button>
+          </Grid>
+        )}
         <Grid item xs={12} className={classes.dataGridWrapper}>
           <ErrorBoundary>
             { isLoadedRules && (
@@ -166,6 +169,7 @@ const ItemsTabForm = (props) => {
                 columns={columns}
                 density="compact"
                 rows={rows}
+                readOnly={readOnly}
                 bindLimitTypesWithDefaultValues={bindLimitTypesWithDefaultValues}
               />
             )}
