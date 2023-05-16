@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+
 import { TextField } from "@material-ui/core";
+
 import { Autocomplete, useModulesManager, useTranslations } from "@openimis/fe-core";
 import { useProductsQuery } from "../hooks";
 
@@ -47,8 +49,8 @@ const ProductPicker = (props) => {
         <TextField
           {...inputProps}
           required={required}
-          label={withLabel && (label || nullLabel)}
-          placeholder={withPlaceholder && (placeholder || formatMessage("Search..."))}
+          label={(withLabel && (label || nullLabel)) || formatMessage("Product")}
+          placeholder={(withPlaceholder && placeholder) || formatMessage("ProductPicker.placeholder")}
         />
       )}
     />

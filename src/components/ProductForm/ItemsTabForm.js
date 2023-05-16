@@ -12,7 +12,7 @@ import _ from "lodash";
 import GenericItemsTabForm from "./GenericItemsTabForm";
 
 const ItemsTabForm = (props) => {
-  const { edited, edited_id, onEditedChanged, limitType, priceOrigin, getLimitValueSwitch } = props;
+  const { edited, edited_id, onEditedChanged, limitType, priceOrigin, getLimitValueSwitch, readOnly } = props;
   const modulesManager = useModulesManager();
   const intl = useIntl();
   const dispatch = useDispatch();
@@ -105,6 +105,7 @@ const ItemsTabForm = (props) => {
       isLoading={isLoading}
       rows={edited.items ?? []}
       onChange={onChange}
+      readOnly={readOnly}
       onAdd={onAdd}
       getLimitValueSwitch={getLimitValueSwitch}
       Picker={(props) => (
