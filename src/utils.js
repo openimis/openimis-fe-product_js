@@ -5,9 +5,6 @@ import { LIMIT_COLUMNS, LIMIT_TYPES, PRICE_ORIGINS } from "./constants";
 export const validateProductForm = (values, rules, isProductCodeValid) => {
   values = { ...values };
 
-  delete values.validityTo;
-  delete values.validityFrom;
-
   const REQUIRED_FIELDS = [
     "code",
     "name",
@@ -26,6 +23,13 @@ export const validateProductForm = (values, rules, isProductCodeValid) => {
       errors[field] = true;
     }
   });
+
+  if (values.validityTo) {
+    errors.validityTo = true;
+  }
+
+  delete values.validityTo;
+  delete values.validityFrom;
 
   if (values.dateFrom > values.dateTo) {
     errors.dateFrom = true;

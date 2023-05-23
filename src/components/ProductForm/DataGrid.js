@@ -1,13 +1,15 @@
-import React, {useState, useMemo, useRef} from "react";
-import { DataGrid as MuiDataGrid } from "@mui/x-data-grid";
-import { ErrorBoundary, useTranslations, useModulesManager } from "@openimis/fe-core";
+import React, { useState, useMemo, useRef } from "react";
+import _ from "lodash";
+
+import { IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/DeleteOutlined";
 import SaveIcon from "@material-ui/icons/Save";
 import CancelIcon from "@material-ui/icons/Close";
-import { IconButton } from "@material-ui/core";
-import _ from "lodash";
+import { DataGrid as MuiDataGrid } from "@mui/x-data-grid";
+
+import { ErrorBoundary, useTranslations, useModulesManager } from "@openimis/fe-core";
 
 const useActionsStyles = makeStyles((theme) => ({
   root: {
@@ -85,11 +87,20 @@ const CellActions = (props) => {
 };
 
 const DataGrid = (props) => {
-  const { className, onChange, error, isLoading, density, readOnly, rows = [], bindLimitTypesWithDefaultValues } = props;
+  const {
+    className,
+    onChange,
+    error,
+    isLoading,
+    density,
+    readOnly,
+    rows = [],
+    bindLimitTypesWithDefaultValues,
+  } = props;
   const [editRowsModel, setEditRowsModel] = useState({});
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product.DataGrid", modulesManager);
-  const prevItemsOrServicesRef = useRef()
+  const prevItemsOrServicesRef = useRef();
 
   const preventRowEdit = (_, event) => (event.defaultMuiPrevented = true);
   const onRowEditCommit = (id, event) => {
@@ -124,8 +135,7 @@ const DataGrid = (props) => {
       },
       ...baseColumns,
     ];
-  }, [props.columns, readOnly]);
-
+  }, [props.columns, readOnly, rows]);
 
   const handleEditRowsModel = (itemsOrServices) => {
     bindLimitTypesWithDefaultValues(itemsOrServices, prevItemsOrServicesRef.current)

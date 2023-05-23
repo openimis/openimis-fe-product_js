@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useIntl } from "react-intl";
+import _ from "lodash";
+
 import {
   useTranslations,
   useModulesManager,
   formatMessage as globalFormatMessage,
   PublishedComponent,
 } from "@openimis/fe-core";
-import {getLimitType, getPriceOrigin, loadProductItems} from "../../utils";
-import _ from "lodash";
+import { getLimitType, getPriceOrigin, loadProductItems } from "../../utils";
 import GenericItemsTabForm from "./GenericItemsTabForm";
 
 const ItemsTabForm = (props) => {
