@@ -1,18 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import clsx from "clsx";
 
-import { withStyles, withTheme } from "@material-ui/core/styles";
-
-import {
-  ErrorBoundary,
-  withHistory,
-  historyPush,
-  combine,
-  useModulesManager,
-  ProgressOrError,
-  useTranslations,
-} from "@openimis/fe-core";
+import { withHistory, historyPush, combine, useModulesManager, useTranslations } from "@openimis/fe-core";
 import { RIGHT_PRODUCT_UPDATE } from "../constants";
 import {
   useProductQuery,
@@ -24,14 +13,8 @@ import {
 import { validateProductForm, toFormValues, toInputValues, rulesToFormValues } from "../utils";
 import ProductForm from "../components/ProductForm/ProductForm";
 
-const styles = (theme) => ({
-  page: theme.page,
-  fab: theme.fab,
-  locked: theme.page.locked,
-});
-
 const ProductDetailsPage = (props) => {
-  const { classes, match, history, location } = props;
+  const { match, history, location } = props;
   const modulesManager = useModulesManager();
   const { formatMessageWithValues } = useTranslations("product", modulesManager);
   const rights = useSelector((state) => state.core?.user?.i_user?.rights ?? []);
@@ -97,28 +80,26 @@ const ProductDetailsPage = (props) => {
   }, [data, isLoading, dataRules, isLoadingRules]);
 
   return (
-    <div className={clsx(classes.page, isLocked && classes.locked)}>
-      <ProgressOrError error={error} />
-      <ErrorBoundary>
-        {isLoaded && isLoadedRules && (
-          <ProductForm
-            readOnly={!rights.includes(RIGHT_PRODUCT_UPDATE) || isLocked || values.validityTo}
-            key={resetKey}
-            onChange={setValues}
-            product={values}
-            canSave={() => validateProductForm(values, valuesRules, isProductCodeValid)}
-            onBack={() => historyPush(modulesManager, history, "product.productsList")}
-            onSave={rights.includes(RIGHT_PRODUCT_UPDATE) ? onSave : undefined}
-            onReset={onReset}
-            autoFocus={shouldBeDuplicated}
-            isDuplicate={shouldBeDuplicated}
-          />
-        )}
-      </ErrorBoundary>
-    </div>
+    <>
+      {isLoaded && isLoadedRules && (
+        <ProductForm
+          readOnly={!rights.includes(RIGHT_PRODUCT_UPDATE) || !!isLocked || !!values.validityTo}
+          key={resetKey}
+          error={error}
+          onChange={setValues}
+          product={values}
+          canSave={() => validateProductForm(values, valuesRules, isProductCodeValid)}
+          onBack={() => historyPush(modulesManager, history, "product.productsList")}
+          onSave={rights.includes(RIGHT_PRODUCT_UPDATE) ? onSave : undefined}
+          onReset={onReset}
+          autoFocus={shouldBeDuplicated}
+          isDuplicate={shouldBeDuplicated}
+        />
+      )}
+    </>
   );
 };
 
-const enhance = combine(withTheme, withStyles(styles), withHistory);
+const enhance = combine(withHistory);
 
 export default enhance(ProductDetailsPage);
