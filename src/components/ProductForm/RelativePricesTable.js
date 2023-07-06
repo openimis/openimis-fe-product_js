@@ -34,7 +34,6 @@ const RelativePricesTable = (props) => {
 
   return (
     <Table size="small" className={clsx(className)}>
-      <caption>The sum of all the periods of a care type must be equal to 100%</caption>
       <TableHead>
         <TableRow className={classes.tableTitle}>
           <TableCell align="left" className={classes.careTypeColumn}>

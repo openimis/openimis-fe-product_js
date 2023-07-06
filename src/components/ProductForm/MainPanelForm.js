@@ -1,14 +1,26 @@
-import React from "react";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import React, { useEffect } from "react";
+import { connect, useDispatch } from "react-redux";
+
 import { Grid } from "@material-ui/core";
+import { withTheme, withStyles } from "@material-ui/core/styles";
+
 import {
-  useModulesManager,
-  useTranslations,
-  TextInput,
+  combine,
   NumberInput,
   PublishedComponent,
-  combine,
+  TextInput,
+  useModulesManager,
+  useTranslations,
+  ValidatedTextInput,
+  withModulesManager,
 } from "@openimis/fe-core";
+import {
+  clearProduct,
+  fetchProduct,
+  productCodeSetValid,
+  productCodeValidationCheck,
+  productCodeValidationClear,
+} from "../../actions";
 import SectionTitle from "../SectionTitle";
 
 const styles = (theme) => ({
@@ -16,23 +28,55 @@ const styles = (theme) => ({
 });
 
 const MainPanelForm = (props) => {
-  const { classes, edited, onEditedChanged, readOnly } = props;
+  const {
+    autoFocus,
+    classes,
+    edited,
+    onEditedChanged,
+    readOnly,
+    isProductCodeValid,
+    isProductCodeValidating,
+    productCodeValidationError,
+    isDuplicate,
+  } = props;
+
+  const dispatch = useDispatch();
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product.FormMainPanel", modulesManager);
+
+  useEffect(() => {
+    if (edited?.id) dispatch(fetchProduct(modulesManager, { "productId": edited.id }));
+    return () => dispatch(clearProduct());
+  }, [edited?.id]);
+
+  const shouldValidate = (inputValue) => {
+    const { savedProductCode } = props;
+    if ((!!edited.id && inputValue === savedProductCode) || (!savedProductCode && !!edited.id)) return false;
+    return true;
+  };
 
   return (
     <Grid container direction="row">
       <Grid item xs={3} className={classes.item}>
-        <TextInput
+        <ValidatedTextInput
+          itemQueryIdentifier="productCode"
+          action={productCodeValidationCheck}
+          autoFocus={autoFocus}
+          clearAction={productCodeValidationClear}
+          setValidAction={productCodeSetValid}
+          shouldValidate={shouldValidate}
+          codeTakenLabel="product.alreadyTaken"
+          readOnly={readOnly}
+          isValid={isProductCodeValid}
+          isValidating={isProductCodeValidating}
+          validationError={productCodeValidationError}
+          label="product.code"
           module="product"
-          required
-          label="code"
-          readOnly={Boolean(edited?.id) || readOnly}
-          value={edited?.code ?? ""}
           onChange={(code) => onEditedChanged({ ...edited, code })}
+          required={true}
+          value={edited?.code ?? ""}
         />
       </Grid>
-
       <Grid item xs={3} className={classes.item}>
         <TextInput
           module="product"
@@ -77,7 +121,6 @@ const MainPanelForm = (props) => {
         <NumberInput
           module="product"
           min={0}
-          displayZero
           label="memberTreshold"
           readOnly={readOnly}
           value={edited?.threshold ?? ""}
@@ -125,7 +168,8 @@ const MainPanelForm = (props) => {
           required
           module="product"
           label="dateFrom"
-          readOnly={readOnly}
+          disablePast={!Boolean(edited?.uuid)}
+          readOnly={(Boolean(edited?.uuid) && !isDuplicate) || readOnly}
           onChange={(dateFrom) => onEditedChanged({ ...edited, dateFrom })}
         />
       </Grid>
@@ -136,8 +180,10 @@ const MainPanelForm = (props) => {
           required
           module="product"
           label="dateTo"
+          disablePast={!Boolean(edited?.uuid)}
           readOnly={readOnly}
           onChange={(dateTo) => onEditedChanged({ ...edited, dateTo })}
+          minDate={props?.edited?.dateFrom || new Date().getDate()}  
         />
       </Grid>
       <Grid item xs={4} className={classes.item}>
@@ -174,6 +220,13 @@ const MainPanelForm = (props) => {
   );
 };
 
-const enhance = combine(withTheme, withStyles(styles));
+const mapStateToProps = (store) => ({
+  isProductCodeValid: store.product.validationFields?.productCode?.isValid,
+  isProductCodeValidating: store.product.validationFields?.productCode?.isValidating,
+  productCodeValidationError: store.product.validationFields?.productCode?.validationError,
+  savedProductCode: store.product?.product?.code,
+});
+
+const enhance = combine(withModulesManager, withTheme, withStyles(styles), connect(mapStateToProps));
 
 export default enhance(MainPanelForm);
