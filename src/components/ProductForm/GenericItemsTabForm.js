@@ -34,7 +34,7 @@ const ItemsTabForm = (props) => {
   const [MIN_VALUE, setMinValue] = useState(0);
   const [MAX_VALUE, setMaxValue] = useState(100);
 
-  const parserLimits= (value,) => {
+  const parserLimits = (value,) => {
     value = Number(value)
     if (value > MAX_VALUE) value = MIN_VALUE
     else if (value < MIN_VALUE) value = MAX_VALUE
@@ -123,8 +123,9 @@ const ItemsTabForm = (props) => {
         editable: true,
         disableColumnMenu: true,
         sortable: false,
-        valueParser: (value) => {
-          if (value < 0) return null;
+        valueParser: (value) => value,
+        valueGetter: ({ value }) => {
+          if (typeof value === 'number') return value.toString();
           return value;
         },
       })),
