@@ -1,6 +1,6 @@
 import { graphqlWithVariables, toISODate } from "@openimis/fe-core";
 import _ from "lodash";
-import { LIMIT_COLUMNS, LIMIT_TYPES, PRICE_ORIGINS } from "./constants";
+import { EMPTY_STRING, LIMIT_COLUMNS, LIMIT_TYPES, PRICE_ORIGINS } from "./constants";
 
 export const validateProductForm = (values, rules, isProductCodeValid) => {
   values = { ...values };
@@ -120,15 +120,43 @@ export const toInputValues = (values) => {
     ...inputValues
   } = values;
 
-  const formatService = ({ service, id, ...params }) => ({
-    serviceUuid: service.uuid,
-    ...params,
-  });
+  const formatService = ({ service, id, ...params }) => {
+    const {
+      limitNoAdult,
+      limitNoChild,
+      waitingPeriodAdult,
+      waitingPeriodChild,
+      ...restParams
+    } = params;
 
-  const formatItem = ({ item, id, ...params }) => ({
-    itemUuid: item.uuid,
-    ...params,
-  });
+    return {
+      serviceUuid: service.uuid,
+      limitNoAdult: limitNoAdult === EMPTY_STRING ? null : parseInt(limitNoAdult),
+      limitNoChild: limitNoChild === EMPTY_STRING ? null : parseInt(limitNoChild),
+      waitingPeriodAdult: waitingPeriodAdult === EMPTY_STRING ? null : parseInt(waitingPeriodAdult),
+      waitingPeriodChild: waitingPeriodChild === EMPTY_STRING ? null : parseInt(waitingPeriodChild),
+      ...restParams,
+    }
+  };
+
+  const formatItem = ({ item, id, ...params }) => {
+    const {
+      limitNoAdult,
+      limitNoChild,
+      waitingPeriodAdult,
+      waitingPeriodChild,
+      ...restParams
+    } = params;
+
+    return {
+      itemUuid: item.uuid,
+      limitNoAdult: limitNoAdult === EMPTY_STRING ? null : parseInt(limitNoAdult),
+      limitNoChild: limitNoChild === EMPTY_STRING ? null : parseInt(limitNoChild),
+      waitingPeriodAdult: waitingPeriodAdult === EMPTY_STRING ? null : parseInt(waitingPeriodAdult),
+      waitingPeriodChild: waitingPeriodChild === EMPTY_STRING ? null : parseInt(waitingPeriodChild),
+      ...restParams,
+    }
+  };
 
   const val = {
     ...inputValues,

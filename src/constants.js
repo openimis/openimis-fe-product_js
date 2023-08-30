@@ -3,6 +3,7 @@ export const RIGHT_PRODUCT_DELETE = 121004;
 export const RIGHT_PRODUCT_ADD = 121002;
 export const RIGHT_PRODUCT_UPDATE = 121003;
 export const RIGHT_PRODUCT_DUPLICATE = 121005;
+export const EMPTY_STRING = '';
 
 export const PRODUCT_QUANTITY_LIMIT = 15;
 
