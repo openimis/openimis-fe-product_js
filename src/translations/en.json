@@ -175,5 +175,11 @@
   "product.ProductSalesReport.dateFrom": "From",
   "product.ProductSalesReport.dateTo": "To",
   "product.ProductSalesReport.region": "Region",
-  "product.ProductSalesReport.district": "District"
+  "product.ProductSalesReport.district": "District",
+  "product.ProductDerivedOperationalIndicators.month": "Month",
+  "product.ProductDerivedOperationalIndicators.year": "Year",
+  "product.ProductDerivedOperationalIndicators.region": "Region",
+  "product.ProductDerivedOperationalIndicators.district": "District",
+  "product.ProductDerivedOperationalIndicators.product": "Product",
+  "product.ProductDerivedOperationalIndicators.hf": "Health Facility"
 }
