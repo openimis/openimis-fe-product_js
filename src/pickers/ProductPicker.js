@@ -37,6 +37,7 @@ const ProductPicker = (props) => {
   return (
     <Autocomplete
       multiple={multiple}
+      required={required}
       error={error}
       readOnly={readOnly}
       options={products ?? []}
