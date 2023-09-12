@@ -14,6 +14,7 @@ import {
   usePageDisplayRulesQuery,
 } from "./hooks";
 import ProductSalesReport from "./reports/ProductSalesReport";
+import ProductDerivedOperationalIndicators from "./reports/ProductDerivedOperationalIndicators";
 
 const DEFAULT_CONFIG = {
   "translations": [{ key: "en", messages: messages_en }],
@@ -36,6 +37,20 @@ const DEFAULT_CONFIG = {
         }
         params.date_start = values.dateFrom;
         params.date_end = values.dateTo;
+        return params;
+      },
+    },
+    {
+      key: "product_derived_operational_indicators",
+      component: ProductDerivedOperationalIndicators,
+      isValid: (values) => values.year && values.product,
+      getParams: (values) => {
+        const params = {}
+        if (values.month) {
+          params.requested_month = values.month;
+        }
+        params.requested_product_id = decodeId(values.product.id);
+        params.requested_year = values.year;
         return params;
       },
     },
