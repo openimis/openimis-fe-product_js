@@ -43,22 +43,13 @@ const DEFAULT_CONFIG = {
     {
       key: "product_derived_operational_indicators",
       component: ProductDerivedOperationalIndicators,
-      isValid: (values) => values.year && values.region,
+      isValid: (values) => values.year && values.product,
       getParams: (values) => {
         const params = {}
-        if (values.district) {
-          params.requested_district_id = decodeId(values.district.id);
-        }
-        if (values.product) {
-          params.requested_product_id = decodeId(values.product.id);
-        }
-        if (values.hf) {
-          params.requested_hf_id = decodeId(values.hf.id);
-        }
         if (values.month) {
           params.requested_month = values.month;
         }
-        params.requested_region_id = decodeId(values.region.id);
+        params.requested_product_id = decodeId(values.product.id);
         params.requested_year = values.year;
         return params;
       },
