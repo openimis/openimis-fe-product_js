@@ -6,7 +6,14 @@ import { withTheme, withStyles } from "@material-ui/styles";
 import AddIcon from "@material-ui/icons/Add";
 
 import { combine, useTranslations, useModulesManager, ErrorBoundary } from "@openimis/fe-core";
-import { LIMIT_TYPES, PRICE_ORIGINS, CEILING_EXCLUSIONS, LIMIT_COLUMNS } from "../../constants";
+import {
+  LIMIT_TYPES,
+  PRICE_ORIGINS,
+  CEILING_EXCLUSIONS,
+  LIMIT_COLUMNS,
+  LIMIT_ADULT,
+  LIMIT_ADULT_R, LIMIT_ADULT_E, LIMIT_CHILD, LIMIT_CHILD_R, LIMIT_CHILD_E
+} from "../../constants";
 import { usePageDisplayRulesQuery } from "../../hooks";
 import { rulesToFormValues } from "../../utils";
 import DataGrid from "./DataGrid";
@@ -34,12 +41,37 @@ const ItemsTabForm = (props) => {
   const [MIN_VALUE, setMinValue] = useState(0);
   const [MAX_VALUE, setMaxValue] = useState(100);
 
-  const parserLimits = (value,) => {
-    value = Number(value)
-    if (value > MAX_VALUE) value = MIN_VALUE
-    else if (value < MIN_VALUE) value = MAX_VALUE
-    return value.toFixed(2)
+  const getLimitationTypeForFieldName = (rowData, fieldName) => {
+    switch (fieldName) {
+      case LIMIT_ADULT:
+      case LIMIT_CHILD:
+        return rowData?.limitationType;
+      case LIMIT_ADULT_E:
+      case LIMIT_CHILD_E:
+        return rowData?.limitationTypeE;
+      case LIMIT_ADULT_R:
+      case LIMIT_CHILD_R:
+        return rowData?.limitationTypeR;
+    }
   }
+
+  const parserLimits = (value, params, fieldName) => {
+    const limitationType = getLimitationTypeForFieldName(params.row, fieldName);
+    value = Number(value);
+
+    const isLimitTypeC = limitationType === LIMIT_TYPES.C;
+    const isValueGreaterThanMax = value > MAX_VALUE;
+    const isValueLessThanMin = value < MIN_VALUE;
+
+    if (isValueGreaterThanMax && isLimitTypeC) {
+      value = MIN_VALUE;
+    } else if (isValueLessThanMin) {
+      value = isLimitTypeC ? MAX_VALUE : 0.01;
+    }
+
+    return value.toFixed(2);
+  };
+
 
   const bindLimitTypesWithDefaultValues = (itemsOrServices, prevItemsOrServices) => {
     Object.keys(itemsOrServices).forEach(key => {
@@ -113,7 +145,7 @@ const ItemsTabForm = (props) => {
         disableColumnMenu: true,
         sortable: false,
         valueGetter: (params) => Number(params.value).toFixed(2),
-        valueParser: (value) => parserLimits(value),
+        valueParser: (value, params) => parserLimits(value, params, fieldName),
       })),
       ...["limitNoAdult", "limitNoChild", "waitingPeriodAdult", "waitingPeriodChild"].map((fieldName) => ({
         field: fieldName,
