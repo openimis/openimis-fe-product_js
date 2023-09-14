@@ -59,14 +59,15 @@ const ItemsTabForm = (props) => {
     const limitationType = getLimitationTypeForFieldName(params.row, fieldName);
     value = Number(value);
 
+    const itemOrServiceValue = Number(params?.row?.service?.price || params?.row?.item?.price || MAX_VALUE);
     const isLimitTypeC = limitationType === LIMIT_TYPES.C;
-    const isValueGreaterThanMax = value > MAX_VALUE;
+    const isValueGreaterThanMax = isLimitTypeC ? value > MAX_VALUE : value > itemOrServiceValue;
     const isValueLessThanMin = value < MIN_VALUE;
 
-    if (isValueGreaterThanMax && isLimitTypeC) {
+    if (isValueGreaterThanMax) {
       value = MIN_VALUE;
     } else if (isValueLessThanMin) {
-      value = isLimitTypeC ? MAX_VALUE : 0.01;
+      value = isLimitTypeC ? MAX_VALUE : itemOrServiceValue;
     }
 
     return value.toFixed(2);
