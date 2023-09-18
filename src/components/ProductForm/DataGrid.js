@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import _ from "lodash";
 
 import { IconButton } from "@material-ui/core";
@@ -98,6 +98,7 @@ const DataGrid = (props) => {
     bindLimitTypesWithDefaultValues,
   } = props;
   const [editRowsModel, setEditRowsModel] = useState({});
+  const [rowId, setRowId] = useState(null);
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product.DataGrid", modulesManager);
   const prevItemsOrServicesRef = useRef();
@@ -106,8 +107,10 @@ const DataGrid = (props) => {
   const onRowEditCommit = (id, event) => {
     const idx = _.findIndex(rows, { id });
     const newRow = { ...rows[idx] };
-    for (const [key, field] of Object.entries(editRowsModel[id])) {
-      newRow[key] = field.value;
+    if (Object.keys(editRowsModel).length !== 0) {
+      for (const [key, field] of Object.entries(editRowsModel[id])) {
+        newRow[key] = field.value;
+      }
     }
 
     const newRows = [...rows];
@@ -137,10 +140,28 @@ const DataGrid = (props) => {
     ];
   }, [props.columns, readOnly, rows]);
 
+  const getLastedEditedRowId = (prevRows, currentRows) => {
+    for (const key of Object.keys(currentRows)) {
+      if (prevRows && prevRows.hasOwnProperty(key)) {
+        if (!_.isEqual(prevRows[key], currentRows[key])){
+          return key;
+        }
+      }
+    }
+    return Object.keys(currentRows)[0];
+  }
+
+  useEffect(() => {
+    if (rowId) {
+      onRowEditCommit(rowId)
+    }
+  }, [editRowsModel])
+
   const handleEditRowsModel = (itemsOrServices) => {
-    bindLimitTypesWithDefaultValues(itemsOrServices, prevItemsOrServicesRef.current)
-    setEditRowsModel(itemsOrServices)
-    prevItemsOrServicesRef.current = itemsOrServices
+    setRowId(getLastedEditedRowId(prevItemsOrServicesRef.current, itemsOrServices));
+    bindLimitTypesWithDefaultValues(itemsOrServices, prevItemsOrServicesRef.current);
+    setEditRowsModel(itemsOrServices);
+    prevItemsOrServicesRef.current = itemsOrServices;
   }
 
   return (
