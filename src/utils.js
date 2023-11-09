@@ -19,7 +19,7 @@ export const validateProductForm = (values, rules, isProductCodeValid) => {
   const errors = {};
 
   REQUIRED_FIELDS.forEach((field) => {
-    if (!values[field]) {
+    if (!values[field] && values[field] != 0) {
       errors[field] = true;
     }
   });
@@ -121,13 +121,7 @@ export const toInputValues = (values) => {
   } = values;
 
   const formatService = ({ service, id, ...params }) => {
-    const {
-      limitNoAdult,
-      limitNoChild,
-      waitingPeriodAdult,
-      waitingPeriodChild,
-      ...restParams
-    } = params;
+    const { limitNoAdult, limitNoChild, waitingPeriodAdult, waitingPeriodChild, ...restParams } = params;
 
     return {
       serviceUuid: service.uuid,
@@ -136,17 +130,11 @@ export const toInputValues = (values) => {
       waitingPeriodAdult: waitingPeriodAdult === EMPTY_STRING ? null : parseInt(waitingPeriodAdult),
       waitingPeriodChild: waitingPeriodChild === EMPTY_STRING ? null : parseInt(waitingPeriodChild),
       ...restParams,
-    }
+    };
   };
 
   const formatItem = ({ item, id, ...params }) => {
-    const {
-      limitNoAdult,
-      limitNoChild,
-      waitingPeriodAdult,
-      waitingPeriodChild,
-      ...restParams
-    } = params;
+    const { limitNoAdult, limitNoChild, waitingPeriodAdult, waitingPeriodChild, ...restParams } = params;
 
     return {
       itemUuid: item.uuid,
@@ -155,7 +143,7 @@ export const toInputValues = (values) => {
       waitingPeriodAdult: waitingPeriodAdult === EMPTY_STRING ? null : parseInt(waitingPeriodAdult),
       waitingPeriodChild: waitingPeriodChild === EMPTY_STRING ? null : parseInt(waitingPeriodChild),
       ...restParams,
-    }
+    };
   };
 
   const val = {
