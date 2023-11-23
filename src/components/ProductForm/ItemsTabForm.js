@@ -107,6 +107,7 @@ const ItemsTabForm = (props) => {
       rows={edited.items ?? []}
       onChange={onChange}
       readOnly={readOnly}
+      addButtonLabel={formatMessage("ItemsOrServicesGrid.addItemsButton")}
       onAdd={onAdd}
       getLimitValueSwitch={getLimitValueSwitch}
       Picker={(props) => (
