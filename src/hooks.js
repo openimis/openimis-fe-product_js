@@ -27,7 +27,7 @@ export const useProductsQuery = ({ filters }, config) => {
     ) {
     products (
       search: $search, first: $first, last: $last, before: $before, after: $after, code_Icontains: $code, showHistory: $showHistory,
-      name_Icontains: $name, dateFrom_Gte: $dateFrom, dateTo_Lte: $dateTo, location: $location
+      name_Icontains: $name, dateFrom_Lte: $dateFrom, dateTo_Gte: $dateTo, location: $location
       ) {
       edges {
         node {

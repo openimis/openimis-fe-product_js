@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import moment from "moment";
 
 import { TextField, Tooltip } from "@material-ui/core";
 
 import { Autocomplete, useModulesManager, useTranslations } from "@openimis/fe-core";
-import { PRODUCT_QUANTITY_LIMIT } from "../constants";
+import { DATE_FORMAT, EMPTY_STRING, PRODUCT_QUANTITY_LIMIT } from "../constants";
 import { useProductsQuery } from "../hooks";
 
 const ProductPicker = (props) => {
@@ -21,11 +22,15 @@ const ProductPicker = (props) => {
     filter,
     filterSelectedOptions,
     locationId,
+    enrollmentDate,
   } = props;
 
   const modulesManager = useModulesManager();
-  const [filters, setFilters] = useState({ location: locationId });
-  const [currentString, setCurrentString] = useState("");
+  const [filters, setFilters] = useState({
+    location: locationId,
+    enrollmentDate: null,
+  });
+  const [currentString, setCurrentString] = useState(EMPTY_STRING);
   const { formatMessage, formatMessageWithValues } = useTranslations("product", modulesManager);
   const {
     isLoading,
@@ -48,13 +53,20 @@ const ProductPicker = (props) => {
       setCurrentString={setCurrentString}
       filterOptions={filter}
       filterSelectedOptions={filterSelectedOptions}
-      onInputChange={(search) => setFilters({ first: PRODUCT_QUANTITY_LIMIT, search, location: locationId })}
+      onInputChange={(search) =>
+        setFilters(() => ({
+          first: PRODUCT_QUANTITY_LIMIT,
+          search,
+          location: locationId,
+          dateFrom: moment(enrollmentDate).format(DATE_FORMAT),
+        }))
+      }
       renderInput={(inputProps) => (
         <Tooltip
           title={
             shouldShowTooltip
               ? formatMessageWithValues("ProductPicker.aboveLimit", { limit: PRODUCT_QUANTITY_LIMIT })
-              : ""
+              : EMPTY_STRING
           }
         >
           <TextField
