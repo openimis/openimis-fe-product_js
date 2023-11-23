@@ -132,6 +132,7 @@
   "product.ItemsOrServicesGrid.careType": "Care Type",
   "product.ItemsOrServicesGrid.price": "Price",
   "product.ItemsOrServicesGrid.addItemsButton": "Add items",
+  "product.ItemsOrServicesGrid.addServicesButton": "Add services",
   "product.ItemsOrServicesGrid.dialogTitle": "Add other medical items",
   "product.DataGrid.actions": "Actions",
   "product.ProductItemsDialog.description": "Search for the items you want to add in this product.",

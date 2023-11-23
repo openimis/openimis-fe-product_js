@@ -31,6 +31,7 @@ const ItemsTabForm = (props) => {
     itemColumns,
     Picker,
     getLimitValueSwitch,
+    addButtonLabel,
   } = props;
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product", modulesManager);
@@ -198,7 +199,7 @@ const ItemsTabForm = (props) => {
       <Grid container className={className}>
         <Grid item container xs={4} className={classes.item}>
           <Button startIcon={<AddIcon />} variant="contained" onClick={() => setDialogOpen(true)} disabled={readOnly}>
-            {formatMessage("ItemsOrServicesGrid.addItemsButton")}
+            {addButtonLabel}
           </Button>
         </Grid>
         <Grid item xs={12} className={classes.dataGridWrapper}>
