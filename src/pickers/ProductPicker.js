@@ -59,6 +59,7 @@ const ProductPicker = (props) => {
           search,
           location: locationId,
           dateFrom: moment(enrollmentDate).format(DATE_FORMAT),
+          dateTo: moment(enrollmentDate).format(DATE_FORMAT),
         }))
       }
       renderInput={(inputProps) => (
