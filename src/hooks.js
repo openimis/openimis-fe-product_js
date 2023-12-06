@@ -19,6 +19,11 @@ export const GRAPHQL_USE_PRODUCTS_PRODUCT_FRAGMENT = `
 
 export const useProductsQuery = ({ filters }, config) => {
   const modulesManager = useModulesManager();
+  // NOTE: The usage of `dateFrom_Lte: $dateFrom` and `dateTo_Gte: $dateTo` in the GraphQL query
+  // seems to imply a reserved naming convention. This might indicate a potential issue or limitation
+  // in the backend's handling of date range filters. The current solution is adjusted to align with 
+  // the backend's existing implementation. Further investigation or backend adjustments may be required
+  // for a more intuitive approach.
   const { isLoading, error, data, refetch } = useGraphqlQuery(
     `
   query (
