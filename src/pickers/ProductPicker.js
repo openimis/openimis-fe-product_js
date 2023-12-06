@@ -28,7 +28,6 @@ const ProductPicker = (props) => {
   const modulesManager = useModulesManager();
   const [filters, setFilters] = useState({
     location: locationId,
-    enrollmentDate: null,
   });
   const [currentString, setCurrentString] = useState(EMPTY_STRING);
   const { formatMessage, formatMessageWithValues } = useTranslations("product", modulesManager);
