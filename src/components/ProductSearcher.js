@@ -80,31 +80,29 @@ const ProductSearcher = (props) => {
       (p) => formatDateFromISO(p.dateFrom),
       (p) => formatDateFromISO(p.dateTo),
       (p) => p.maxMembers,
-
-      (p) =>
-        !filters.showHistory?.value ? (
-          <div className={classes.horizontalButtonContainer}>
-            <Tooltip title={formatMessage("ProductSearcher.openNewTab")}>
-              <IconButton onClick={() => onDoubleClick(p, true)}>
-                <TabIcon />
+      (p) => (
+        <div className={classes.horizontalButtonContainer}>
+          <Tooltip title={formatMessage("ProductSearcher.openNewTab")}>
+            <IconButton onClick={() => onDoubleClick(p, true)}>
+              <TabIcon />
+            </IconButton>
+          </Tooltip>
+          {canDuplicate(p) && (
+            <Tooltip title={formatMessage("ProductSearcher.duplicateProductTooltip")}>
+              <IconButton onClick={() => onDuplicate(p, true)}>
+                <FileCopyIcon />
               </IconButton>
             </Tooltip>
-            {canDuplicate(p) && (
-              <Tooltip title={formatMessage("ProductSearcher.duplicateProductTooltip")}>
-                <IconButton onClick={() => onDuplicate(p, true)}>
-                  <FileCopyIcon />
-                </IconButton>
-              </Tooltip>
-            )}
-            {canDelete(p) && (
-              <Tooltip title={formatMessage("ProductSearcher.deleteProductTooltip")}>
-                <IconButton onClick={() => setProductToDelete(p)}>
-                  <DeleteIcon />
-                </IconButton>
-              </Tooltip>
-            )}
-          </div>
-        ) : null,
+          )}
+          {canDelete(p) && (
+            <Tooltip title={formatMessage("ProductSearcher.deleteProductTooltip")}>
+              <IconButton onClick={() => setProductToDelete(p)}>
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+        </div>
+      ),
     ];
   }, []);
   return (
