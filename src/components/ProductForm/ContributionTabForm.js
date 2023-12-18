@@ -174,8 +174,8 @@ const ContributionTabForm = (props) => {
           required
           label="gracePeriodPayment"
           readOnly={readOnly}
-          value={edited?.gracePeriodPayment ?? 0}
-          onChange={(gracePeriodPayment) => onEditedChanged({ ...edited, gracePeriodPayment: Number(gracePeriodPayment) })}
+          value={edited?.gracePeriodPayment}
+          onChange={(gracePeriodPayment) => onEditedChanged({ ...edited, gracePeriodPayment })}
           displayZero={true}
         />
       </Grid>
