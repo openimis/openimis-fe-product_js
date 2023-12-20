@@ -168,9 +168,13 @@ const MainPanelForm = (props) => {
           required
           module="product"
           label="dateFrom"
-          disablePast={!Boolean(edited?.uuid)}
+          disablePast={!edited?.uuid}
           readOnly={(Boolean(edited?.uuid) && !isDuplicate) || readOnly}
           onChange={(dateFrom) => onEditedChanged({ ...edited, dateFrom })}
+          // NOTE: maxDate cannot be passed if endDate does not exist.
+          // Passing any other falsy value will block months manipulation.
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          {...(edited.dateTo ? { maxDate: edited.dateTo } : null)}
         />
       </Grid>
       <Grid item xs={4} className={classes.item}>
@@ -180,10 +184,13 @@ const MainPanelForm = (props) => {
           required
           module="product"
           label="dateTo"
-          disablePast={!Boolean(edited?.uuid)}
+          disablePast={!edited?.uuid}
           readOnly={readOnly}
           onChange={(dateTo) => onEditedChanged({ ...edited, dateTo })}
-          minDate={props?.edited?.dateFrom || new Date().getDate()}  
+          // NOTE: minDate cannot be passed if startDate does not exist.
+          // Passing any other falsy value will block months manipulation.
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          {...(edited.dateFrom ? { minDate: edited.dateFrom } : null)}
         />
       </Grid>
       <Grid item xs={4} className={classes.item}>
