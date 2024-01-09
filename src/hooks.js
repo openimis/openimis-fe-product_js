@@ -140,10 +140,6 @@ export const GRAPHQL_USE_PRODUCT_PRODUCT_FRAGMENT = `
       code
       }
 
-    relativePrices {
-      careType
-      periods
-    }
     administrationPeriod
   }
 `;
