@@ -92,7 +92,7 @@ const MainPanelForm = (props) => {
           pubRef="location.RegionPicker"
           value={edited.location?.parent ?? edited.location}
           readOnly={readOnly}
-          withNull
+          withNull={false}
           onChange={(location) => onEditedChanged({ ...edited, location })}
         />
       </Grid>
@@ -101,7 +101,7 @@ const MainPanelForm = (props) => {
           region={edited.location?.parent || edited.location}
           value={edited.location?.parent ? edited.location : null}
           pubRef="location.DistrictPicker"
-          withNull={true}
+          withNull={false}
           readOnly={readOnly}
           onChange={(location) => onEditedChanged({ ...edited, location: location || edited.location?.parent })}
         />
