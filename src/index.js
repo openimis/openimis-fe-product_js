@@ -1,6 +1,8 @@
 import messages_en from "./translations/en.json";
 import ProductPicker from "./pickers/ProductPicker";
 import { reducer } from "./reducer";
+import { decodeId } from "@openimis/fe-core";
+
 
 import ProductsPage from "./pages/ProductsPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
@@ -11,10 +13,48 @@ import {
   useProductQuery,
   usePageDisplayRulesQuery,
 } from "./hooks";
+import ProductSalesReport from "./reports/ProductSalesReport";
+import ProductDerivedOperationalIndicators from "./reports/ProductDerivedOperationalIndicators";
 
 const DEFAULT_CONFIG = {
   "translations": [{ key: "en", messages: messages_en }],
   "reducers": [{ key: "product", reducer }],
+  "reports": [
+    {
+      key: "product_sales",
+      component: ProductSalesReport,
+      isValid: (values) => values.dateFrom && values.dateTo,
+      getParams: (values) => {
+        const params = {}
+        if (values.region) {
+          params.requested_region_id = decodeId(values.region.id);
+        }
+        if (values.district) {
+          params.requested_district_id = decodeId(values.district.id);
+        }
+        if (values.product) {
+          params.requested_product_id = decodeId(values.product.id);
+        }
+        params.date_start = values.dateFrom;
+        params.date_end = values.dateTo;
+        return params;
+      },
+    },
+    {
+      key: "product_derived_operational_indicators",
+      component: ProductDerivedOperationalIndicators,
+      isValid: (values) => values.year && values.product,
+      getParams: (values) => {
+        const params = {}
+        if (values.month) {
+          params.requested_month = values.month;
+        }
+        params.requested_product_id = decodeId(values.product.id);
+        params.requested_year = values.year;
+        return params;
+      },
+    },
+  ],
   "core.Router": [
     { path: "admin/products", component: ProductsPage },
     { path: "admin/products/new", component: ProductDetailsPage },

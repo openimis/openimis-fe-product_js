@@ -106,6 +106,7 @@ const ServicesTabForm = (props) => {
       onChange={onChange}
       onAdd={onAdd}
       readOnly={readOnly}
+      addButtonLabel={formatMessage("ItemsOrServicesGrid.addServicesButton")}
       getLimitValueSwitch={getLimitValueSwitch}
       Picker={(props) => (
         <PublishedComponent

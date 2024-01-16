@@ -1,6 +1,7 @@
 {
   "product.Product": "Product",
   "product.ProductPicker.placeholder": "Search Product…",
+  "product.ProductPicker.aboveLimit": "Over {limit} products found. For specific results, please use the search bar.",
   "product.Product.none": "None",
   "product.name": "Name",
   "product.code": "Code",
@@ -131,6 +132,7 @@
   "product.ItemsOrServicesGrid.careType": "Care Type",
   "product.ItemsOrServicesGrid.price": "Price",
   "product.ItemsOrServicesGrid.addItemsButton": "Add items",
+  "product.ItemsOrServicesGrid.addServicesButton": "Add services",
   "product.ItemsOrServicesGrid.dialogTitle": "Add other medical items",
   "product.DataGrid.actions": "Actions",
   "product.ProductItemsDialog.description": "Search for the items you want to add in this product.",
@@ -169,5 +171,13 @@
   "product.createMutation.label": "Create product {name}",
   "product.updateMutation.label": "Update product {name}",
   "product.duplicateMutation.label": "Duplicate product {name}",
-  "product.deleteMutation.label": "Delete product {name}"
+  "product.deleteMutation.label": "Delete product {name}",
+
+  "product.ProductSalesReport.dateFrom": "From",
+  "product.ProductSalesReport.dateTo": "To",
+  "product.ProductSalesReport.region": "Region",
+  "product.ProductSalesReport.district": "District",
+  "product.ProductDerivedOperationalIndicators.month": "Month",
+  "product.ProductDerivedOperationalIndicators.year": "Year",
+  "product.ProductDerivedOperationalIndicators.product": "Product"
 }

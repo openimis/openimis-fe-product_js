@@ -1,13 +1,15 @@
-import React, {useState, useMemo, useRef} from "react";
-import { DataGrid as MuiDataGrid } from "@mui/x-data-grid";
-import { ErrorBoundary, useTranslations, useModulesManager } from "@openimis/fe-core";
+import React, { useState, useMemo, useRef, useEffect } from "react";
+import _ from "lodash";
+
+import { IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/DeleteOutlined";
 import SaveIcon from "@material-ui/icons/Save";
 import CancelIcon from "@material-ui/icons/Close";
-import { IconButton } from "@material-ui/core";
-import _ from "lodash";
+import { DataGrid as MuiDataGrid } from "@mui/x-data-grid";
+
+import { ErrorBoundary, useTranslations, useModulesManager } from "@openimis/fe-core";
 
 const useActionsStyles = makeStyles((theme) => ({
   root: {
@@ -85,18 +87,30 @@ const CellActions = (props) => {
 };
 
 const DataGrid = (props) => {
-  const { className, onChange, error, isLoading, density, readOnly, rows = [], bindLimitTypesWithDefaultValues } = props;
+  const {
+    className,
+    onChange,
+    error,
+    isLoading,
+    density,
+    readOnly,
+    rows = [],
+    bindLimitTypesWithDefaultValues,
+  } = props;
   const [editRowsModel, setEditRowsModel] = useState({});
+  const [rowId, setRowId] = useState(null);
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product.DataGrid", modulesManager);
-  const prevItemsOrServicesRef = useRef()
+  const prevItemsOrServicesRef = useRef();
 
   const preventRowEdit = (_, event) => (event.defaultMuiPrevented = true);
   const onRowEditCommit = (id, event) => {
     const idx = _.findIndex(rows, { id });
     const newRow = { ...rows[idx] };
-    for (const [key, field] of Object.entries(editRowsModel[id])) {
-      newRow[key] = field.value;
+    if (Object.keys(editRowsModel).length !== 0) {
+      for (const [key, field] of Object.entries(editRowsModel[id])) {
+        newRow[key] = field.value;
+      }
     }
 
     const newRows = [...rows];
@@ -124,13 +138,30 @@ const DataGrid = (props) => {
       },
       ...baseColumns,
     ];
-  }, [props.columns, readOnly]);
+  }, [props.columns, readOnly, rows]);
 
+  const getLastedEditedRowId = (prevRows, currentRows) => {
+    for (const key of Object.keys(currentRows)) {
+      if (prevRows && prevRows.hasOwnProperty(key)) {
+        if (!_.isEqual(prevRows[key], currentRows[key])){
+          return key;
+        }
+      }
+    }
+    return Object.keys(currentRows)[0];
+  }
+
+  useEffect(() => {
+    if (rowId) {
+      onRowEditCommit(rowId)
+    }
+  }, [editRowsModel])
 
   const handleEditRowsModel = (itemsOrServices) => {
-    bindLimitTypesWithDefaultValues(itemsOrServices, prevItemsOrServicesRef.current)
-    setEditRowsModel(itemsOrServices)
-    prevItemsOrServicesRef.current = itemsOrServices
+    setRowId(getLastedEditedRowId(prevItemsOrServicesRef.current, itemsOrServices));
+    bindLimitTypesWithDefaultValues(itemsOrServices, prevItemsOrServicesRef.current);
+    setEditRowsModel(itemsOrServices);
+    prevItemsOrServicesRef.current = itemsOrServices;
   }
 
   return (

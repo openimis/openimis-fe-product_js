@@ -1,34 +1,78 @@
-import React, {useState, useMemo, useEffect} from "react";
-import { combine, useTranslations, useModulesManager, ErrorBoundary, NumberInput } from "@openimis/fe-core";
-import { Grid, Button } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
-import DataGrid from "./DataGrid";
-import { withTheme, withStyles } from "@material-ui/styles";
-import ProductItemsDialog from "./ProductItemsDialog";
-import {LIMIT_TYPES, PRICE_ORIGINS, CEILING_EXCLUSIONS, LIMIT_COLUMNS} from "../../constants";
+import React, { useState, useMemo, useEffect } from "react";
 import _ from "lodash";
-import {rulesToFormValues, toFormValues} from "../../utils";
-import {usePageDisplayRulesQuery} from "../../hooks";
-import {GridRenderCellParams} from "@mui/x-data-grid";
+
+import { Grid, Button } from "@material-ui/core";
+import { withTheme, withStyles } from "@material-ui/styles";
+import AddIcon from "@material-ui/icons/Add";
+
+import { combine, useTranslations, useModulesManager, ErrorBoundary } from "@openimis/fe-core";
+import {
+  LIMIT_TYPES,
+  PRICE_ORIGINS,
+  CEILING_EXCLUSIONS,
+  LIMIT_COLUMNS,
+  LIMIT_ADULT,
+  LIMIT_ADULT_R, LIMIT_ADULT_E, LIMIT_CHILD, LIMIT_CHILD_R, LIMIT_CHILD_E
+} from "../../constants";
+import { usePageDisplayRulesQuery } from "../../hooks";
+import { rulesToFormValues } from "../../utils";
+import DataGrid from "./DataGrid";
+import ProductItemsDialog from "./ProductItemsDialog";
 
 const ItemsTabForm = (props) => {
-  const { classes, className, isLoading, onChange, onAdd, readOnly, rows = [],
-          itemColumns, Picker, getLimitValueSwitch} = props;
+  const {
+    classes,
+    className,
+    isLoading,
+    onChange,
+    onAdd,
+    readOnly,
+    rows = [],
+    itemColumns,
+    Picker,
+    getLimitValueSwitch,
+    addButtonLabel,
+  } = props;
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product", modulesManager);
   const [isDialogOpen, setDialogOpen] = useState(false);
-  const { isLoadingRules, errorRules, dataRules, refetchRules } = usePageDisplayRulesQuery({skip: true});
+  const { isLoadingRules, errorRules, dataRules, refetchRules } = usePageDisplayRulesQuery({ skip: true });
   const [valuesRules, setValuesRules] = useState({});
   const [isLoadedRules, setLoadedRules] = useState(false);
   const [MIN_VALUE, setMinValue] = useState(0);
   const [MAX_VALUE, setMaxValue] = useState(100);
 
-  const parserLimits= (value,) => {
-    value = Number(value)
-    if (value > MAX_VALUE) value = MIN_VALUE
-    else if (value < MIN_VALUE) value = MAX_VALUE
-    return value.toFixed(2)
+  const getLimitationTypeForFieldName = (rowData, fieldName) => {
+    switch (fieldName) {
+      case LIMIT_ADULT:
+      case LIMIT_CHILD:
+        return rowData?.limitationType;
+      case LIMIT_ADULT_E:
+      case LIMIT_CHILD_E:
+        return rowData?.limitationTypeE;
+      case LIMIT_ADULT_R:
+      case LIMIT_CHILD_R:
+        return rowData?.limitationTypeR;
+    }
   }
+
+  const parserLimits = (value, params, fieldName) => {
+    const limitationType = getLimitationTypeForFieldName(params.row, fieldName);
+    value = Number(value);
+
+    const itemOrServiceValue = Number(params?.row?.service?.price || params?.row?.item?.price || MAX_VALUE);
+    const isLimitTypeC = limitationType === LIMIT_TYPES.C;
+    const isValueGreaterThanMax = isLimitTypeC ? value > MAX_VALUE : value > itemOrServiceValue;
+    const isValueLessThanMin = value < MIN_VALUE;
+
+    if (isValueGreaterThanMax) {
+      value = MIN_VALUE;
+    } else if (isValueLessThanMin) {
+      value = isLimitTypeC ? MAX_VALUE : itemOrServiceValue;
+    }
+
+    return value.toFixed(2);
+  };
 
 
   const bindLimitTypesWithDefaultValues = (itemsOrServices, prevItemsOrServices) => {
@@ -103,7 +147,7 @@ const ItemsTabForm = (props) => {
         disableColumnMenu: true,
         sortable: false,
         valueGetter: (params) => Number(params.value).toFixed(2),
-        valueParser: (value) => parserLimits(value),
+        valueParser: (value, params) => parserLimits(value, params, fieldName),
       })),
       ...["limitNoAdult", "limitNoChild", "waitingPeriodAdult", "waitingPeriodChild"].map((fieldName) => ({
         field: fieldName,
@@ -113,10 +157,11 @@ const ItemsTabForm = (props) => {
         editable: true,
         disableColumnMenu: true,
         sortable: false,
-        valueParser: (value) => {
-          if (value < 0) return null;
+        valueParser: (value) => value,
+        valueGetter: ({ value }) => {
+          if (typeof value === 'number') return value.toString();
           return value;
-        }
+        },
       })),
       ...["ceilingExclusionAdult", "ceilingExclusionChild"].map((fieldName) => ({
         field: fieldName,
@@ -152,16 +197,14 @@ const ItemsTabForm = (props) => {
         Picker={Picker}
       />
       <Grid container className={className}>
-        {!readOnly && (
-          <Grid item container xs={4} className={classes.item}>
-            <Button startIcon={<AddIcon />} variant="contained" onClick={() => setDialogOpen(true)}>
-              {formatMessage("ItemsOrServicesGrid.addItemsButton")}
-            </Button>
-          </Grid>
-        )}
+        <Grid item container xs={4} className={classes.item}>
+          <Button startIcon={<AddIcon />} variant="contained" onClick={() => setDialogOpen(true)} disabled={readOnly}>
+            {addButtonLabel}
+          </Button>
+        </Grid>
         <Grid item xs={12} className={classes.dataGridWrapper}>
           <ErrorBoundary>
-            { isLoadedRules && (
+            {isLoadedRules && (
               <DataGrid
                 className={classes.dataGrid}
                 onChange={onChange}
