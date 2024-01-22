@@ -115,6 +115,7 @@ const MainPanelForm = (props) => {
           readOnly={readOnly}
           value={edited?.maxMembers ?? ""}
           onChange={(maxMembers) => onEditedChanged({ ...edited, maxMembers })}
+          allowDecimals={false}
         />
       </Grid>
       <Grid item xs={3} className={classes.item}>
@@ -125,6 +126,7 @@ const MainPanelForm = (props) => {
           readOnly={readOnly}
           value={edited?.threshold ?? ""}
           onChange={(threshold) => onEditedChanged({ ...edited, threshold })}
+          allowDecimals={false}
         />
       </Grid>
       <Grid item xs={3} className={classes.item}>
@@ -136,6 +138,7 @@ const MainPanelForm = (props) => {
           readOnly={readOnly}
           value={edited?.insurancePeriod ?? ""}
           onChange={(insurancePeriod) => onEditedChanged({ ...edited, insurancePeriod })}
+          allowDecimals={false}
         />
       </Grid>
       <Grid item xs={3} className={classes.item}>
@@ -146,6 +149,7 @@ const MainPanelForm = (props) => {
           readOnly={readOnly}
           value={edited?.administrationPeriod ?? ""}
           onChange={(administrationPeriod) => onEditedChanged({ ...edited, administrationPeriod })}
+          allowDecimals={false}
         />
       </Grid>
       <Grid item xs={3} className={classes.item}>
@@ -168,7 +172,7 @@ const MainPanelForm = (props) => {
           required
           module="product"
           label="dateFrom"
-          disablePast={!!edited?.uuid}
+          disablePast={!edited?.id && !!edited?.uuid}
           readOnly={(Boolean(edited?.uuid) && !isDuplicate) || readOnly}
           onChange={(dateFrom) => onEditedChanged({ ...edited, dateFrom })}
           // NOTE: maxDate cannot be passed if endDate does not exist.
