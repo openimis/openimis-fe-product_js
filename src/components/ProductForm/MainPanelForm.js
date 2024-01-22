@@ -172,7 +172,7 @@ const MainPanelForm = (props) => {
           required
           module="product"
           label="dateFrom"
-          disablePast={!edited?.id && !!edited?.uuid}
+          disablePast={!edited?.uuid}
           readOnly={(Boolean(edited?.uuid) && !isDuplicate) || readOnly}
           onChange={(dateFrom) => onEditedChanged({ ...edited, dateFrom })}
           // NOTE: maxDate cannot be passed if endDate does not exist.
