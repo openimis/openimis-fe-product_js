@@ -14,6 +14,8 @@ export const GRAPHQL_USE_PRODUCTS_PRODUCT_FRAGMENT = `
     maxMembers
     validityFrom
     validityTo
+    ageMaximal
+    ageMinimal
   }
 `;
 
@@ -68,6 +70,8 @@ export const GRAPHQL_USE_PRODUCT_PRODUCT_FRAGMENT = `
     uuid
     code
     name
+    ageMaximal
+    ageMinimal
     maxMembers
     threshold
     location {id uuid code name parent {id uuid name code}}
