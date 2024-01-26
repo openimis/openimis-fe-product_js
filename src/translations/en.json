@@ -165,5 +165,7 @@
   "product.ProductSalesReport.district": "District",
   "product.ProductDerivedOperationalIndicators.month": "Month",
   "product.ProductDerivedOperationalIndicators.year": "Year",
-  "product.ProductDerivedOperationalIndicators.product": "Product"
+  "product.ProductDerivedOperationalIndicators.product": "Product",
+  "product.ageMinimal": "Minimum Age",
+  "product.ageMaximal": "Maximum Age"
 }
