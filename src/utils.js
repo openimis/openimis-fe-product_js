@@ -159,8 +159,6 @@ export const toInputValues = (values) => {
     ceilingType: ceilingType,
   };
 
-  console.log(val);
-
   return val;
 };
 
