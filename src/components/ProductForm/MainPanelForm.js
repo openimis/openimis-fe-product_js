@@ -43,6 +43,7 @@ const MainPanelForm = (props) => {
   const dispatch = useDispatch();
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product.FormMainPanel", modulesManager);
+  const codeMaxLength = modulesManager.getConf("fe-product", "productForm.codeMaxLength", 8);
 
   useEffect(() => {
     if (edited?.id) dispatch(fetchProduct(modulesManager, { "productId": edited.id }));
@@ -75,6 +76,9 @@ const MainPanelForm = (props) => {
           onChange={(code) => onEditedChanged({ ...edited, code })}
           required={true}
           value={edited?.code ?? ""}
+          inputProps={{
+            "maxLength": codeMaxLength,
+          }}
         />
       </Grid>
       <Grid item xs={3} className={classes.item}>
@@ -183,7 +187,7 @@ const MainPanelForm = (props) => {
           disablePast={!Boolean(edited?.uuid)}
           readOnly={readOnly}
           onChange={(dateTo) => onEditedChanged({ ...edited, dateTo })}
-          minDate={props?.edited?.dateFrom || new Date().getDate()}  
+          minDate={props?.edited?.dateFrom || new Date().getDate()}
         />
       </Grid>
       <Grid item xs={4} className={classes.item}>

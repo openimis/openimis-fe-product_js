@@ -17,6 +17,7 @@ const ContributionTabForm = (props) => {
           label="lumpSum"
           readOnly={readOnly}
           value={edited?.lumpSum ?? ""}
+          decimal={true}
           onChange={(lumpSum) => onEditedChanged({ ...edited, lumpSum })}
         />
       </Grid>
@@ -27,6 +28,7 @@ const ContributionTabForm = (props) => {
           label="premiumAdult"
           readOnly={readOnly}
           value={edited?.premiumAdult ?? ""}
+          decimal={true}
           onChange={(premiumAdult) => onEditedChanged({ ...edited, premiumAdult })}
         />
       </Grid>
@@ -37,6 +39,7 @@ const ContributionTabForm = (props) => {
           label="premiumChild"
           readOnly={readOnly}
           value={edited?.premiumChild ?? ""}
+          decimal={true}
           onChange={(premiumChild) => onEditedChanged({ ...edited, premiumChild })}
         />
       </Grid>
@@ -58,6 +61,7 @@ const ContributionTabForm = (props) => {
           label="registrationLumpSum"
           readOnly={readOnly}
           value={edited?.registrationLumpSum ?? ""}
+          decimal={true}
           onChange={(registrationLumpSum) => onEditedChanged({ ...edited, registrationLumpSum })}
         />
       </Grid>
@@ -68,6 +72,7 @@ const ContributionTabForm = (props) => {
           label="registrationFee"
           readOnly={readOnly}
           value={edited?.registrationFee ?? ""}
+          decimal={true}
           onChange={(registrationFee) => onEditedChanged({ ...edited, registrationFee })}
         />
       </Grid>
@@ -78,6 +83,7 @@ const ContributionTabForm = (props) => {
           label="generalAssemblyLumpSum"
           readOnly={readOnly}
           value={edited?.generalAssemblyLumpSum ?? ""}
+          decimal={true}
           onChange={(generalAssemblyLumpSum) => onEditedChanged({ ...edited, generalAssemblyLumpSum })}
         />
       </Grid>
@@ -88,6 +94,7 @@ const ContributionTabForm = (props) => {
           label="generalAssemblyFee"
           readOnly={readOnly}
           value={edited?.generalAssemblyFee ?? ""}
+          decimal={true}
           onChange={(generalAssemblyFee) => onEditedChanged({ ...edited, generalAssemblyFee })}
         />
       </Grid>
