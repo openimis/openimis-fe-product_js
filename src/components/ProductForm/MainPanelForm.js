@@ -92,7 +92,7 @@ const MainPanelForm = (props) => {
           pubRef="location.RegionPicker"
           value={edited.location?.parent ?? edited.location}
           readOnly={readOnly}
-          withNull
+          withNull={false}
           onChange={(location) => onEditedChanged({ ...edited, location })}
         />
       </Grid>
@@ -101,7 +101,7 @@ const MainPanelForm = (props) => {
           region={edited.location?.parent || edited.location}
           value={edited.location?.parent ? edited.location : null}
           pubRef="location.DistrictPicker"
-          withNull={true}
+          withNull={false}
           readOnly={readOnly}
           onChange={(location) => onEditedChanged({ ...edited, location: location || edited.location?.parent })}
         />
@@ -115,6 +115,7 @@ const MainPanelForm = (props) => {
           readOnly={readOnly}
           value={edited?.maxMembers ?? ""}
           onChange={(maxMembers) => onEditedChanged({ ...edited, maxMembers })}
+          allowDecimals={false}
         />
       </Grid>
       <Grid item xs={3} className={classes.item}>
@@ -125,6 +126,7 @@ const MainPanelForm = (props) => {
           readOnly={readOnly}
           value={edited?.threshold ?? ""}
           onChange={(threshold) => onEditedChanged({ ...edited, threshold })}
+          allowDecimals={false}
         />
       </Grid>
       <Grid item xs={3} className={classes.item}>
@@ -136,6 +138,7 @@ const MainPanelForm = (props) => {
           readOnly={readOnly}
           value={edited?.insurancePeriod ?? ""}
           onChange={(insurancePeriod) => onEditedChanged({ ...edited, insurancePeriod })}
+          allowDecimals={false}
         />
       </Grid>
       <Grid item xs={3} className={classes.item}>
@@ -146,6 +149,7 @@ const MainPanelForm = (props) => {
           readOnly={readOnly}
           value={edited?.administrationPeriod ?? ""}
           onChange={(administrationPeriod) => onEditedChanged({ ...edited, administrationPeriod })}
+          allowDecimals={false}
         />
       </Grid>
       <Grid item xs={3} className={classes.item}>
@@ -168,9 +172,13 @@ const MainPanelForm = (props) => {
           required
           module="product"
           label="dateFrom"
-          disablePast={!Boolean(edited?.uuid)}
+          disablePast={!edited?.uuid}
           readOnly={(Boolean(edited?.uuid) && !isDuplicate) || readOnly}
           onChange={(dateFrom) => onEditedChanged({ ...edited, dateFrom })}
+          // NOTE: maxDate cannot be passed if endDate does not exist.
+          // Passing any other falsy value will block months manipulation.
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          {...(edited.dateTo ? { maxDate: edited.dateTo } : null)}
         />
       </Grid>
       <Grid item xs={4} className={classes.item}>
@@ -180,10 +188,13 @@ const MainPanelForm = (props) => {
           required
           module="product"
           label="dateTo"
-          disablePast={!Boolean(edited?.uuid)}
+          disablePast={!!edited?.uuid}
           readOnly={readOnly}
           onChange={(dateTo) => onEditedChanged({ ...edited, dateTo })}
-          minDate={props?.edited?.dateFrom || new Date().getDate()}  
+          // NOTE: minDate cannot be passed if startDate does not exist.
+          // Passing any other falsy value will block months manipulation.
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          {...(edited.dateFrom ? { minDate: edited.dateFrom } : null)}
         />
       </Grid>
       <Grid item xs={4} className={classes.item}>

@@ -43,11 +43,10 @@ const ContributionTabForm = (props) => {
       <Grid item xs={3} className={classes.item}>
         <NumberInput
           module="product"
-          min={1}
           label="maxInstallments"
-          required
           readOnly={readOnly}
-          value={edited?.maxInstallments ?? 1}
+          displayZero
+          value={edited?.maxInstallments}
           onChange={(maxInstallments) => onEditedChanged({ ...edited, maxInstallments })}
         />
       </Grid>
@@ -174,8 +173,8 @@ const ContributionTabForm = (props) => {
           required
           label="gracePeriodPayment"
           readOnly={readOnly}
-          value={edited?.gracePeriodPayment ?? 0}
-          onChange={(gracePeriodPayment) => onEditedChanged({ ...edited, gracePeriodPayment: Number(gracePeriodPayment) })}
+          value={edited?.gracePeriodPayment}
+          onChange={(gracePeriodPayment) => onEditedChanged({ ...edited, gracePeriodPayment })}
           displayZero={true}
         />
       </Grid>

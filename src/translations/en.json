@@ -72,15 +72,6 @@
   "product.ceilingDiscrimination.CLAIM_TYPE": "Based on Claim Type",
 
   "product.PoolingManagementTabForm.startCyclesSectionTitle": "Start Cycles",
-  "product.PoolingManagementTabForm.relativePricingSectionTitle": "Relative Pricing",
-  "product.relativePricingTypePicker": "Distribution Type",
-  "product.relativePricingTypePicker.disabled": "Disabled",
-  "product.relativePricingTypePicker.enabled": "Enabled",
-  "product.relativePricingTypePicker.split": "Split",
-  "product.relativePricingPeriodsPicker": "Distribution Periods",
-  "product.relativePricingPeriodsPicker.12": "Month",
-  "product.relativePricingPeriodsPicker.4": "Quarter",
-  "product.relativePricingPeriodsPicker.1": "Year",
 
   "product.CapitationTabForm.capitationLevelsSectionTitle": "Levels of Capitation",
   "product.CapitationTabForm.weightsSectionTitle": "Weights Repartition",
@@ -139,11 +130,6 @@
   "product.ProductItemsDialog.submit": "Add {count} items",
   "product.ProductItemsDialog.emptySubmit": "Add items",
   "product.ProductItemsDialog.cancel": "Cancel",
-  "product.RelativePricesTable.period": "Period {count} (%)",
-  "product.RelativePricesTable.careType": "Care Type",
-  "product.RelativePricesTable.careType.IN_PATIENT": "In - Patient",
-  "product.RelativePricesTable.careType.OUT_PATIENT": "Out - Patient",
-  "product.RelativePricesTable.careType.BOTH": "In & Out - Patient",
 
   "product.DeductiblesCeilingsTabForm.ceilingDiscriminationExplanation": "Specify whether Hospital and Non-Hospital care should be determined according to the type of level of health facility that provided health care (Hospital/Non-Hospital) or according to the type of health care acquired from the claim (In-patient/Out-Patient).",
   "product.DeductiblesCeilingsTabForm.all": "All",
