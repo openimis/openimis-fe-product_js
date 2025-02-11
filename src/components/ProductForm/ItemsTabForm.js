@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useIntl } from "react-intl";
 import {
@@ -74,9 +74,9 @@ const ItemsTabForm = (props) => {
     }
   }, []);
 
-  const onChange = (items) => {
+  const onChange = useCallback((items) => {
     onEditedChanged({ ...edited, items, hasEditedItems: true });
-  };
+  }, [edited, onEditedChanged]);
 
   const onAdd = (selection) => {
     const newItems = selection.map((item) => ({

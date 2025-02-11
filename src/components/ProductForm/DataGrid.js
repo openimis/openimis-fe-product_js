@@ -1,4 +1,4 @@
-import React, {useState, useMemo, useRef} from "react";
+import React, { useState, useMemo, useRef, useCallback } from "react";
 import { DataGrid as MuiDataGrid } from "@mui/x-data-grid";
 import { ErrorBoundary, useTranslations, useModulesManager } from "@openimis/fe-core";
 import { makeStyles } from "@material-ui/styles";
@@ -104,11 +104,11 @@ const DataGrid = (props) => {
     onChange(newRows);
   };
 
-  const onRowDelete = (id) => {
+  const onRowDelete = useCallback((id) => {
     onChange(rows.filter((x) => x.id !== id));
-  };
+  }, [rows, onChange]);
 
-  const renderCellActions = (props) => <CellActions {...props} onRowDelete={onRowDelete} />;
+  const renderCellActions = useCallback((props) => <CellActions {...props} onRowDelete={onRowDelete} />, [onRowDelete]);
 
   const columns = useMemo(() => {
     const baseColumns = props.columns;
@@ -124,7 +124,7 @@ const DataGrid = (props) => {
       },
       ...baseColumns,
     ];
-  }, [props.columns, readOnly]);
+  }, [props.columns, readOnly, renderCellActions]);
 
 
   const handleEditRowsModel = (itemsOrServices) => {
