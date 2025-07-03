@@ -98,8 +98,8 @@ const DeductiblesCeilingsTabForm = (props) => {
           control={<Checkbox checked={isSplit} onChange={setSplit} disabled={readOnly} />}
         />
       </Grid>
-      <Grid item xs={6}>
-        <SectionTitle label={"Deductibles"} />
+      <Grid item xs={6}>DeductiblesCeilingsTabForm.DeductiblesTable.deductible
+        <SectionTitle label={formatMessage("DeductiblesCeilingsTabForm.DeductiblesTable.deductible")} />
       </Grid>
       <Grid item xs={6} className={classes.item} />
       <Grid item xs={6} className={classes.item}>
@@ -159,7 +159,7 @@ const DeductiblesCeilingsTabForm = (props) => {
         </Table>
       </Grid>
       <Grid item xs={12}>
-        <SectionTitle label={"Ceilings"} />
+        <SectionTitle label={formatMessage("DeductiblesCeilingsTabForm.MaxTable.ceiling")} />
       </Grid>
       <Grid item xs={6} className={classes.item}>
         <Table size="small">
