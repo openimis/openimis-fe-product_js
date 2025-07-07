@@ -105,7 +105,7 @@ const DeductiblesCeilingsTabForm = (props) => {
         />
       </Grid>
       <Grid item xs={6}>
-        <SectionTitle label={"Deductibles"} />
+        <SectionTitle label={formatMessage("DeductiblesCeilingsTabForm.DeductiblesTable.deductible")} />
       </Grid>
       <Grid item xs={6} className={classes.item} />
       <Grid item xs={6} className={classes.item}>
@@ -168,7 +168,7 @@ const DeductiblesCeilingsTabForm = (props) => {
         </Table>
       </Grid>
       <Grid item xs={12}>
-        <SectionTitle label={"Ceilings"} />
+        <SectionTitle label={formatMessage("DeductiblesCeilingsTabForm.MaxTable.ceiling")} />
       </Grid>
       <Grid item xs={6} className={classes.item}>
         <Table size="small">
