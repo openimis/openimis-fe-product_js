@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import moment from "moment";
 
-import { TextField, Tooltip } from "@material-ui/core";
+import { TextField, Tooltip } from "@mui/material";
 
 import { Autocomplete, useModulesManager, useTranslations } from "@openimis/fe-core";
 import { DATE_FORMAT, EMPTY_STRING, PRODUCT_QUANTITY_LIMIT } from "../constants";

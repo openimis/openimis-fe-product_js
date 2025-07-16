@@ -1,7 +1,5 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import babel from 'vite-plugin-babel';
-import json from '@rollup/plugin-json';
 import path from 'path';
 
 export default defineConfig({
@@ -16,8 +14,9 @@ export default defineConfig({
       external: [
         /^@babel.*/,
         /^@date-io\/.*/,
-        /^@material-ui\/.*/,
+       
         /^@openimis.*/,
+        '@mui/styles',
         'classnames',
         'clsx',
         'history',
@@ -27,17 +26,11 @@ export default defineConfig({
         /^react.*/,
         /^redux.*/
       ],
-      plugins: [json()]
+      // Removed plugins: [json()]
     },
     sourcemap: true,
   },
   plugins: [
     react(),
-    babel({
-      babelConfig: {
-        exclude: 'node_modules/**',
-        babelHelpers: 'runtime',
-      },
-    }),
   ],
 }); 

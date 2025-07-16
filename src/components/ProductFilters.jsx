@@ -1,8 +1,8 @@
 import React from "react";
 import moment from "moment";
 
-import { FormControlLabel, Grid, Checkbox } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { FormControlLabel, Grid, Checkbox } from "@mui/material";
+import { withTheme, withStyles } from "@mui/styles";
 
 import {
   combine,

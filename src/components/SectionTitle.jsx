@@ -1,7 +1,7 @@
 import React from "react";
 import clsx from "clsx";
-import { withTheme, withStyles } from "@material-ui/styles";
-import { Box, Typography, Divider } from "@material-ui/core";
+import { withTheme, withStyles } from "@mui/styles";
+import { Box, Typography, Divider } from "@mui/material";
 
 const SectionTitle = (props) => {
   const { classes, className, label } = props;

@@ -1,8 +1,8 @@
 import React from "react";
 import clsx from "clsx";
 
-import { withStyles, withTheme } from "@material-ui/core/styles";
-import ReplayIcon from "@material-ui/icons/Replay";
+import { withStyles, withTheme } from "@mui/styles";
+import ReplayIcon from "@mui/icons-material/Replay";
 
 import { Form, ProgressOrError, combine, ErrorBoundary } from "@openimis/fe-core";
 import MainPanelForm from "./MainPanelForm";

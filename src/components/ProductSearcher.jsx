@@ -1,11 +1,11 @@
 import React, { useState, useCallback } from "react";
 import { useProductsQuery } from "../hooks";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { withTheme, withStyles } from "@mui/styles";
 import { Searcher, useTranslations, combine, useModulesManager, ConfirmDialog } from "@openimis/fe-core";
 import ProductFilters from "./ProductFilters";
-import { Tooltip, IconButton } from "@material-ui/core";
-import { Tab as TabIcon, Delete as DeleteIcon } from "@material-ui/icons";
-import FileCopyIcon from '@material-ui/icons/FileCopy';
+import { Tooltip, IconButton } from "@mui/material";
+import { Tab as TabIcon, Delete as DeleteIcon } from "@mui/icons-material";
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 
 const isRowDisabled = (_, row) => Boolean(row.validityTo);
 const formatLocation = (location) => (location ? `${location.code} - ${location.name}` : null);

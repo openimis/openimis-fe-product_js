@@ -1,6 +1,6 @@
 import React from "react";
-import { Typography, Slider, Grid } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/styles";
+import { Typography, Slider, Grid } from "@mui/material";
+import { withTheme, withStyles } from "@mui/styles";
 import { combine, NumberInput } from "@openimis/fe-core";
 
 const InputSlider = (props) => {

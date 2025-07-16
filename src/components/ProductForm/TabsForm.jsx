@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef} from "react";
-import { Tab, Tabs, Paper } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/styles";
+import { Tab, Tabs, Paper } from "@mui/material";
+import { withTheme, withStyles } from "@mui/styles";
 import { useTranslations, combine } from "@openimis/fe-core";
 import ItemsTabForm from "./ItemsTabForm";
 import ContributionTabForm from "./ContributionTabForm";

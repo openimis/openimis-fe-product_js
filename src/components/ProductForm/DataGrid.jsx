@@ -1,12 +1,12 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import _ from "lodash";
 
-import { IconButton } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/DeleteOutlined";
-import SaveIcon from "@material-ui/icons/Save";
-import CancelIcon from "@material-ui/icons/Close";
+import { IconButton } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Close";
 import { DataGrid as MuiDataGrid } from "@mui/x-data-grid";
 
 import { ErrorBoundary, useTranslations, useModulesManager } from "@openimis/fe-core";

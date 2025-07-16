@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Typography, Box } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/styles";
+import { Grid, Typography, Box } from "@mui/material";
+import { withTheme, withStyles } from "@mui/styles";
 import { combine, useTranslations, useModulesManager, FormattedMessage, NumberInput } from "@openimis/fe-core";
 import SectionTitle from "../SectionTitle";
 

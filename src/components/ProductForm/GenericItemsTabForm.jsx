@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useEffect } from "react";
 import _ from "lodash";
 
-import { Grid, Button } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/styles";
-import AddIcon from "@material-ui/icons/Add";
+import { Grid, Button } from "@mui/material";
+import { withTheme, withStyles } from "@mui/styles";
+import AddIcon from "@mui/icons-material/Add";
 
 import { combine, useTranslations, useModulesManager, ErrorBoundary } from "@openimis/fe-core";
 import {

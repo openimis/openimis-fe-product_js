@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
 
-import { Grid } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { Grid } from "@mui/material";
+import { withTheme, withStyles } from "@mui/styles";
 
 import {
   combine,
