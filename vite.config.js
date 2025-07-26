@@ -2,7 +2,57 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
+const noExternal = [
+  '@mui/material',
+  '@mui/utils',
+  '@mui/system',
+  '@mui/icons-material',
+  '@mui/styled-engine',
+  '@emotion/react',
+  '@emotion/styled',
+  '@emotion/cache'
+];
+
 export default defineConfig({
+  plugins: [
+    react({
+      jsxImportSource: '@emotion/react',
+      babel: {
+        plugins: ['@emotion/babel-plugin'],
+      },
+    }),
+  ],
+  define: {
+    'process.env.NODE_ENV': JSON.stringify('production'),
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+      '@emotion/react': path.resolve(
+        __dirname,
+        'node_modules/@emotion/react'
+      ),
+      '@emotion/styled': path.resolve(
+        __dirname,
+        'node_modules/@emotion/styled'
+      ),
+      '@emotion/cache': path.resolve(
+        __dirname,
+        'node_modules/@emotion/cache'
+      ),
+    },
+  },
+  optimizeDeps: {
+    include: [
+      '@emotion/react',
+      '@emotion/styled',
+      '@emotion/cache',
+      '@mui/material',
+      '@mui/icons-material',
+      '@mui/system',
+    ],
+    force: true,
+  },
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.jsx'),
@@ -12,25 +62,60 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [
-        /^@babel.*/,
-        /^@date-io\/.*/,
-       
-        /^@openimis.*/,
-        '@mui/styles',
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        'react/jsx-dev-runtime',
+        'redux',
+        'redux-api-middleware',
+        'react-redux',
+        'react-intl',
+        'prop-types',
+        'moment',
+        'lodash',
+        /^lodash\/.*/,
+        'lodash-uuid',
         'classnames',
         'clsx',
+        'react-autosuggest',
+        'react-router',
+        'react-router-dom',
         'history',
-        /^lodash.*/,
-        'moment',
-        'prop-types',
-        /^react.*/,
-        /^redux.*/
+        '@emotion/react',
+        '@emotion/styled',
+        '@emotion/cache',
+        '@mui/material',
+        '@mui/icons-material',
+        '@mui/system',
+        '@mui/styles',
+        '@mui/x-data-grid',
+        '@material-ui/lab',
+        '@material-ui/pickers',
+        '@date-io/core',
+        '@date-io/moment',
+        'flat',
+        /^@babel.*/,
+        /^@date-io\/.*/,
+        /^@material-ui\/.*/,
+        /^@openimis.*/,
       ],
-      // Removed plugins: [json()]
+      output: {
+        globals: {
+          react: 'React',
+          'react-dom': 'ReactDOM',
+          'react/jsx-runtime': 'jsxRuntime',
+          'react/jsx-dev-runtime': 'jsxDevRuntime',
+          '@emotion/react': 'EmotionReact',
+          '@emotion/styled': 'EmotionStyled',
+          '@mui/material': 'MuiMaterial',
+        },
+      },
     },
     sourcemap: true,
+    outDir: 'dist',
+    emptyOutDir: true,
   },
-  plugins: [
-    react(),
-  ],
+  ssr: {
+    noExternal,
+  },
 }); 

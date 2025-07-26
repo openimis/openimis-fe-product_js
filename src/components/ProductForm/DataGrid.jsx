@@ -7,7 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
-import { DataGrid as MuiDataGrid } from "@mui/x-data-grid";
+import { DataGrid as MuiDataGrid, useGridApiContext } from "@mui/x-data-grid";
 
 import { ErrorBoundary, useTranslations, useModulesManager } from "@openimis/fe-core";
 
@@ -21,18 +21,18 @@ const useActionsStyles = makeStyles((theme) => ({
 }));
 
 const CellActions = (props) => {
-  const { api, id, onRowDelete } = props;
+  const { id, onRowDelete } = props;
+  const apiRef = useGridApiContext();
   const classes = useActionsStyles();
-  const isInEditMode = api.getRowMode(id) === "edit";
+  const isInEditMode = apiRef.current.getRowMode(id) === "edit";
 
   const handleEditClick = (event) => {
     event.stopPropagation();
-    api.setRowMode(id, "edit");
+    apiRef.current.startRowEditMode({ id });
   };
   const handleSaveClick = (event) => {
     event.stopPropagation();
-    api.commitRowChange(id);
-    api.setRowMode(id, "view");
+    apiRef.current.stopRowEditMode({ id });
   };
   const handleDeleteClick = (event) => {
     event.stopPropagation();
@@ -40,11 +40,11 @@ const CellActions = (props) => {
   };
   const handleCancelClick = (event) => {
     event.stopPropagation();
-    api.setRowMode(id, "view");
+    apiRef.current.stopRowEditMode({ id, ignoreModifications: true });
 
-    const row = api.getRow(id);
+    const row = apiRef.current.getRow(id);
     if (row.isNew) {
-      api.updateRows([{ id, _action: "delete" }]);
+      apiRef.current.updateRows([{ id, _action: "delete" }]);
       onRowDelete(id, event);
     }
   };
@@ -143,7 +143,7 @@ const DataGrid = (props) => {
   const getLastedEditedRowId = (prevRows, currentRows) => {
     for (const key of Object.keys(currentRows)) {
       if (prevRows && prevRows.hasOwnProperty(key)) {
-        if (!_.isEqual(prevRows[key], currentRows[key])){
+        if (!_.isEqual(prevRows[key], currentRows[key])) {
           return key;
         }
       }
