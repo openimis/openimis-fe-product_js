@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef} from "react";
 import { Tab, Tabs, Paper } from "@mui/material";
-import { withTheme, withStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 import { useTranslations, combine } from "@openimis/fe-core";
 import ItemsTabForm from "./ItemsTabForm";
 import ContributionTabForm from "./ContributionTabForm";
@@ -9,6 +9,14 @@ import ServicesTabForm from "./ServicesTabForm";
 import DeductiblesCeilingsTabForm from "./DeductiblesCeilingsTabForm";
 import {useLimitDefaultsQuery} from "../../hooks";
 import {LIMIT_TYPES, PRICE_ORIGINS} from "../../constants";
+
+const StyledPaper = styled('div')(({ theme }) => ({
+  ...theme.paper.paper,
+}));
+
+const StyledHeader = styled('div')(({ theme }) => ({
+  ...theme.paper.header,
+}));
 
 const CurrentTab = (props) => {
   const { tab } = props;
@@ -29,7 +37,7 @@ const CurrentTab = (props) => {
 };
 
 const TabsForm = (props) => {
-  const { classes, ...otherProps } = props;
+  const { ...otherProps } = props;
   const [activeTab, setActiveTab] = useState("contributions");
   const handleChange = (_, value) => setActiveTab(value);
   const { formatMessage } = useTranslations("product.TabsForm");
@@ -60,8 +68,8 @@ const TabsForm = (props) => {
   }
 
   return isLoadedLimitDefaults && (
-    <Paper className={classes.paper}>
-      <Tabs className={classes.header} value={activeTab} indicatorColor="primary" onChange={handleChange}>
+    <Paper component={StyledPaper}>
+      <Tabs component={StyledHeader} value={activeTab} indicatorColor="primary" onChange={handleChange}>
         <Tab value="contributions" label={formatMessage("contributionPlan")}></Tab>
         <Tab value="items" label={formatMessage("productItems")}></Tab>
         <Tab value="services" label={formatMessage("productServices")}></Tab>
@@ -78,10 +86,4 @@ const TabsForm = (props) => {
   );
 };
 
-const styles = (theme) => ({
-  paper: theme.paper.paper,
-  header: theme.paper.header,
-});
-
-const enhance = combine(withTheme, withStyles(styles));
-export default enhance(TabsForm);
+export default TabsForm;

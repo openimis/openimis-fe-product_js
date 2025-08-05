@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef, useEffect } from "react";
 import _ from "lodash";
 
 import { IconButton } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
@@ -11,19 +11,16 @@ import { DataGrid as MuiDataGrid, useGridApiContext } from "@mui/x-data-grid";
 
 import { ErrorBoundary, useTranslations, useModulesManager } from "@openimis/fe-core";
 
-const useActionsStyles = makeStyles((theme) => ({
-  root: {
-    display: "inline-flex",
-    alignItems: "center",
-    gap: theme.spacing(1),
-    color: theme.palette.text.secondary,
-  },
+const StyledActionsRoot = styled('div')(({ theme }) => ({
+  display: "inline-flex",
+  alignItems: "center",
+  gap: theme.spacing(1),
+  color: theme.palette.text.secondary,
 }));
 
 const CellActions = (props) => {
   const { id, onRowDelete } = props;
   const apiRef = useGridApiContext();
-  const classes = useActionsStyles();
   const isInEditMode = apiRef.current.getRowMode(id) === "edit";
 
   const handleEditClick = (event) => {
@@ -51,7 +48,7 @@ const CellActions = (props) => {
 
   if (isInEditMode) {
     return (
-      <div className={classes.root}>
+      <StyledActionsRoot>
         <IconButton color="primary" size="small" aria-label="save" onClick={handleSaveClick}>
           <SaveIcon fontSize="small" />
         </IconButton>
@@ -59,20 +56,18 @@ const CellActions = (props) => {
           color="inherit"
           size="small"
           aria-label="cancel"
-          className={classes.textPrimary}
           onClick={handleCancelClick}
         >
           <CancelIcon fontSize="small" />
         </IconButton>
-      </div>
+      </StyledActionsRoot>
     );
   }
 
   return (
-    <div className={classes.root}>
+    <StyledActionsRoot>
       <IconButton
         color="inherit"
-        className={classes.textPrimary}
         size="small"
         aria-label="edit"
         onClick={handleEditClick}
@@ -82,7 +77,7 @@ const CellActions = (props) => {
       <IconButton color="inherit" size="small" aria-label="delete" onClick={handleDeleteClick}>
         <DeleteIcon fontSize="small" />
       </IconButton>
-    </div>
+    </StyledActionsRoot>
   );
 };
 

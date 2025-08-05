@@ -1,24 +1,25 @@
 import React from "react";
 import clsx from "clsx";
-import { withTheme, withStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 import { Box, Typography, Divider } from "@mui/material";
 
+const StyledWrapper = styled('div')(({ theme }) => ({
+  ...theme.paper.item,
+  paddingBottom: 0,
+}));
+
+const StyledTitle = styled('div')(({ theme }) => ({
+  ...theme.typography.title,
+}));
+
 const SectionTitle = (props) => {
-  const { classes, className, label } = props;
+  const { className, label } = props;
   return (
-    <Box className={clsx(classes.wrapper, className)}>
-      <Typography className={classes.title}>{label}</Typography>
+    <Box component={StyledWrapper} className={className}>
+      <Typography component={StyledTitle}>{label}</Typography>
       <Divider variant="fullWidth" />
     </Box>
   );
 };
 
-const styles = (theme) => ({
-  wrapper: {
-    ...theme.paper.item,
-    paddingBottom: 0,
-  },
-  title: theme.typography.title,
-});
-
-export default withTheme(withStyles(styles)(SectionTitle));
+export default SectionTitle;

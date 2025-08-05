@@ -1,21 +1,21 @@
 import React, { useState, useCallback } from "react";
 import { useProductsQuery } from "../hooks";
-import { withTheme, withStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 import { Searcher, useTranslations, combine, useModulesManager, ConfirmDialog } from "@openimis/fe-core";
 import ProductFilters from "./ProductFilters";
 import { Tooltip, IconButton } from "@mui/material";
 import { Tab as TabIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 
+const StyledHorizontalButtonContainer = styled('div')(({ theme }) => ({
+  ...theme.buttonContainer.horizontal,
+}));
+
 const isRowDisabled = (_, row) => Boolean(row.validityTo);
 const formatLocation = (location) => (location ? `${location.code} - ${location.name}` : null);
 
-const styles = (theme) => ({
-  horizontalButtonContainer: theme.buttonContainer.horizontal,
-});
-
 const ProductSearcher = (props) => {
-  const { cacheFiltersKey, classes, onDelete, canDelete, onDoubleClick, onDuplicate, canDuplicate } = props;
+  const { cacheFiltersKey, onDelete, canDelete, onDoubleClick, onDuplicate, canDuplicate } = props;
   const modulesManager = useModulesManager();
   const { formatMessage, formatDateFromISO, formatMessageWithValues } = useTranslations("product", modulesManager);
   const [filters, setFilters] = useState({});
@@ -83,7 +83,7 @@ const ProductSearcher = (props) => {
 
       (p) =>
         !filters.showHistory?.value ? (
-          <div className={classes.horizontalButtonContainer}>
+          <StyledHorizontalButtonContainer>
             <Tooltip title={formatMessage("ProductSearcher.openNewTab")}>
               <IconButton onClick={() => onDoubleClick(p, true)}>
                 <TabIcon />
@@ -103,7 +103,7 @@ const ProductSearcher = (props) => {
                 </IconButton>
               </Tooltip>
             )}
-          </div>
+          </StyledHorizontalButtonContainer>
         ) : null,
     ];
   }, []);
@@ -142,6 +142,6 @@ const ProductSearcher = (props) => {
   );
 };
 
-const enhance = combine(withTheme, withStyles(styles));
+const enhance = combine();
 
 export default enhance(ProductSearcher);

@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment";
 
 import { FormControlLabel, Grid, Checkbox } from "@mui/material";
-import { withTheme, withStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 
 import {
   combine,
@@ -15,18 +15,17 @@ import {
   useDebounceCb,
 } from "@openimis/fe-core";
 
-const styles = (theme) => ({
-  form: {
-    padding: "0 0 10px 0",
-    width: "100%",
-  },
-  item: {
-    padding: theme.spacing(1),
-  },
-});
+const StyledForm = styled('section')(({ theme }) => ({
+  padding: "0 0 10px 0",
+  width: "100%",
+}));
+
+const StyledItem = styled('div')(({ theme }) => ({
+  padding: theme.spacing(1),
+}));
 
 const ProductFilters = (props) => {
-  const { classes, filters, onChangeFilters, modulesManager } = props;
+  const { filters, onChangeFilters, modulesManager } = props;
   const { formatMessage } = useTranslations("product", modulesManager);
 
   const onValueChange = (id, value) => {
@@ -36,13 +35,13 @@ const ProductFilters = (props) => {
   const onChangeDebounce = useDebounceCb(onValueChange, modulesManager.getConf("fe-admin", "debounceTime", 200));
 
   return (
-    <section className={classes.form}>
+    <StyledForm>
       <Grid container>
         <ControlledField
           module="product"
           id="code"
           field={
-            <Grid item xs={3} className={classes.item}>
+            <Grid item xs={3} component={StyledItem}>
               <TextInput
                 module="product"
                 name="code"
@@ -57,7 +56,7 @@ const ProductFilters = (props) => {
           module="product"
           id="name"
           field={
-            <Grid item xs={3} className={classes.item}>
+            <Grid item xs={3} component={StyledItem}>
               <TextInput
                 module="product"
                 name="name"
@@ -72,7 +71,7 @@ const ProductFilters = (props) => {
           module="product"
           id="region"
           field={
-            <Grid item xs={3} className={classes.item}>
+            <Grid item xs={3} component={StyledItem}>
               <PublishedComponent
                 pubRef="location.RegionPicker"
                 value={filters.location?.value?.parent ?? filters.location?.value}
@@ -88,7 +87,7 @@ const ProductFilters = (props) => {
           module="product"
           id="district"
           field={
-            <Grid item xs={3} className={classes.item}>
+            <Grid item xs={3} component={StyledItem}>
               <PublishedComponent
                 pubRef="location.DistrictPicker"
                 value={filters.location?.value?.parent ? filters.location?.value : null}
@@ -109,7 +108,7 @@ const ProductFilters = (props) => {
           module="product"
           id="product.dateFrom"
           field={
-            <Grid item xs={3} className={classes.item}>
+            <Grid item xs={3} component={StyledItem}>
               <PublishedComponent
                 pubRef="core.DatePicker"
                 value={filters?.dateFrom?.value}
@@ -132,7 +131,7 @@ const ProductFilters = (props) => {
           module="product"
           id="product.dateTo"
           field={
-            <Grid item xs={3} className={classes.item}>
+            <Grid item xs={3} component={StyledItem}>
               <PublishedComponent
                 pubRef="core.DatePicker"
                 value={filters?.dateTo?.value}
@@ -155,7 +154,7 @@ const ProductFilters = (props) => {
           module="product"
           id="showHistory"
           field={
-            <Grid item xs={3} className={classes.item}>
+            <Grid item xs={3} component={StyledItem}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -177,10 +176,10 @@ const ProductFilters = (props) => {
           }
         />
       </Grid>
-    </section>
+    </StyledForm>
   );
 };
 
-const enhance = combine(withTheme, withStyles(styles), withModulesManager);
+const enhance = combine(withModulesManager);
 
 export default enhance(ProductFilters);

@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import _ from "lodash";
 
 import { Grid, Button } from "@mui/material";
-import { withTheme, withStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
 
 import { combine, useTranslations, useModulesManager, ErrorBoundary } from "@openimis/fe-core";
@@ -19,9 +19,27 @@ import { rulesToFormValues } from "../../utils";
 import DataGrid from "./DataGrid";
 import ProductItemsDialog from "./ProductItemsDialog";
 
+const StyledItem = styled('div')(({ theme }) => ({
+  ...theme.paper.item,
+}));
+
+const StyledDataGridWrapper = styled('div')(({ theme }) => ({
+  height: "50vh",
+}));
+
+const StyledDataGrid = styled('div')(({ theme }) => ({
+  "& .MuiDataGrid-columnsContainer": {
+    fontSize: 10,
+  },
+  "& .ellipsis": {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  },
+}));
+
 const ItemsTabForm = (props) => {
   const {
-    classes,
     className,
     isLoading,
     onChange,
@@ -197,16 +215,16 @@ const ItemsTabForm = (props) => {
         Picker={Picker}
       />
       <Grid container className={className}>
-        <Grid item container xs={4} className={classes.item}>
+        <Grid item container xs={4} component={StyledItem}>
           <Button startIcon={<AddIcon />} variant="contained" onClick={() => setDialogOpen(true)} disabled={readOnly}>
             {addButtonLabel}
           </Button>
         </Grid>
-        <Grid item xs={12} className={classes.dataGridWrapper}>
+        <Grid item xs={12} component={StyledDataGridWrapper}>
           <ErrorBoundary>
             {isLoadedRules && (
               <DataGrid
-                className={classes.dataGrid}
+                className={StyledDataGrid}
                 onChange={onChange}
                 isLoading={isLoading}
                 columns={columns}
@@ -223,22 +241,4 @@ const ItemsTabForm = (props) => {
   );
 };
 
-const styles = (theme) => ({
-  item: theme.paper.item,
-  dataGridWrapper: {
-    height: "50vh",
-  },
-  dataGrid: {
-    "& .MuiDataGrid-columnsContainer": {
-      fontSize: 10,
-    },
-    "& .ellipsis": {
-      whiteSpace: "nowrap",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-    },
-  },
-});
-
-const enhance = combine(withTheme, withStyles(styles));
-export default enhance(ItemsTabForm);
+export default ItemsTabForm;
