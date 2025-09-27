@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import { useProductsQuery } from "../hooks";
 import { Searcher, useTranslations, useModulesManager, ConfirmDialog } from "@openimis/fe-core";
 import ProductFilters from "./ProductFilters";
-import { Tooltip, IconButton } from "@material-ui/core";
+import { Tooltip, Button } from "@material-ui/core";
 import { Tab as TabIcon, Delete as DeleteIcon } from "@material-ui/icons";
 
 const isRowDisabled = (_, row) => Boolean(row.validityTo);
@@ -66,20 +66,20 @@ const ProductSearcher = (props) => {
 
       (p) =>
         !filters.showHistory?.value ? (
-          <>
+          <div style={{ display: 'flex', gap: '8px' }}>
             <Tooltip title={formatMessage("ProductSearcher.openNewTab")}>
-              <IconButton onClick={() => onDoubleClick(p, true)}>
-                <TabIcon />
-              </IconButton>
+              <Button startIcon={<TabIcon fontSize="small" />} onClick={() => onDoubleClick(p, true)} size="small">
+                {formatMessage("productSummaries.openNewTabButton.buttonText")}
+              </Button>
             </Tooltip>
             {canDelete(p) && (
               <Tooltip title={formatMessage("ProductSearcher.deleteProductTooltip")}>
-                <IconButton onClick={() => setProductToDelete(p)}>
-                  <DeleteIcon />
-                </IconButton>
+                <Button startIcon={<DeleteIcon fontSize="small" />} onClick={() => setProductToDelete(p)} size="small">
+                  {formatMessage("ProductSearcher.deleteProductButton.buttonText")}
+                </Button>
               </Tooltip>
             )}
-          </>
+          </div>
         ) : null,
     ];
   }, []);

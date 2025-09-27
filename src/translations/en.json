@@ -46,8 +46,10 @@
   "product.ProductFilters.showHistory": "Show Historical Values",
   "product.ProductSearcher.tableTitle": "{count} Products",
   "product.ProductSearcher.deleteProductTooltip": "Delete product",
+  "product.ProductSearcher.deleteProductButton.buttonText": "Delete",
+  "productSummaries.openNewTabButton.buttonText": "Open",
   "product.ProductSearcher.openNewTab": "Open in new tab",
-
+  "product.ProductSearcher.openNewTabButton.buttonText": "Open",
   "product.ProductForm.title": "Product {label}",
   "product.ProductForm.emptyTitle": "New Product",
   "product.FormMainPanel.validitySectionTitle": "Validity",

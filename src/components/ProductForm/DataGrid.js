@@ -6,7 +6,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/DeleteOutlined";
 import SaveIcon from "@material-ui/icons/Save";
 import CancelIcon from "@material-ui/icons/Close";
-import { IconButton } from "@material-ui/core";
+import { IconButton, Tooltip } from "@material-ui/core";
 import _ from "lodash";
 
 const useActionsStyles = makeStyles((theme) => ({
@@ -19,9 +19,10 @@ const useActionsStyles = makeStyles((theme) => ({
 }));
 
 const CellActions = (props) => {
-  const { api, id, onRowDelete } = props;
+  const { api, id, onRowDelete, intl } = props;
   const classes = useActionsStyles();
   const isInEditMode = api.getRowMode(id) === "edit";
+  const { formatMessage } = useTranslations("product.DataGrid", intl);
 
   const handleEditClick = (event) => {
     event.stopPropagation();
@@ -50,42 +51,62 @@ const CellActions = (props) => {
   if (isInEditMode) {
     return (
       <div className={classes.root}>
-        <IconButton color="primary" size="small" aria-label="save" onClick={handleSaveClick}>
-          <SaveIcon fontSize="small" />
-        </IconButton>
-        <IconButton
-          color="inherit"
-          size="small"
-          aria-label="cancel"
-          className={classes.textPrimary}
-          onClick={handleCancelClick}
-        >
-          <CancelIcon fontSize="small" />
-        </IconButton>
+        <Tooltip title={formatMessage(intl, "core", "save")}>
+          <div>
+            <IconButton color="primary" size="small" aria-label="save" onClick={handleSaveClick}>
+              <SaveIcon fontSize="small" />
+            </IconButton>
+            {formatMessage(intl, "core", "save")}
+          </div>
+        </Tooltip>
+        <Tooltip title={formatMessage(intl, "core", "cancel")}>
+          <div>
+            <IconButton
+              color="inherit"
+              size="small"
+              aria-label="cancel"
+              className={classes.textPrimary}
+              onClick={handleCancelClick}
+            >
+              <CancelIcon fontSize="small" />
+            </IconButton>
+            {formatMessage(intl, "core", "cancel")}
+          </div>
+        </Tooltip>
       </div>
     );
   }
 
   return (
     <div className={classes.root}>
-      <IconButton
-        color="inherit"
-        className={classes.textPrimary}
-        size="small"
-        aria-label="edit"
-        onClick={handleEditClick}
-      >
-        <EditIcon fontSize="small" />
-      </IconButton>
-      <IconButton color="inherit" size="small" aria-label="delete" onClick={handleDeleteClick}>
-        <DeleteIcon fontSize="small" />
-      </IconButton>
+      <Tooltip title={formatMessage(intl, "core", "edit")}>
+        <div>
+          <IconButton
+            color="inherit"
+            className={classes.textPrimary}
+            size="small"
+            aria-label="edit"
+            onClick={handleEditClick}
+          >
+            <EditIcon fontSize="small" />
+          </IconButton>
+          {formatMessage(intl, "core", "edit")}
+        </div>
+      </Tooltip>
+      <Tooltip title={formatMessage(intl, "core", "delete")}>
+        <div>
+          <IconButton color="inherit" size="small" aria-label="delete" onClick={handleDeleteClick}>
+            <DeleteIcon fontSize="small" />
+          </IconButton>
+          {formatMessage(intl, "core", "delete")}
+        </div>
+      </Tooltip>
     </div>
   );
 };
 
 const DataGrid = (props) => {
-  const { className, onChange, error, isLoading, density, rows = [] } = props;
+  const { className, onChange, error, isLoading, density, rows = [], intl } = props;
   const [editRowsModel, setEditRowsModel] = useState({});
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product.DataGrid", modulesManager);
@@ -107,7 +128,7 @@ const DataGrid = (props) => {
     onChange(rows.filter((x) => x.id !== id));
   };
 
-  const renderCellActions = (props) => <CellActions {...props} onRowDelete={onRowDelete} />;
+  const renderCellActions = (props) => <CellActions {...props} onRowDelete={onRowDelete} intl={intl} />;
 
   const columns = useMemo(
     () => [
