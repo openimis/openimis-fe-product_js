@@ -85,22 +85,22 @@ const ProductSearcher = (props) => {
         !filters.showHistory?.value ? (
           <div className={classes.horizontalButtonContainer}>
             <Tooltip title={formatMessage("ProductSearcher.openNewTab")}>
-              <IconButton onClick={() => onDoubleClick(p, true)}>
-                <TabIcon />
-              </IconButton>
+              <Button startIcon={<TabIcon />} onClick={() => onDoubleClick(p, true)}>
+                {formatMessage("ProductSearcher.openNewTabButton")}
+              </Button>
             </Tooltip>
             {canDuplicate(p) && (
               <Tooltip title={formatMessage("ProductSearcher.duplicateProductTooltip")}>
-                <IconButton onClick={() => onDuplicate(p, true)}>
-                  <FileCopyIcon />
-                </IconButton>
+                <Button startIcon={<FileCopyIcon />} onClick={() => onDuplicate(p, true)}>
+                  {formatMessage("ProductSearcher.duplicateProductButton")}
+                </Button>
               </Tooltip>
             )}
             {canDelete(p) && (
               <Tooltip title={formatMessage("ProductSearcher.deleteProductTooltip")}>
-                <IconButton onClick={() => setProductToDelete(p)}>
-                  <DeleteIcon />
-                </IconButton>
+                <Button startIcon={<DeleteIcon />} onClick={() => setProductToDelete(p)}>
+                  {formatMessage("ProductSearcher.deleteProductButton")}
+                </Button>
               </Tooltip>
             )}
           </div>
