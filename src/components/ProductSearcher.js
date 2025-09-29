@@ -3,7 +3,7 @@ import { useProductsQuery } from "../hooks";
 import { withTheme, withStyles } from "@material-ui/core/styles";
 import { Searcher, useTranslations, combine, useModulesManager, ConfirmDialog } from "@openimis/fe-core";
 import ProductFilters from "./ProductFilters";
-import { Tooltip, IconButton } from "@material-ui/core";
+import { Tooltip, Button } from "@material-ui/core";
 import { Tab as TabIcon, Delete as DeleteIcon } from "@material-ui/icons";
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 
