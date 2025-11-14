@@ -1,4 +1,7 @@
 {
+  "product.ProductSearcher.deleteProductButton": "Delete",
+  "product.ProductSearcher.duplicateProductButton": "Duplicate",
+  "product.ProductSearcher.openNewTabButton": "Open",
   "product.Product": "Product",
   "product.ProductPicker.placeholder": "Search Product…",
   "product.ProductPicker.aboveLimit": "Over {limit} products found. For specific results, please use the search bar.",
