@@ -1,4 +1,4 @@
-import { graphqlWithVariables, toISODate } from "@openimis/fe-core";
+import { graphqlWithVariables, toISODate, decodeId } from "@openimis/fe-core";
 import _ from "lodash";
 import { EMPTY_STRING, LIMIT_COLUMNS, LIMIT_TYPES, PRICE_ORIGINS } from "./constants";
 
@@ -125,6 +125,7 @@ export const toInputValues = (values) => {
     services,
     ceilingType,
     maxInstallments,
+    program,
     ...inputValues
   } = values;
 
@@ -168,6 +169,7 @@ export const toInputValues = (values) => {
     locationUuid: location?.uuid,
     conversionProductUuid: conversionProduct?.uuid,
     ceilingType: ceilingType,
+    program: decodeId(program.id)
   };
 
   return val;
