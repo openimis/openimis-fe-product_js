@@ -9,7 +9,7 @@ const ProductSalesReport = (props) => {
 
   return (
     <Grid container direction="column" spacing={1}>
-      <Grid item>
+      <Grid>
         <PublishedComponent
           pubRef="core.DatePicker"
           value={values.dateFrom}
@@ -19,7 +19,7 @@ const ProductSalesReport = (props) => {
           onChange={(dateFrom) => setValues({ ...values, dateFrom })}
         />
       </Grid>
-      <Grid item>
+      <Grid>
         <PublishedComponent
           pubRef="core.DatePicker"
           value={values.dateTo}
@@ -29,7 +29,7 @@ const ProductSalesReport = (props) => {
           onChange={(dateTo) => setValues({ ...values, dateTo })}
         />
       </Grid>
-      <Grid item>
+      <Grid>
         <PublishedComponent
           pubRef="location.LocationPicker"
           onChange={(region) =>
@@ -43,7 +43,7 @@ const ProductSalesReport = (props) => {
           label={formatMessage("ProductSalesReport.region")}
         />
       </Grid>
-      <Grid item>
+      <Grid>
         <PublishedComponent
           pubRef="location.LocationPicker"
           onChange={(district) =>
@@ -57,7 +57,7 @@ const ProductSalesReport = (props) => {
           label={formatMessage("ProductSalesReport.district")}
         />
       </Grid>
-      <Grid item>
+      <Grid>
         <PublishedComponent
           pubRef="product.ProductPicker"
           onChange={(product) => setValues({ ...values, product })}

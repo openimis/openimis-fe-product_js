@@ -80,7 +80,7 @@ const DeductiblesCeilingsTabForm = (props) => {
   useEffect(() => { }, [isSplit]);
   return (
     <Grid container className={className}>
-      <Grid item xs={6} component={StyledItem}>
+      <Grid size={6} component={StyledItem}>
         <ConstantBasedPicker
           required
           withNull
@@ -92,10 +92,10 @@ const DeductiblesCeilingsTabForm = (props) => {
           label="ceilingDiscrimination"
         />
       </Grid>
-      <Grid item xs={12} component={StyledItem}>
+      <Grid size={12} component={StyledItem}>
         <Typography>{formatMessage("DeductiblesCeilingsTabForm.ceilingDiscriminationExplanation")}</Typography>
       </Grid>
-      <Grid item xs={4} component={StyledItem}>
+      <Grid size={4} component={StyledItem}>
         <ConstantBasedPicker
           withNull={false}
           module="product"
@@ -106,17 +106,17 @@ const DeductiblesCeilingsTabForm = (props) => {
           label="ceilingType"
         />
       </Grid>
-      <Grid item xs={4} component={StyledItem}>
+      <Grid size={4} component={StyledItem}>
         <FormControlLabel
           label={formatMessage("DeductiblesCeilingsTabForm.splitCeilings")}
           control={<Checkbox checked={isSplit} onChange={setSplit} disabled={readOnly} />}
         />
       </Grid>
-      <Grid item xs={6}>
+      <Grid size={6}>
         <SectionTitle label={"Deductibles"} />
       </Grid>
-      <Grid item xs={6} component={StyledItem} />
-      <Grid item xs={6} component={StyledItem}>
+      <Grid size={6} component={StyledItem} />
+      <Grid size={6} component={StyledItem}>
         <Table size="small">
           <TableHead component={StyledTableHead}>
             <TableRow component={StyledTableTitle}>
@@ -175,10 +175,10 @@ const DeductiblesCeilingsTabForm = (props) => {
           </TableBody>
         </Table>
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <SectionTitle label={"Ceilings"} />
       </Grid>
-      <Grid item xs={6} component={StyledItem}>
+      <Grid size={6} component={StyledItem}>
         <Table size="small">
           <TableHead component={StyledTableHead}>
             <TableRow component={StyledTableTitle}>
@@ -338,7 +338,7 @@ const DeductiblesCeilingsTabForm = (props) => {
           </TableBody>
         </Table>
       </Grid>
-      <Grid item xs={6} component={StyledItem}>
+      <Grid size={6} component={StyledItem}>
         <Table size="small">
           <TableHead component={StyledTableHead}>
             <TableRow component={StyledTableTitle}>

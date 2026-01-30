@@ -81,4 +81,5 @@ const ProductsPage = (props) => {
 
 const enhance = combine(withHistory);
 
+export { StyledPage };
 export default enhance(ProductsPage);

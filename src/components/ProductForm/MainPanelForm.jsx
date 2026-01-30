@@ -56,7 +56,7 @@ const MainPanelForm = (props) => {
 
   return (
     <Grid container direction="row">
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <ValidatedTextInput
           itemQueryIdentifier="productCode"
           action={productCodeValidationCheck}
@@ -76,7 +76,7 @@ const MainPanelForm = (props) => {
           value={edited?.code ?? ""}
         />
       </Grid>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <TextInput
           module="product"
           required
@@ -86,7 +86,7 @@ const MainPanelForm = (props) => {
           onChange={(name) => onEditedChanged({ ...edited, name })}
         />
       </Grid>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <PublishedComponent
           pubRef="location.RegionPicker"
           value={edited.location?.parent ?? edited.location}
@@ -95,7 +95,7 @@ const MainPanelForm = (props) => {
           onChange={(location) => onEditedChanged({ ...edited, location })}
         />
       </Grid>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <PublishedComponent
           region={edited.location?.parent || edited.location}
           value={edited.location?.parent ? edited.location : null}
@@ -105,7 +105,7 @@ const MainPanelForm = (props) => {
           onChange={(location) => onEditedChanged({ ...edited, location: location || edited.location?.parent })}
         />
       </Grid>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <NumberInput
           module="product"
           required
@@ -117,7 +117,7 @@ const MainPanelForm = (props) => {
           allowDecimals={false}
         />
       </Grid>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <NumberInput
           module="product"
           min={0}
@@ -128,7 +128,7 @@ const MainPanelForm = (props) => {
           allowDecimals={false}
         />
       </Grid>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <NumberInput
           min={0}
           module="product"
@@ -140,7 +140,7 @@ const MainPanelForm = (props) => {
           allowDecimals={false}
         />
       </Grid>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <NumberInput
           min={0}
           module="product"
@@ -151,7 +151,7 @@ const MainPanelForm = (props) => {
           allowDecimals={false}
         />
       </Grid>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <NumberInput
           min={0}
           module="product"
@@ -161,7 +161,7 @@ const MainPanelForm = (props) => {
           onChange={(recurrence) => onEditedChanged({ ...edited, recurrence })}
         />
       </Grid>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <NumberInput
           min={0}
           module="product"
@@ -171,7 +171,7 @@ const MainPanelForm = (props) => {
           onChange={(ageMinimal) => onEditedChanged({ ...edited, ageMinimal  })}
         />
       </Grid>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <NumberInput
           min={0}
           module="product"
@@ -181,10 +181,10 @@ const MainPanelForm = (props) => {
           onChange={(ageMaximal) => onEditedChanged({ ...edited, ageMaximal })}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <SectionTitle label={formatMessage("validitySectionTitle")} />
       </Grid>
-      <Grid item xs={4} component={StyledItem}>
+      <Grid size={4} component={StyledItem}>
         <PublishedComponent
           pubRef="core.DatePicker"
           value={edited?.dateFrom}
@@ -200,7 +200,7 @@ const MainPanelForm = (props) => {
           {...(edited.dateTo ? { maxDate: edited.dateTo } : null)}
         />
       </Grid>
-      <Grid item xs={4} component={StyledItem}>
+      <Grid size={4} component={StyledItem}>
         <PublishedComponent
           pubRef="core.DatePicker"
           value={edited?.dateTo}
@@ -216,7 +216,7 @@ const MainPanelForm = (props) => {
           {...(edited.dateFrom ? { minDate: edited.dateFrom } : null)}
         />
       </Grid>
-      <Grid item xs={4} component={StyledItem}>
+      <Grid size={4} component={StyledItem}>
         <PublishedComponent
           pubRef="product.ProductPicker"
           value={edited?.conversionProduct}
@@ -225,10 +225,10 @@ const MainPanelForm = (props) => {
           onChange={(conversionProduct) => onEditedChanged({ ...edited, conversionProduct })}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <SectionTitle label={formatMessage("accountingSectionTitle")} />
       </Grid>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <TextInput
           module="product"
           label="remunerationCode"
@@ -237,7 +237,7 @@ const MainPanelForm = (props) => {
           onChange={(accCodeRemuneration) => onEditedChanged({ ...edited, accCodeRemuneration })}
         />
       </Grid>
-      <Grid item xs={3} component={StyledItem}>
+      <Grid size={3} component={StyledItem}>
         <TextInput
           module="product"
           label="contributionCode"
@@ -259,4 +259,5 @@ const mapStateToProps = (store) => ({
 
 const enhance = combine(withModulesManager, connect(mapStateToProps));
 
+export { StyledItem };
 export default enhance(MainPanelForm);

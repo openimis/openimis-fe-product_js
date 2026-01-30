@@ -9,7 +9,7 @@ const ProductDerivedOperationalIndicators = (props) => {
 
   return (
     <Grid container direction="column" spacing={1}>
-      <Grid item>
+      <Grid>
         <PublishedComponent
           pubRef="product.ProductPicker"
           onChange={(product) => setValues({ ...values, product })}
@@ -19,7 +19,7 @@ const ProductDerivedOperationalIndicators = (props) => {
           label={formatMessage("ProductDerivedOperationalIndicators.product")}
         />
       </Grid>
-      <Grid item>
+      <Grid>
         <PublishedComponent
           pubRef="core.YearPicker"
           onChange={(year) =>
@@ -35,7 +35,7 @@ const ProductDerivedOperationalIndicators = (props) => {
           label={formatMessage("ProductDerivedOperationalIndicators.year")}
         />
       </Grid>
-      <Grid item>
+      <Grid>
         <PublishedComponent
           pubRef="core.MonthPicker"
           onChange={(month) =>

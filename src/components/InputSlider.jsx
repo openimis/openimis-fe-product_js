@@ -34,10 +34,10 @@ const InputSlider = (props) => {
         </Typography>
       )}
       <Grid container alignItems="center" spacing={2} component={StyledRoot}>
-        <Grid item xs>
+        <Grid xs>
           <Slider disabled={readOnly} value={value ?? 0} onChange={handleSlideChange} />
         </Grid>
-        <Grid item component={StyledInput}>
+        <Grid component={StyledInput}>
           <NumberInput
             required={required}
             readOnly={readOnly}

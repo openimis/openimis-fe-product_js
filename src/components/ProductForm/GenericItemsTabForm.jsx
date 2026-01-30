@@ -215,12 +215,12 @@ const ItemsTabForm = (props) => {
         Picker={Picker}
       />
       <Grid container className={className}>
-        <Grid item container xs={4} component={StyledItem}>
+        <Grid container size={4} component={StyledItem}>
           <Button startIcon={<AddIcon />} variant="contained" onClick={() => setDialogOpen(true)} disabled={readOnly}>
             {addButtonLabel}
           </Button>
         </Grid>
-        <Grid item xs={12} component={StyledDataGridWrapper}>
+        <Grid size={12} component={StyledDataGridWrapper}>
           <ErrorBoundary>
             {isLoadedRules && (
               <DataGrid

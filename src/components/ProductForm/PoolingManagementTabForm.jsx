@@ -61,7 +61,7 @@ const CycleInput = React.memo((props) => {
         <FormattedMessage module={module} id={label} />
       </Typography>
       <Grid container direction="row" spacing={1}>
-        <Grid item xs>
+        <Grid xs>
           <NumberInput
             min={1}
             max={31}
@@ -73,7 +73,7 @@ const CycleInput = React.memo((props) => {
             onChange={(date) => setCurrentValue({ date })}
           />
         </Grid>
-        <Grid item xs>
+        <Grid xs>
           <NumberInput
             module="product"
             label="CycleInput.month"
@@ -97,11 +97,11 @@ const PoolingManagementTabForm = (props) => {
 
   return (
     <Grid container>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <SectionTitle label={formatMessage("startCyclesSectionTitle")} />
       </Grid>
-      <Grid container item xs={12}>
-        <Grid item xs={2} component={StyledItem}>
+      <Grid container size={12}>
+        <Grid size={2} component={StyledItem}>
           <CycleInput
             readOnly={readOnly}
             module="product"
@@ -110,7 +110,7 @@ const PoolingManagementTabForm = (props) => {
             onChange={(startCycle1) => onEditedChanged({ ...edited, startCycle1 })}
           />
         </Grid>
-        <Grid item xs={2} component={StyledItem}>
+        <Grid size={2} component={StyledItem}>
           <CycleInput
             readOnly={readOnly}
             module="product"
@@ -119,7 +119,7 @@ const PoolingManagementTabForm = (props) => {
             onChange={(startCycle2) => onEditedChanged({ ...edited, startCycle2 })}
           />
         </Grid>
-        <Grid item xs={2} component={StyledItem}>
+        <Grid size={2} component={StyledItem}>
           <CycleInput
             readOnly={readOnly}
             module="product"
@@ -128,7 +128,7 @@ const PoolingManagementTabForm = (props) => {
             onChange={(startCycle3) => onEditedChanged({ ...edited, startCycle3 })}
           />
         </Grid>
-        <Grid item xs={2} component={StyledItem}>
+        <Grid size={2} component={StyledItem}>
           <CycleInput
             readOnly={readOnly}
             module="product"

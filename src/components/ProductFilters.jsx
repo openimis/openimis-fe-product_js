@@ -41,7 +41,7 @@ const ProductFilters = (props) => {
           module="product"
           id="code"
           field={
-            <Grid item xs={3} component={StyledItem}>
+            <Grid size={3} component={StyledItem}>
               <TextInput
                 module="product"
                 name="code"
@@ -56,7 +56,7 @@ const ProductFilters = (props) => {
           module="product"
           id="name"
           field={
-            <Grid item xs={3} component={StyledItem}>
+            <Grid size={3} component={StyledItem}>
               <TextInput
                 module="product"
                 name="name"
@@ -71,7 +71,7 @@ const ProductFilters = (props) => {
           module="product"
           id="region"
           field={
-            <Grid item xs={3} component={StyledItem}>
+            <Grid size={3} component={StyledItem}>
               <PublishedComponent
                 pubRef="location.RegionPicker"
                 value={filters.location?.value?.parent ?? filters.location?.value}
@@ -87,7 +87,7 @@ const ProductFilters = (props) => {
           module="product"
           id="district"
           field={
-            <Grid item xs={3} component={StyledItem}>
+            <Grid size={3} component={StyledItem}>
               <PublishedComponent
                 pubRef="location.DistrictPicker"
                 value={filters.location?.value?.parent ? filters.location?.value : null}
@@ -108,7 +108,7 @@ const ProductFilters = (props) => {
           module="product"
           id="product.dateFrom"
           field={
-            <Grid item xs={3} component={StyledItem}>
+            <Grid size={3} component={StyledItem}>
               <PublishedComponent
                 pubRef="core.DatePicker"
                 value={filters?.dateFrom?.value}
@@ -131,7 +131,7 @@ const ProductFilters = (props) => {
           module="product"
           id="product.dateTo"
           field={
-            <Grid item xs={3} component={StyledItem}>
+            <Grid size={3} component={StyledItem}>
               <PublishedComponent
                 pubRef="core.DatePicker"
                 value={filters?.dateTo?.value}
@@ -154,7 +154,7 @@ const ProductFilters = (props) => {
           module="product"
           id="showHistory"
           field={
-            <Grid item xs={3} component={StyledItem}>
+            <Grid size={3} component={StyledItem}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -182,4 +182,5 @@ const ProductFilters = (props) => {
 
 const enhance = combine(withModulesManager);
 
+export { StyledForm };
 export default enhance(ProductFilters);

@@ -102,4 +102,5 @@ const ProductDetailsPage = (props) => {
 
 const enhance = combine(withHistory);
 
+export { ProductDetailsPage };
 export default enhance(ProductDetailsPage);
