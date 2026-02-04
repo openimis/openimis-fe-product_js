@@ -19,11 +19,11 @@ import { useProductDeleteMutation } from "../hooks";
 import ProductSearcher from "../components/ProductSearcher";
 
 const StyledPage = styled('div')(({ theme }) => ({
-  ...theme.page,
+  ...theme.page ?? {},
 }));
 
 const StyledFab = styled('div')(({ theme }) => ({
-  ...theme.fab,
+  ...theme.fab ?? {},
 }));
 
 const ProductsPage = (props) => {

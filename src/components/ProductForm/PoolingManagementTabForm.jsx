@@ -5,16 +5,16 @@ import { combine, useTranslations, useModulesManager, FormattedMessage, NumberIn
 import SectionTitle from "../SectionTitle";
 
 const StyledItem = styled('div')(({ theme }) => ({
-  ...theme.paper.item,
+  ...theme.paper?.item ?? {},
 }));
 
 const StyledSectionHeader = styled('div')(({ theme }) => ({
-  ...theme.paper.item,
+  ...theme.paper?.item ?? {},
   paddingBottom: 0,
 }));
 
 const StyledSectionTitle = styled('div')(({ theme }) => ({
-  ...theme.typography.title,
+  ...theme.typography?.title ?? {},
 }));
 
 const StyledTable = styled('div')(({ theme }) => ({
@@ -22,11 +22,11 @@ const StyledTable = styled('div')(({ theme }) => ({
 }));
 
 const StyledTableTitle = styled('div')(({ theme }) => ({
-  ...theme.table.title,
+  ...theme.table?.title ?? {},
 }));
 
 const StyledTableHeader = styled('div')(({ theme }) => ({
-  ...theme.table.header,
+  ...theme.table?.header ?? {},
 }));
 
 const parseCycle = (cycle) => {

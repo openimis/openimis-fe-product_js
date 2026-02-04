@@ -4,12 +4,12 @@ import { styled } from "@mui/material/styles";
 import { Box, Typography, Divider } from "@mui/material";
 
 const StyledWrapper = styled('div')(({ theme }) => ({
-  ...theme.paper.item,
+  ...theme.paper?.item ?? {},
   paddingBottom: 0,
 }));
 
 const StyledTitle = styled('div')(({ theme }) => ({
-  ...theme.typography.title,
+  ...theme.typography?.title ?? {},
 }));
 
 const SectionTitle = (props) => {

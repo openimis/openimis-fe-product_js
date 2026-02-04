@@ -9,11 +9,11 @@ import MainPanelForm from "./MainPanelForm";
 import TabsForm from "./TabsForm";
 
 const StyledPage = styled('div')(({ theme }) => ({
-  ...theme.page,
+  ...theme.page ?? {},
 }));
 
 const StyledLocked = styled('div')(({ theme }) => ({
-  ...theme.page.locked,
+  ...theme.page?.locked ?? {},
 }));
 
 const ProductForm = (props) => {

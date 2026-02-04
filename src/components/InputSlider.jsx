@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 import { combine, NumberInput } from "@openimis/fe-core";
 
 const StyledRoot = styled('div')(({ theme }) => ({
-  ...theme.paper.item,
+  ...theme.paper?.item ?? {},
   paddingBlock: 0,
 }));
 

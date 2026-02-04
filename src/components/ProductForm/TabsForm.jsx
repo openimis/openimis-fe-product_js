@@ -11,11 +11,11 @@ import {useLimitDefaultsQuery} from "../../hooks";
 import {LIMIT_TYPES, PRICE_ORIGINS} from "../../constants";
 
 const StyledPaper = styled('div')(({ theme }) => ({
-  ...theme.paper.paper,
+  ...theme.paper?.paper ?? {},
 }));
 
 const StyledHeader = styled('div')(({ theme }) => ({
-  ...theme.paper.header,
+  ...theme.paper?.header ?? {},
 }));
 
 const CurrentTab = (props) => {

@@ -24,7 +24,7 @@ import {
 import SectionTitle from "../SectionTitle";
 
 const StyledItem = styled('div')(({ theme }) => ({
-  ...theme.paper.item,
+  ...theme.paper?.item ?? {},
 }));
 
 const MainPanelForm = (props) => {

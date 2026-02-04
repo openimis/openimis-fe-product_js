@@ -24,19 +24,19 @@ import {
 import SectionTitle from "../SectionTitle";
 
 const StyledItem = styled('div')(({ theme }) => ({
-  ...theme.paper.item,
+  ...theme.paper?.item ?? {},
 }));
 
 const StyledTableHead = styled('div')(({ theme }) => ({
-  ...theme.table.header,
+  ...theme.table?.header ?? {},
 }));
 
 const StyledTableTitle = styled('div')(({ theme }) => ({
-  ...theme.table.title,
+  ...theme.table?.title ?? {},
 }));
 
 const StyledTableRow = styled('div')(({ theme }) => ({
-  ...theme.table.row,
+  ...theme.table?.row ?? {},
 }));
 
 const isInitialSplit = (product) =>

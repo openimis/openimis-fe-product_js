@@ -5,7 +5,7 @@ import { combine, useTranslations, NumberInput, useModulesManager } from "@openi
 import SectionTitle from "../SectionTitle";
 
 const StyledItem = styled('div')(({ theme }) => ({
-  ...theme.paper.item,
+  ...theme.paper?.item ?? {},
 }));
 
 const ContributionTabForm = (props) => {

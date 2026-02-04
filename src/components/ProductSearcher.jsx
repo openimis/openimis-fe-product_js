@@ -8,7 +8,7 @@ import { Tab as TabIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 
 const StyledHorizontalButtonContainer = styled('div')(({ theme }) => ({
-  ...theme.buttonContainer.horizontal,
+  ...theme.buttonContainer?.horizontal ?? {},
 }));
 
 const isRowDisabled = (_, row) => Boolean(row.validityTo);

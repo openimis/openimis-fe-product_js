@@ -20,7 +20,7 @@ import DataGrid from "./DataGrid";
 import ProductItemsDialog from "./ProductItemsDialog";
 
 const StyledItem = styled('div')(({ theme }) => ({
-  ...theme.paper.item,
+  ...theme.paper?.item ?? {},
 }));
 
 const StyledDataGridWrapper = styled('div')(({ theme }) => ({
