@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
 import _ from "lodash";
 import { useSelector } from "react-redux";
-import { useTranslations, useModulesManager, NumberInput, ConstantBasedPicker } from "@openimis/fe-core";
+import {
+  useTranslations,
+  useModulesManager,
+  NumberInput,
+  ConstantBasedPicker,
+  GRID_RESPONSIVE_HALF,
+  GRID_RESPONSIVE_STANDARD,
+  GRID_RESPONSIVE_FULL,
+} from "@openimis/fe-core";
 import {
   Grid,
   Table,
@@ -15,28 +23,23 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-import {
-  CEILING_DISCRIMINATION,
-  CEILING_TYPES,
-  HEALTH_FACILITY_TYPE,
-  CLAIM_TYPE
-} from "../../constants";
+import { CEILING_DISCRIMINATION, CEILING_TYPES, HEALTH_FACILITY_TYPE, CLAIM_TYPE } from "../../constants";
 import SectionTitle from "../SectionTitle";
 
-const StyledItem = styled('div')(({ theme }) => ({
-  ...theme.paper?.item ?? {},
+const StyledItem = styled("div")(({ theme }) => ({
+  ...(theme.paper?.item ?? {}),
 }));
 
-const StyledTableHead = styled('div')(({ theme }) => ({
-  ...theme.table?.header ?? {},
+const StyledTableHead = styled("div")(({ theme }) => ({
+  ...(theme.table?.header ?? {}),
 }));
 
-const StyledTableTitle = styled('div')(({ theme }) => ({
-  ...theme.table?.title ?? {},
+const StyledTableTitle = styled("div")(({ theme }) => ({
+  ...(theme.table?.title ?? {}),
 }));
 
-const StyledTableRow = styled('div')(({ theme }) => ({
-  ...theme.table?.row ?? {},
+const StyledTableRow = styled("div")(({ theme }) => ({
+  ...(theme.table?.row ?? {}),
 }));
 
 const isInitialSplit = (product) =>
@@ -77,10 +80,10 @@ const DeductiblesCeilingsTabForm = (props) => {
     }
   }, []);
 
-  useEffect(() => { }, [isSplit]);
+  useEffect(() => {}, [isSplit]);
   return (
     <Grid container className={className}>
-      <Grid size={6} component={StyledItem}>
+      <Grid size={GRID_RESPONSIVE_HALF} component={StyledItem}>
         <ConstantBasedPicker
           required
           withNull
@@ -92,10 +95,10 @@ const DeductiblesCeilingsTabForm = (props) => {
           label="ceilingDiscrimination"
         />
       </Grid>
-      <Grid size={12} component={StyledItem}>
+      <Grid size={GRID_RESPONSIVE_HALF} component={StyledItem}>
         <Typography>{formatMessage("DeductiblesCeilingsTabForm.ceilingDiscriminationExplanation")}</Typography>
       </Grid>
-      <Grid size={4} component={StyledItem}>
+      <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
         <ConstantBasedPicker
           withNull={false}
           module="product"
@@ -106,17 +109,17 @@ const DeductiblesCeilingsTabForm = (props) => {
           label="ceilingType"
         />
       </Grid>
-      <Grid size={4} component={StyledItem}>
+      <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
         <FormControlLabel
           label={formatMessage("DeductiblesCeilingsTabForm.splitCeilings")}
           control={<Checkbox checked={isSplit} onChange={setSplit} disabled={readOnly} />}
         />
       </Grid>
-      <Grid size={6}>
-        <SectionTitle label={"Deductibles"} />
+      <Grid size={GRID_RESPONSIVE_HALF}>
+        <SectionTitle label={formatMessage("DeductiblesCeilingsTabForm.DeductiblesTable.deductible")} />
       </Grid>
-      <Grid size={6} component={StyledItem} />
-      <Grid size={6} component={StyledItem}>
+      <Grid size={GRID_RESPONSIVE_HALF} />
+      <Grid size={GRID_RESPONSIVE_HALF}>
         <Table size="small">
           <TableHead component={StyledTableHead}>
             <TableRow component={StyledTableTitle}>
@@ -175,10 +178,10 @@ const DeductiblesCeilingsTabForm = (props) => {
           </TableBody>
         </Table>
       </Grid>
-      <Grid size={12}>
-        <SectionTitle label={"Ceilings"} />
+      <Grid size={GRID_RESPONSIVE_FULL}>
+        <SectionTitle label={formatMessage("DeductiblesCeilingsTabForm.MaxTable.ceiling")} />
       </Grid>
-      <Grid size={6} component={StyledItem}>
+      <Grid size={GRID_RESPONSIVE_HALF} component={StyledItem}>
         <Table size="small">
           <TableHead component={StyledTableHead}>
             <TableRow component={StyledTableTitle}>
@@ -338,7 +341,7 @@ const DeductiblesCeilingsTabForm = (props) => {
           </TableBody>
         </Table>
       </Grid>
-      <Grid size={6} component={StyledItem}>
+      <Grid size={GRID_RESPONSIVE_HALF} component={StyledItem}>
         <Table size="small">
           <TableHead component={StyledTableHead}>
             <TableRow component={StyledTableTitle}>

@@ -3,7 +3,7 @@ import { useProductsQuery } from "../hooks";
 import { styled } from "@mui/material/styles";
 import { Searcher, useTranslations, combine, useModulesManager, ConfirmDialog } from "@openimis/fe-core";
 import ProductFilters from "./ProductFilters";
-import { Tooltip, IconButton } from "@mui/material";
+import { Tooltip, Button } from "@mui/material";
 import { Tab as TabIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 
@@ -85,22 +85,22 @@ const ProductSearcher = (props) => {
         !filters.showHistory?.value ? (
           <StyledHorizontalButtonContainer>
             <Tooltip title={formatMessage("ProductSearcher.openNewTab")}>
-              <IconButton onClick={() => onDoubleClick(p, true)}>
-                <TabIcon />
-              </IconButton>
+              <Button startIcon={<TabIcon />} onClick={() => onDoubleClick(p, true)}>
+                {formatMessage("ProductSearcher.openNewTabButton")}
+              </Button>
             </Tooltip>
             {canDuplicate(p) && (
               <Tooltip title={formatMessage("ProductSearcher.duplicateProductTooltip")}>
-                <IconButton onClick={() => onDuplicate(p, true)}>
-                  <FileCopyIcon />
-                </IconButton>
+                <Button startIcon={<FileCopyIcon />} onClick={() => onDuplicate(p, true)}>
+                  {formatMessage("ProductSearcher.duplicateProductButton")}
+                </Button>
               </Tooltip>
             )}
             {canDelete(p) && (
               <Tooltip title={formatMessage("ProductSearcher.deleteProductTooltip")}>
-                <IconButton onClick={() => setProductToDelete(p)}>
-                  <DeleteIcon />
-                </IconButton>
+                <Button startIcon={<DeleteIcon />} onClick={() => setProductToDelete(p)}>
+                  {formatMessage("ProductSearcher.deleteProductButton")}
+                </Button>
               </Tooltip>
             )}
           </StyledHorizontalButtonContainer>
