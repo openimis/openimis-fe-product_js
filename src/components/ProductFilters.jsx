@@ -13,6 +13,8 @@ import {
   useTranslations,
   withModulesManager,
   useDebounceCb,
+  GRID_RESPONSIVE_STANDARD,
+  GRID_RESPONSIVE_SMALL,
 } from "@openimis/fe-core";
 
 const StyledForm = styled('section')(({ theme }) => ({
@@ -41,7 +43,7 @@ const ProductFilters = (props) => {
           module="product"
           id="code"
           field={
-            <Grid size={3} component={StyledItem}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <TextInput
                 module="product"
                 name="code"
@@ -56,7 +58,7 @@ const ProductFilters = (props) => {
           module="product"
           id="name"
           field={
-            <Grid size={3} component={StyledItem}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <TextInput
                 module="product"
                 name="name"
@@ -71,7 +73,7 @@ const ProductFilters = (props) => {
           module="product"
           id="region"
           field={
-            <Grid size={3} component={StyledItem}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <PublishedComponent
                 pubRef="location.RegionPicker"
                 value={filters.location?.value?.parent ?? filters.location?.value}
@@ -87,7 +89,7 @@ const ProductFilters = (props) => {
           module="product"
           id="district"
           field={
-            <Grid size={3} component={StyledItem}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <PublishedComponent
                 pubRef="location.DistrictPicker"
                 value={filters.location?.value?.parent ? filters.location?.value : null}
@@ -108,7 +110,7 @@ const ProductFilters = (props) => {
           module="product"
           id="product.dateFrom"
           field={
-            <Grid size={3} component={StyledItem}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <PublishedComponent
                 pubRef="core.DatePicker"
                 value={filters?.dateFrom?.value}
@@ -131,7 +133,7 @@ const ProductFilters = (props) => {
           module="product"
           id="product.dateTo"
           field={
-            <Grid size={3} component={StyledItem}>
+            <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
               <PublishedComponent
                 pubRef="core.DatePicker"
                 value={filters?.dateTo?.value}
@@ -154,7 +156,7 @@ const ProductFilters = (props) => {
           module="product"
           id="showHistory"
           field={
-            <Grid size={3} component={StyledItem}>
+            <Grid size={GRID_RESPONSIVE_SMALL} component={StyledItem}>
               <FormControlLabel
                 control={
                   <Checkbox
