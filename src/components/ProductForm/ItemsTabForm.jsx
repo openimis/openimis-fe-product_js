@@ -24,7 +24,7 @@ const ItemsTabForm = (props) => {
     () => [
       {
         field: "code",
-        valueGetter: (params) => params.row.item.code,
+        valueGetter: (value, row) => row?.item?.code ?? "",
         renderCell: (params) => <strong>{params.value}</strong>,
         headerName: formatMessage("ItemsOrServicesGrid.code"),
         width: 100,
@@ -33,7 +33,7 @@ const ItemsTabForm = (props) => {
       },
       {
         field: "name",
-        valueGetter: (params) => params.row.item.name,
+        valueGetter: (value, row) => row?.item?.name ?? "",
         renderCell: (params) => (
           <span title={params.value} className="ellipsis">
             {params.value}
@@ -44,25 +44,28 @@ const ItemsTabForm = (props) => {
       },
       {
         field: "type",
-        valueGetter: (params) => globalFormatMessage(intl, "medical", `itemType.${params.row.item.type}`),
+        valueGetter: (value, row) =>
+          row?.item?.type
+            ? globalFormatMessage(intl, "medical", `itemType.${row.item.type}`)
+            : "",
         headerName: globalFormatMessage(intl, "medical", "itemType"),
         width: 120,
       },
       {
         field: "package",
-        valueGetter: (params) => params.row.item.package,
+        valueGetter: (value, row) => row?.item?.package ?? "",
         headerName: formatMessage("ItemsOrServicesGrid.package"),
         width: 180,
       },
       {
         field: "price",
-        valueGetter: (params) => params.row.item.price,
+        valueGetter: (value, row) => row?.item?.price ?? 0,
         headerName: formatMessage("ItemsOrServicesGrid.price"),
         width: 90,
         disableColumnMenu: true,
       },
     ],
-    [],
+    [formatMessage, intl],
   );
 
   useEffect(() => {
