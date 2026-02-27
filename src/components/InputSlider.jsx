@@ -34,7 +34,7 @@ const InputSlider = (props) => {
         </Typography>
       )}
       <Grid container alignItems="center" spacing={2} component={StyledRoot}>
-        <Grid xs>
+        <Grid size={4}>
           <Slider disabled={readOnly} value={value ?? 0} onChange={handleSlideChange} />
         </Grid>
         <Grid component={StyledInput}>
