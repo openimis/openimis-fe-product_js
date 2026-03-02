@@ -30,8 +30,10 @@ const StyledTableHeader = styled('div')(({ theme }) => ({
 }));
 
 const parseCycle = (cycle) => {
-  const [date, month] = cycle?.split("-") ?? [];
-  return { date: parseInt(date, 10), month: parseInt(month, 10), untouched: true };
+  const parts = cycle?.split("-") ?? [];
+  const date = parts[0] ? parseInt(parts[0], 10) : undefined;
+  const month = parts[1] ? parseInt(parts[1], 10) : undefined;
+  return { date, month, untouched: true };
 };
 
 const CycleInput = React.memo((props) => {
@@ -43,16 +45,13 @@ const CycleInput = React.memo((props) => {
   }, [value]);
 
   useEffect(() => {
-    if (currentValue.date && currentValue.month) {
-      onChange(
-        `${Number(currentValue.date).toString().padStart(2, "0")}-${Number(currentValue.month)
-          .toString()
-          .padStart(2, "0")}`,
-      );
-    } else if (!currentValue.date && value) {
-      onChange(null);
+    const computedCycle = currentValue.date && currentValue.month
+      ? `${Number(currentValue.date).toString().padStart(2, "0")}-${Number(currentValue.month).toString().padStart(2, "0")}`
+      : null;
+    if (computedCycle !== value) {
+      onChange(computedCycle);
     }
-  }, [currentValue]);
+  }, [currentValue.date, currentValue.month, value]);
 
   const { date } = currentValue;
   return (
@@ -70,7 +69,7 @@ const CycleInput = React.memo((props) => {
             value={date ?? undefined}
             required={required}
             readOnly={readOnly}
-            onChange={(date) => setCurrentValue({ date })}
+            onChange={(date) => setCurrentValue(prev => ({ ...prev, date }))}
           />
         </Grid>
         <Grid xs>
@@ -82,7 +81,7 @@ const CycleInput = React.memo((props) => {
             value={currentValue.month}
             required={required || Boolean(currentValue.date)}
             readOnly={readOnly}
-            onChange={(month) => setCurrentValue({ ...currentValue, month })}
+            onChange={(month) => setCurrentValue(prev => ({ ...prev, month }))}
           />
         </Grid>
       </Grid>
