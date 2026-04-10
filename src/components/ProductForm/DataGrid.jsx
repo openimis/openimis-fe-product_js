@@ -3,10 +3,13 @@ import _ from "lodash";
 
 import { IconButton } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import SaveIcon from "@mui/icons-material/Save";
-import CancelIcon from "@mui/icons-material/Close";
+import { GetIconComponent } from "@openimis/fe-core";
+
+const EditIcon = GetIconComponent("Edit")
+
+const DeleteIcon = GetIconComponent("DeleteOutlined")
+const SaveIcon = GetIconComponent("Save")
+const CancelIcon = GetIconComponent("Close")
 import { DataGrid as MuiDataGrid, useGridApiContext } from "@mui/x-data-grid";
 
 import { ErrorBoundary, useTranslations, useModulesManager } from "@openimis/fe-core";

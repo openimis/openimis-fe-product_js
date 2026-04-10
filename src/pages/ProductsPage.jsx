@@ -3,7 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { Fab } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import AddIcon from "@mui/icons-material/Add";
+import { GetIconComponent } from "@openimis/fe-core";
+
+const AddIcon = GetIconComponent("Add")
+
 
 import {
   combine,

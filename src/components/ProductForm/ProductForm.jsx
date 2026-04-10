@@ -2,7 +2,10 @@ import React from "react";
 import clsx from "clsx";
 
 import { styled } from "@mui/material/styles";
-import ReplayIcon from "@mui/icons-material/Replay";
+import { GetIconComponent } from "@openimis/fe-core";
+
+const ReplayIcon = GetIconComponent("Replay")
+
 
 import { Form, ProgressOrError, combine, ErrorBoundary } from "@openimis/fe-core";
 import MainPanelForm from "./MainPanelForm";

@@ -4,8 +4,11 @@ import { styled } from "@mui/material/styles";
 import { Searcher, useTranslations, combine, useModulesManager, ConfirmDialog } from "@openimis/fe-core";
 import ProductFilters from "./ProductFilters";
 import { Tooltip, Button } from "@mui/material";
-import { Tab as TabIcon, Delete as DeleteIcon } from "@mui/icons-material";
-import FileCopyIcon from '@mui/icons-material/FileCopy';
+import { GetIconComponent } from "@openimis/fe-core";
+const TabIcon = GetIconComponent("Tab")
+const DeleteIcon = GetIconComponent("Delete")
+
+const FileCopyIcon = GetIconComponent("FileCopy");
 
 const StyledHorizontalButtonContainer = styled('div')(({ theme }) => ({
   ...theme.buttonContainer?.horizontal ?? {},

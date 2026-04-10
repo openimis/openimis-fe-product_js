@@ -3,7 +3,10 @@ import _ from "lodash";
 
 import { Grid, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import AddIcon from "@mui/icons-material/Add";
+import { GetIconComponent } from "@openimis/fe-core";
+
+const AddIcon = GetIconComponent("Add")
+
 
 import { combine, useTranslations, useModulesManager, ErrorBoundary } from "@openimis/fe-core";
 import {
