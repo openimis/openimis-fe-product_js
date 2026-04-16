@@ -15,7 +15,7 @@ import {
 } from "./hooks";
 import ProductSalesReport from "./reports/ProductSalesReport";
 import ProductDerivedOperationalIndicators from "./reports/ProductDerivedOperationalIndicators";
-
+import { RIGHT_PRODUCT} from "./constants"
 const DEFAULT_CONFIG = {
   "translations": [{ key: "en", messages: messages_en }],
   "reducers": [{ key: "product", reducer }],
@@ -56,10 +56,13 @@ const DEFAULT_CONFIG = {
     },
   ],
   "core.Router": [
-    { path: "admin/products", component: ProductsPage },
+    { path: "admin/products", rights: [RIGHT_PRODUCT], icon: 'Loyalty',text:"product.Product",id:"product.Product", component: ProductsPage },
     { path: "admin/products/new", component: ProductDetailsPage },
     { path: "admin/products/:product_id", component: ProductDetailsPage },
     { path: "admin/products/duplicate/:product_id", component: ProductDetailsPage },
+  ],
+  "admin.MainMenu":[
+    {route: "admin/products"}
   ],
   "refs": [
     { key: "product.ProductPicker", ref: ProductPicker },
