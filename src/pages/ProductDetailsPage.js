@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import _ from "lodash";
 
 import { withHistory, historyPush, combine, useModulesManager, useTranslations } from "@openimis/fe-core";
 import { RIGHT_PRODUCT_UPDATE } from "../constants";
@@ -44,13 +45,13 @@ const ProductDetailsPage = (props) => {
     if (values.uuid) {
       shouldBeDuplicated
         ? duplicateMutation.mutate({
-            ...toInputValues(values),
-            clientMutationLabel: formatMessageWithValues("duplicateMutation.label", { name: values.name }),
-          })
+          ...toInputValues(values),
+          clientMutationLabel: formatMessageWithValues("duplicateMutation.label", { name: values.name }),
+        })
         : updateMutation.mutate({
-            ...toInputValues(values),
-            clientMutationLabel: formatMessageWithValues("updateMutation.label", { name: values.name }),
-          });
+          ...toInputValues(values),
+          clientMutationLabel: formatMessageWithValues("updateMutation.label", { name: values.name }),
+        });
     } else {
       createMutation.mutate({
         ...toInputValues(values, shouldBeDuplicated),
@@ -79,6 +80,11 @@ const ProductDetailsPage = (props) => {
     }
   }, [data, isLoading, dataRules, isLoadingRules]);
 
+  const isProductChanged = !_.isEqual(
+    _.omit(data, ['ageMinimal', 'ageMaximal', 'gracePeriodRenewal']),
+    _.omit(values, ['ageMinimal', 'ageMaximal', 'gracePeriodRenewal'])
+  );
+
   return (
     <>
       {isLoaded && isLoadedRules && (
@@ -88,7 +94,7 @@ const ProductDetailsPage = (props) => {
           error={error}
           onChange={setValues}
           product={values}
-          canSave={() => validateProductForm(values, valuesRules, isProductCodeValid)}
+          canSave={() => isProductChanged && validateProductForm(values, valuesRules, isProductCodeValid)}
           onBack={() => historyPush(modulesManager, history, "product.productsList")}
           onSave={rights.includes(RIGHT_PRODUCT_UPDATE) ? onSave : undefined}
           onReset={onReset}
