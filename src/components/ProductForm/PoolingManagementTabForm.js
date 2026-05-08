@@ -5,8 +5,20 @@ import { combine, useTranslations, useModulesManager, FormattedMessage, NumberIn
 import SectionTitle from "../SectionTitle";
 
 const parseCycle = (cycle) => {
-  const [date, month] = cycle?.split("-") ?? [];
-  return { date: parseInt(date, 10), month: parseInt(month, 10), untouched: true };
+  if (!cycle || typeof cycle !== 'string') {
+    return { date: null, month: null, untouched: true };
+  }
+
+  const [rawDate, rawMonth] = cycle.split("-");
+
+  const date = parseInt(rawDate, 10);
+  const month = parseInt(rawMonth, 10);
+
+  return {
+    date: isNaN(date) ? null : date,
+    month: isNaN(month) ? null : month,
+    untouched: true
+  };
 };
 
 const CycleInput = React.memo((props) => {
