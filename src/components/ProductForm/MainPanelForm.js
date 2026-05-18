@@ -55,6 +55,8 @@ const MainPanelForm = (props) => {
     return true;
   };
 
+  const isProgramAvailable = modulesManager.getConf("fe-core", "isProgramAvailable", false);
+
   return (
     <Grid container direction="row">
       <Grid item xs={3} className={classes.item}>
@@ -162,6 +164,15 @@ const MainPanelForm = (props) => {
           onChange={(recurrence) => onEditedChanged({ ...edited, recurrence })}
         />
       </Grid>
+      { isProgramAvailable && (<Grid item xs={3} className={classes.item}>
+        <PublishedComponent
+          pubRef="program.ProgramPicker"
+          value={edited?.program ? edited.program: null}
+          withNull={true}
+          readOnly={readOnly}
+          onChange={(program) => onEditedChanged({ ...edited, program })}
+        />
+      </Grid>)}
       <Grid item xs={3} className={classes.item}>
         <NumberInput
           min={0}
