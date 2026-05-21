@@ -35,12 +35,22 @@ export const validateProductForm = (values, rules, isProductCodeValid) => {
     errors.dateTo = true;
   }
 
+  if (values.dateTo) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const dateTo = new Date(values.dateTo);
+    dateTo.setHours(0, 0, 0, 0);
+    if (dateTo < today) {
+      errors.dateTo = true;
+    }
+  }
+
   if (values.ageMaximal < values.ageMinimal){
     errors.ageMaximal = true;
     errors.ageMinimal = true;
   }
 
-  if (!isProductCodeValid) {
+  if (!isProductCodeValid || values?.code?.length > 8) {
     errors.isProductCodeInvalid = true;
   }
 
