@@ -23,7 +23,7 @@ const ProductSearcher = (props) => {
   const { formatMessage, formatDateFromISO, formatMessageWithValues } = useTranslations("product", modulesManager);
   const [filters, setFilters] = useState({});
   const [productToDelete, setProductToDelete] = useState(null);
-  const { data, isLoading, error, refetch } = useProductsQuery({ filters }, { skip: true, keepStale: true });
+  const { data, isLoading, error, refetch } = useProductsQuery({ filters }, { keepStale: true });
   const filtersToQueryParam = useCallback((state) => {
     let params = {};
     if (!state.beforeCursor && !state.afterCursor) {
