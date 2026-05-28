@@ -23,7 +23,7 @@ const ServicesTabForm = (props) => {
     () => [
       {
         field: "code",
-        valueGetter: (params) => params.row.service.code,
+        valueGetter: (value, row) => row?.service?.code ?? "",
         renderCell: (params) => <strong>{params.value}</strong>,
         headerName: formatMessage("ItemsOrServicesGrid.code"),
         width: 100,
@@ -32,7 +32,7 @@ const ServicesTabForm = (props) => {
       },
       {
         field: "name",
-        valueGetter: (params) => params.row.service.name,
+        valueGetter: (value, row) => row?.service?.name ?? "",
         renderCell: (params) => (
           <span title={params.value} className="ellipsis">
             {params.value}
@@ -43,25 +43,32 @@ const ServicesTabForm = (props) => {
       },
       {
         field: "type",
-        valueGetter: (params) => globalFormatMessage(intl, "medical", `serviceType.${params.row.service.type}`),
+        valueGetter: (value, row) =>
+          row?.service?.type
+            ? globalFormatMessage(
+                intl,
+                "medical",
+                `serviceType.${row.service.type}`
+              )
+            : "",
         headerName: globalFormatMessage(intl, "medical", "itemType"),
         width: 120,
       },
       {
         field: "level",
-        valueGetter: (params) => params.row.service.level,
+        valueGetter: (value, row) => row?.service?.level ?? "",
         headerName: formatMessage("ItemsOrServicesGrid.level"),
         width: 180,
       },
       {
         field: "price",
-        valueGetter: (params) => params.row.service.price,
+        valueGetter: (value, row) => row?.service?.price ?? 0,
         headerName: formatMessage("ItemsOrServicesGrid.price"),
         width: 90,
         disableColumnMenu: true,
       },
     ],
-    [],
+    [formatMessage, intl],
   );
 
   useEffect(() => {
