@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect, useDispatch } from "react-redux";
 
 import { Grid } from "@mui/material";
@@ -22,6 +22,7 @@ import {
   productCodeValidationClear,
 } from "../../actions";
 import SectionTitle from "../SectionTitle";
+import { PRODUCT_CODE_MAX_LENGTH } from "../../constants";
 
 const StyledItem = styled('div')(({ theme }) => ({
   ...theme.paper?.item ?? {},
@@ -42,6 +43,7 @@ const MainPanelForm = (props) => {
   const dispatch = useDispatch();
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product.FormMainPanel", modulesManager);
+  const [codeLengthError, setCodeLengthError] = useState(null);
 
   useEffect(() => {
     if (edited?.id) dispatch(fetchProduct(modulesManager, { "productId": edited.id }));
@@ -52,6 +54,16 @@ const MainPanelForm = (props) => {
     const { savedProductCode } = props;
     if ((!!edited.id && inputValue === savedProductCode) || (!savedProductCode && !!edited.id)) return false;
     return true;
+  };
+  const productCodeMaxLength = modulesManager.getConf("fe-product", "productCodeMaxLength", PRODUCT_CODE_MAX_LENGTH);
+
+  const handleCodeChange = (code) => {
+    onEditedChanged({ ...edited, code });
+    if (code && code.length > productCodeMaxLength) {
+      setCodeLengthError("product.codeTooLong");
+    } else {
+      setCodeLengthError(null);
+    }
   };
 
   return (
@@ -64,14 +76,14 @@ const MainPanelForm = (props) => {
           clearAction={productCodeValidationClear}
           setValidAction={productCodeSetValid}
           shouldValidate={shouldValidate}
-          codeTakenLabel="product.alreadyTaken"
+          codeTakenLabel={codeLengthError || "product.alreadyTaken"}
           readOnly={readOnly}
           isValid={isProductCodeValid}
           isValidating={isProductCodeValidating}
-          validationError={productCodeValidationError}
+          validationError={codeLengthError || productCodeValidationError}
           label="product.code"
           module="product"
-          onChange={(code) => onEditedChanged({ ...edited, code })}
+          onChange={handleCodeChange}
           required={true}
           value={edited?.code ?? ""}
         />
