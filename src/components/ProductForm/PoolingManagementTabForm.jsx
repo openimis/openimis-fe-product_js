@@ -30,10 +30,20 @@ const StyledTableHeader = styled('div')(({ theme }) => ({
 }));
 
 const parseCycle = (cycle) => {
-  const parts = cycle?.split("-") ?? [];
-  const date = parts[0] ? parseInt(parts[0], 10) : undefined;
-  const month = parts[1] ? parseInt(parts[1], 10) : undefined;
-  return { date, month, untouched: true };
+  if (!cycle || typeof cycle !== 'string') {
+    return { date: null, month: null, untouched: true };
+  }
+
+  const [rawDate, rawMonth] = cycle.split("-");
+
+  const date = parseInt(rawDate, 10);
+  const month = parseInt(rawMonth, 10);
+
+  return {
+    date: isNaN(date) ? null : date,
+    month: isNaN(month) ? null : month,
+    untouched: true
+  };
 };
 
 const CycleInput = React.memo((props) => {
