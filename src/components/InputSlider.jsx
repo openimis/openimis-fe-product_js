@@ -1,10 +1,19 @@
 import React from "react";
-import { Typography, Slider, Grid } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/styles";
+import { Typography, Slider, Grid } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { combine, NumberInput } from "@openimis/fe-core";
 
+const StyledRoot = styled('div')(({ theme }) => ({
+  ...theme.paper?.item ?? {},
+  paddingBlock: 0,
+}));
+
+const StyledInput = styled('div')(({ theme }) => ({
+  width: 50,
+}));
+
 const InputSlider = (props) => {
-  const { value, classes, label, required, className, onChange, readOnly } = props;
+  const { value, label, required, className, onChange, readOnly } = props;
 
   const handleSlideChange = (event, newValue) => onChange(newValue);
   const handleInputChange = (newValue) => {
@@ -24,15 +33,14 @@ const InputSlider = (props) => {
           {required && "*"}
         </Typography>
       )}
-      <Grid container alignItems="center" spacing={2} className={classes.root}>
-        <Grid item xs>
+      <Grid container alignItems="center" spacing={2} component={StyledRoot}>
+        <Grid size={4}>
           <Slider disabled={readOnly} value={value ?? 0} onChange={handleSlideChange} />
         </Grid>
-        <Grid item>
+        <Grid component={StyledInput}>
           <NumberInput
             required={required}
             readOnly={readOnly}
-            className={classes.input}
             value={value ?? 0}
             max={100}
             onBlur={handleBlur}
@@ -46,15 +54,4 @@ const InputSlider = (props) => {
   );
 };
 
-const styles = (theme) => ({
-  root: {
-    ...theme.paper.item,
-    paddingBlock: 0,
-  },
-  input: {
-    width: 50,
-  },
-});
-
-const enhance = combine(withTheme, withStyles(styles));
-export default enhance(InputSlider);
+export default InputSlider;

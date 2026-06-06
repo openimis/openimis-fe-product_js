@@ -1,4 +1,4 @@
-export const RIGHT_PRODUCT = 121000;
+export const RIGHT_PRODUCT = 121001;
 export const RIGHT_PRODUCT_DELETE = 121004;
 export const RIGHT_PRODUCT_ADD = 121002;
 export const RIGHT_PRODUCT_UPDATE = 121003;

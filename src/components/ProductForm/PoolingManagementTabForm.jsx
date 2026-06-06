@@ -1,8 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Typography, Box } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/styles";
+import { Grid, Typography, Box } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { combine, useTranslations, useModulesManager, FormattedMessage, NumberInput } from "@openimis/fe-core";
 import SectionTitle from "../SectionTitle";
+
+const StyledItem = styled('div')(({ theme }) => ({
+  ...theme.paper?.item ?? {},
+}));
+
+const StyledSectionHeader = styled('div')(({ theme }) => ({
+  ...theme.paper?.item ?? {},
+  paddingBottom: 0,
+}));
+
+const StyledSectionTitle = styled('div')(({ theme }) => ({
+  ...theme.typography?.title ?? {},
+}));
+
+const StyledTable = styled('div')(({ theme }) => ({
+  tableLayout: "fixed",
+}));
+
+const StyledTableTitle = styled('div')(({ theme }) => ({
+  ...theme.table?.title ?? {},
+}));
+
+const StyledTableHeader = styled('div')(({ theme }) => ({
+  ...theme.table?.header ?? {},
+}));
 
 const parseCycle = (cycle) => {
   if (!cycle || typeof cycle !== 'string') {
@@ -30,16 +55,13 @@ const CycleInput = React.memo((props) => {
   }, [value]);
 
   useEffect(() => {
-    if (currentValue.date && currentValue.month) {
-      onChange(
-        `${Number(currentValue.date).toString().padStart(2, "0")}-${Number(currentValue.month)
-          .toString()
-          .padStart(2, "0")}`,
-      );
-    } else if (!currentValue.date && value) {
-      onChange(null);
+    const computedCycle = currentValue.date && currentValue.month
+      ? `${Number(currentValue.date).toString().padStart(2, "0")}-${Number(currentValue.month).toString().padStart(2, "0")}`
+      : null;
+    if (computedCycle !== value) {
+      onChange(computedCycle);
     }
-  }, [currentValue]);
+  }, [currentValue.date, currentValue.month, value]);
 
   const { date } = currentValue;
   return (
@@ -48,7 +70,7 @@ const CycleInput = React.memo((props) => {
         <FormattedMessage module={module} id={label} />
       </Typography>
       <Grid container direction="row" spacing={1}>
-        <Grid item xs>
+        <Grid xs>
           <NumberInput
             min={1}
             max={31}
@@ -57,10 +79,10 @@ const CycleInput = React.memo((props) => {
             value={date ?? undefined}
             required={required}
             readOnly={readOnly}
-            onChange={(date) => setCurrentValue({ date })}
+            onChange={(date) => setCurrentValue(prev => ({ ...prev, date }))}
           />
         </Grid>
-        <Grid item xs>
+        <Grid xs>
           <NumberInput
             module="product"
             label="CycleInput.month"
@@ -69,7 +91,7 @@ const CycleInput = React.memo((props) => {
             value={currentValue.month}
             required={required || Boolean(currentValue.date)}
             readOnly={readOnly}
-            onChange={(month) => setCurrentValue({ ...currentValue, month })}
+            onChange={(month) => setCurrentValue(prev => ({ ...prev, month }))}
           />
         </Grid>
       </Grid>
@@ -78,17 +100,17 @@ const CycleInput = React.memo((props) => {
 });
 
 const PoolingManagementTabForm = (props) => {
-  const { edited, onEditedChanged, readOnly, classes } = props;
+  const { edited, onEditedChanged, readOnly } = props;
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product.PoolingManagementTabForm", modulesManager);
 
   return (
     <Grid container>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <SectionTitle label={formatMessage("startCyclesSectionTitle")} />
       </Grid>
-      <Grid container item xs={12}>
-        <Grid item xs={2} className={classes.item}>
+      <Grid container size={12}>
+        <Grid size={2} component={StyledItem}>
           <CycleInput
             readOnly={readOnly}
             module="product"
@@ -97,7 +119,7 @@ const PoolingManagementTabForm = (props) => {
             onChange={(startCycle1) => onEditedChanged({ ...edited, startCycle1 })}
           />
         </Grid>
-        <Grid item xs={2} className={classes.item}>
+        <Grid size={2} component={StyledItem}>
           <CycleInput
             readOnly={readOnly}
             module="product"
@@ -106,7 +128,7 @@ const PoolingManagementTabForm = (props) => {
             onChange={(startCycle2) => onEditedChanged({ ...edited, startCycle2 })}
           />
         </Grid>
-        <Grid item xs={2} className={classes.item}>
+        <Grid size={2} component={StyledItem}>
           <CycleInput
             readOnly={readOnly}
             module="product"
@@ -115,7 +137,7 @@ const PoolingManagementTabForm = (props) => {
             onChange={(startCycle3) => onEditedChanged({ ...edited, startCycle3 })}
           />
         </Grid>
-        <Grid item xs={2} className={classes.item}>
+        <Grid size={2} component={StyledItem}>
           <CycleInput
             readOnly={readOnly}
             module="product"
@@ -129,20 +151,4 @@ const PoolingManagementTabForm = (props) => {
   );
 };
 
-const styles = (theme) => ({
-  item: theme.paper.item,
-  sectionHeader: {
-    ...theme.paper.item,
-    paddingBottom: 0,
-  },
-  sectionTitle: theme.typography.title,
-  table: {
-    tableLayout: "fixed",
-  },
-  tableTitle: theme.table.title,
-  tableHeader: theme.table.header,
-});
-
-const enhance = combine(withTheme, withStyles(styles));
-
-export default enhance(PoolingManagementTabForm);
+export default PoolingManagementTabForm;

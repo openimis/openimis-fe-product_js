@@ -1,24 +1,30 @@
 import React from "react";
 import clsx from "clsx";
 
-import { withStyles, withTheme } from "@material-ui/core/styles";
-import ReplayIcon from "@material-ui/icons/Replay";
+import { styled } from "@mui/material/styles";
+import { GetIconComponent } from "@openimis/fe-core";
+
+const ReplayIcon = GetIconComponent("Replay")
+
 
 import { Form, ProgressOrError, combine, ErrorBoundary } from "@openimis/fe-core";
 import MainPanelForm from "./MainPanelForm";
 import TabsForm from "./TabsForm";
 
-const styles = (theme) => ({
-  page: theme.page,
-  locked: theme.page.locked,
-});
+const StyledPage = styled('div')(({ theme }) => ({
+  ...theme.page ?? {},
+}));
+
+const StyledLocked = styled('div')(({ theme }) => ({
+  ...theme.page?.locked ?? {},
+}));
 
 const ProductForm = (props) => {
-  const { readOnly, onBack, onSave, product, canSave, onReset, onChange, autoFocus, isDuplicate, error, classes } =
+  const { readOnly, onBack, onSave, product, canSave, onReset, onChange, autoFocus, isDuplicate, error } =
     props;
 
   return (
-    <div className={clsx(classes.page, readOnly && classes.locked)}>
+    <StyledPage className={clsx(readOnly && StyledLocked)}>
       <ErrorBoundary>
         <ProgressOrError error={error} />
         <Form
@@ -46,10 +52,8 @@ const ProductForm = (props) => {
           ]}
         />
       </ErrorBoundary>
-    </div>
+    </StyledPage>
   );
 };
 
-const enhance = combine(withTheme, withStyles(styles));
-
-export default enhance(ProductForm);
+export default ProductForm;

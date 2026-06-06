@@ -1,9 +1,12 @@
 import React, { useState, useMemo, useEffect } from "react";
 import _ from "lodash";
 
-import { Grid, Button } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/styles";
-import AddIcon from "@material-ui/icons/Add";
+import { Grid, Button } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { GetIconComponent } from "@openimis/fe-core";
+
+const AddIcon = GetIconComponent("Add")
+
 
 import { combine, useTranslations, useModulesManager, ErrorBoundary } from "@openimis/fe-core";
 import {
@@ -19,9 +22,27 @@ import { rulesToFormValues } from "../../utils";
 import DataGrid from "./DataGrid";
 import ProductItemsDialog from "./ProductItemsDialog";
 
+const StyledItem = styled('div')(({ theme }) => ({
+  ...theme.paper?.item ?? {},
+}));
+
+const StyledDataGridWrapper = styled('div')(({ theme }) => ({
+  height: "50vh",
+}));
+
+const StyledDataGrid = styled('div')(({ theme }) => ({
+  "& .MuiDataGrid-columnsContainer": {
+    fontSize: 10,
+  },
+  "& .ellipsis": {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  },
+}));
+
 const ItemsTabForm = (props) => {
   const {
-    classes,
     className,
     isLoading,
     onChange,
@@ -110,6 +131,7 @@ const ItemsTabForm = (props) => {
   const columns = useMemo(
     () => [
       ...itemColumns,
+
       {
         field: "priceOrigin",
         headerName: formatMessage("ItemsOrServicesGrid.priceOrigin"),
@@ -118,69 +140,114 @@ const ItemsTabForm = (props) => {
         type: "singleSelect",
         sortable: false,
         disableColumnMenu: true,
-        valueFormatter: (params) => params.value && formatMessage(`ItemsOrServicesGrid.priceOrigin.${params.value}`),
+        valueFormatter: (value) =>
+          value
+            ? formatMessage(`ItemsOrServicesGrid.priceOrigin.${value}`)
+            : "",
         valueOptions: Object.values(PRICE_ORIGINS).map((v) => ({
-          label: v && formatMessage(`ItemsOrServicesGrid.priceOrigin.${v}`),
+          label:
+            v && formatMessage(`ItemsOrServicesGrid.priceOrigin.${v}`),
           value: v,
         })),
       },
-      ...["limitationType", "limitationTypeR", "limitationTypeE"].map((fieldName) => ({
-        field: fieldName,
-        headerName: formatMessage(`ItemsOrServicesGrid.${fieldName}`),
-        width: 120,
-        editable: true,
-        type: "singleSelect",
-        sortable: false,
-        disableColumnMenu: true,
-        valueFormatter: (params) => params.value && formatMessage(`ItemsOrServicesGrid.limitTypes.${params.value}`),
-        valueOptions: Object.values(LIMIT_TYPES).map((v) => ({
-          label: v && formatMessage(`ItemsOrServicesGrid.limitTypes.${v}`),
-          value: v,
-        })),
-      })),
+
+      ...["limitationType", "limitationTypeR", "limitationTypeE"].map(
+        (fieldName) => ({
+          field: fieldName,
+          headerName: formatMessage(
+            `ItemsOrServicesGrid.${fieldName}`,
+          ),
+          width: 120,
+          editable: true,
+          type: "singleSelect",
+          sortable: false,
+          disableColumnMenu: true,
+          valueFormatter: (value) =>
+            value
+              ? formatMessage(
+                  `ItemsOrServicesGrid.limitTypes.${value}`,
+                )
+              : "",
+          valueOptions: Object.values(LIMIT_TYPES).map((v) => ({
+            label:
+              v &&
+              formatMessage(
+                `ItemsOrServicesGrid.limitTypes.${v}`,
+              ),
+            value: v,
+          })),
+        }),
+      ),
+
       ...LIMIT_COLUMNS.map((fieldName) => ({
         field: fieldName,
-        headerName: formatMessage(`ItemsOrServicesGrid.${fieldName}`),
+        headerName: formatMessage(
+          `ItemsOrServicesGrid.${fieldName}`,
+        ),
         width: 90,
         editable: true,
         type: "number",
         disableColumnMenu: true,
         sortable: false,
-        valueGetter: (params) => Number(params.value).toFixed(2),
-        valueParser: (value, params) => parserLimits(value, params, fieldName),
+        valueGetter: (value) =>
+          value != null
+            ? Number(value).toFixed(2)
+            : "0.00",
+        valueParser: (value, row) =>
+          parserLimits(value, row, fieldName),
       })),
-      ...["limitNoAdult", "limitNoChild", "waitingPeriodAdult", "waitingPeriodChild"].map((fieldName) => ({
+
+      ...[
+        "limitNoAdult",
+        "limitNoChild",
+        "waitingPeriodAdult",
+        "waitingPeriodChild",
+      ].map((fieldName) => ({
         field: fieldName,
-        headerName: formatMessage(`ItemsOrServicesGrid.${fieldName}`),
+        headerName: formatMessage(
+          `ItemsOrServicesGrid.${fieldName}`,
+        ),
         width: 100,
         type: "number",
         editable: true,
         disableColumnMenu: true,
         sortable: false,
         valueParser: (value) => value,
-        valueGetter: ({ value }) => {
-          if (typeof value === 'number') return value.toString();
-          return value;
-        },
+        valueGetter: (value) =>
+          typeof value === "number"
+            ? value.toString()
+            : value,
       })),
-      ...["ceilingExclusionAdult", "ceilingExclusionChild"].map((fieldName) => ({
-        field: fieldName,
-        headerName: formatMessage(`ItemsOrServicesGrid.${fieldName}`),
-        width: 120,
-        editable: true,
-        type: "singleSelect",
-        sortable: false,
-        disableColumnMenu: true,
-        valueFormatter: (params) => {
-          return params.value ? formatMessage(`ItemsOrServicesGrid.ceilingExclusion.${params.value}`) : "";
-        },
-        valueOptions: [null].concat(CEILING_EXCLUSIONS).map((v) => ({
-          label: formatMessage(`ItemsOrServicesGrid.ceilingExclusion.${v ?? null}`),
-          value: v,
-        })),
-      })),
+
+      ...["ceilingExclusionAdult", "ceilingExclusionChild"].map(
+        (fieldName) => ({
+          field: fieldName,
+          headerName: formatMessage(
+            `ItemsOrServicesGrid.${fieldName}`,
+          ),
+          width: 120,
+          editable: true,
+          type: "singleSelect",
+          sortable: false,
+          disableColumnMenu: true,
+          valueFormatter: (value) =>
+            value
+              ? formatMessage(
+                  `ItemsOrServicesGrid.ceilingExclusion.${value}`,
+                )
+              : "",
+          valueOptions: [null, ...CEILING_EXCLUSIONS].map(
+            (v) => ({
+              label: formatMessage(
+                `ItemsOrServicesGrid.ceilingExclusion.${v ?? null}`,
+              ),
+              value: v,
+            }),
+          ),
+        }),
+      ),
     ],
-    [itemColumns],
+    [itemColumns, formatMessage],
   );
 
   const onDialogSubmit = (selection) => {
@@ -197,16 +264,16 @@ const ItemsTabForm = (props) => {
         Picker={Picker}
       />
       <Grid container className={className}>
-        <Grid item container xs={4} className={classes.item}>
+        <Grid container size={4} component={StyledItem}>
           <Button startIcon={<AddIcon />} variant="contained" onClick={() => setDialogOpen(true)} disabled={readOnly}>
             {addButtonLabel}
           </Button>
         </Grid>
-        <Grid item xs={12} className={classes.dataGridWrapper}>
+        <Grid size={12} component={StyledDataGridWrapper}>
           <ErrorBoundary>
             {isLoadedRules && (
               <DataGrid
-                className={classes.dataGrid}
+                className={StyledDataGrid}
                 onChange={onChange}
                 isLoading={isLoading}
                 columns={columns}
@@ -223,22 +290,4 @@ const ItemsTabForm = (props) => {
   );
 };
 
-const styles = (theme) => ({
-  item: theme.paper.item,
-  dataGridWrapper: {
-    height: "50vh",
-  },
-  dataGrid: {
-    "& .MuiDataGrid-columnsContainer": {
-      fontSize: 10,
-    },
-    "& .ellipsis": {
-      whiteSpace: "nowrap",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-    },
-  },
-});
-
-const enhance = combine(withTheme, withStyles(styles));
-export default enhance(ItemsTabForm);
+export default ItemsTabForm;

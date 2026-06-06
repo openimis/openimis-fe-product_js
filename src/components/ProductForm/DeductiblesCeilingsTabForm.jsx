@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
 import _ from "lodash";
 import { useSelector } from "react-redux";
-import { useTranslations, useModulesManager, NumberInput, ConstantBasedPicker } from "@openimis/fe-core";
+import {
+  useTranslations,
+  useModulesManager,
+  NumberInput,
+  ConstantBasedPicker,
+  GRID_RESPONSIVE_HALF,
+  GRID_RESPONSIVE_STANDARD,
+  GRID_RESPONSIVE_FULL,
+} from "@openimis/fe-core";
 import {
   Grid,
   Table,
@@ -12,22 +20,26 @@ import {
   TableBody,
   TableRow,
   TableCell,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
 
-import {
-  CEILING_DISCRIMINATION,
-  CEILING_TYPES,
-  HEALTH_FACILITY_TYPE,
-  CLAIM_TYPE
-} from "../../constants";
+import { CEILING_DISCRIMINATION, CEILING_TYPES, HEALTH_FACILITY_TYPE, CLAIM_TYPE } from "../../constants";
 import SectionTitle from "../SectionTitle";
 
-const useStyles = makeStyles((theme) => ({
-  item: theme.paper.item,
-  tableHead: theme.table.header,
-  tableTitle: theme.table.title,
-  tableRow: theme.table.row,
+const StyledItem = styled("div")(({ theme }) => ({
+  ...(theme.paper?.item ?? {}),
+}));
+
+const StyledTableHead = styled("div")(({ theme }) => ({
+  ...(theme.table?.header ?? {}),
+}));
+
+const StyledTableTitle = styled("div")(({ theme }) => ({
+  ...(theme.table?.title ?? {}),
+}));
+
+const StyledTableRow = styled("div")(({ theme }) => ({
+  ...(theme.table?.row ?? {}),
 }));
 
 const isInitialSplit = (product) =>
@@ -39,7 +51,6 @@ const DeductiblesCeilingsTabForm = (props) => {
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product", modulesManager);
   const [isSplit, _setSplit] = useState(isInitialSplit(edited));
-  const classes = useStyles();
   const setSplit = (event) => {
     const isChecked = event.target.checked;
     onEditedChanged({
@@ -69,10 +80,10 @@ const DeductiblesCeilingsTabForm = (props) => {
     }
   }, []);
 
-  useEffect(() => { }, [isSplit]);
+  useEffect(() => {}, [isSplit]);
   return (
     <Grid container className={className}>
-      <Grid item xs={6} className={classes.item}>
+      <Grid size={GRID_RESPONSIVE_HALF} component={StyledItem}>
         <ConstantBasedPicker
           required
           withNull
@@ -84,10 +95,10 @@ const DeductiblesCeilingsTabForm = (props) => {
           label="ceilingDiscrimination"
         />
       </Grid>
-      <Grid item xs={12} className={classes.item}>
+      <Grid size={GRID_RESPONSIVE_HALF} component={StyledItem}>
         <Typography>{formatMessage("DeductiblesCeilingsTabForm.ceilingDiscriminationExplanation")}</Typography>
       </Grid>
-      <Grid item xs={4} className={classes.item}>
+      <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
         <ConstantBasedPicker
           withNull={false}
           module="product"
@@ -98,20 +109,20 @@ const DeductiblesCeilingsTabForm = (props) => {
           label="ceilingType"
         />
       </Grid>
-      <Grid item xs={4} className={classes.item}>
+      <Grid size={GRID_RESPONSIVE_STANDARD} component={StyledItem}>
         <FormControlLabel
           label={formatMessage("DeductiblesCeilingsTabForm.splitCeilings")}
           control={<Checkbox checked={isSplit} onChange={setSplit} disabled={readOnly} />}
         />
       </Grid>
-      <Grid item xs={6}>
+      <Grid size={GRID_RESPONSIVE_HALF}>
         <SectionTitle label={formatMessage("DeductiblesCeilingsTabForm.DeductiblesTable.deductible")} />
       </Grid>
-      <Grid item xs={6} className={classes.item} />
-      <Grid item xs={6} className={classes.item}>
+      <Grid size={GRID_RESPONSIVE_HALF} />
+      <Grid size={GRID_RESPONSIVE_HALF}>
         <Table size="small">
-          <TableHead className={classes.tableHead}>
-            <TableRow className={classes.tableTitle}>
+          <TableHead component={StyledTableHead}>
+            <TableRow component={StyledTableTitle}>
               <TableCell width="200" />
               {!isSplit && <TableCell>{formatMessage("DeductiblesCeilingsTabForm.all")}</TableCell>}
               {isSplit && edited.ceilingInterpretation === HEALTH_FACILITY_TYPE && (
@@ -129,8 +140,8 @@ const DeductiblesCeilingsTabForm = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow className={classes.tableRow}>
-              <TableCell className={classes.tableTitle}>{formatMessage(`ceilingType.${edited.ceilingType}`)}</TableCell>
+            <TableRow component={StyledTableRow}>
+              <TableCell component={StyledTableTitle}>{formatMessage(`ceilingType.${edited.ceilingType}`)}</TableCell>
               {isSplit ? (
                 <>
                   <TableCell>
@@ -167,13 +178,13 @@ const DeductiblesCeilingsTabForm = (props) => {
           </TableBody>
         </Table>
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={GRID_RESPONSIVE_FULL}>
         <SectionTitle label={formatMessage("DeductiblesCeilingsTabForm.MaxTable.ceiling")} />
       </Grid>
-      <Grid item xs={6} className={classes.item}>
+      <Grid size={GRID_RESPONSIVE_HALF} component={StyledItem}>
         <Table size="small">
-          <TableHead className={classes.tableHead}>
-            <TableRow className={classes.tableTitle}>
+          <TableHead component={StyledTableHead}>
+            <TableRow component={StyledTableTitle}>
               <TableCell width="200" />
               {!isSplit && <TableCell>{formatMessage("DeductiblesCeilingsTabForm.all")}</TableCell>}
               {isSplit && edited.ceilingInterpretation === HEALTH_FACILITY_TYPE && (
@@ -191,8 +202,8 @@ const DeductiblesCeilingsTabForm = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow className={classes.tableRow}>
-              <TableCell className={classes.tableTitle}>{formatMessage(`ceilingType.${edited.ceilingType}`)}</TableCell>
+            <TableRow component={StyledTableRow}>
+              <TableCell component={StyledTableTitle}>{formatMessage(`ceilingType.${edited.ceilingType}`)}</TableCell>
               {isSplit ? (
                 <>
                   <TableCell>
@@ -235,8 +246,8 @@ const DeductiblesCeilingsTabForm = (props) => {
                 </TableCell>
               )}
             </TableRow>
-            <TableRow className={classes.tableRow}>
-              <TableCell className={classes.tableTitle}>
+            <TableRow component={StyledTableRow}>
+              <TableCell component={StyledTableTitle}>
                 {formatMessage("DeductiblesCeilingsTabForm.extraMemberCeiling")}
               </TableCell>
               {isSplit ? (
@@ -281,8 +292,8 @@ const DeductiblesCeilingsTabForm = (props) => {
                 </TableCell>
               )}
             </TableRow>
-            <TableRow className={classes.tableRow}>
-              <TableCell className={classes.tableTitle}>
+            <TableRow component={StyledTableRow}>
+              <TableCell component={StyledTableTitle}>
                 {formatMessage("DeductiblesCeilingsTabForm.maximumCeiling")}
               </TableCell>
               {isSplit ? (
@@ -330,10 +341,10 @@ const DeductiblesCeilingsTabForm = (props) => {
           </TableBody>
         </Table>
       </Grid>
-      <Grid item xs={6} className={classes.item}>
+      <Grid size={GRID_RESPONSIVE_HALF} component={StyledItem}>
         <Table size="small">
-          <TableHead className={classes.tableHead}>
-            <TableRow className={classes.tableTitle}>
+          <TableHead component={StyledTableHead}>
+            <TableRow component={StyledTableTitle}>
               <TableCell width="180"></TableCell>
               <TableCell>{formatMessage("DeductiblesCeilingsTabForm.MaxTable.number")}</TableCell>
               <TableCell>{formatMessage("DeductiblesCeilingsTabForm.MaxTable.ceiling")}</TableCell>
@@ -341,7 +352,7 @@ const DeductiblesCeilingsTabForm = (props) => {
           </TableHead>
           <TableBody>
             <TableRow>
-              <TableCell className={classes.tableTitle}>
+              <TableCell component={StyledTableTitle}>
                 {formatMessage("DeductiblesCeilingsTabForm.MaxTable.consultations")}
               </TableCell>
               <TableCell>
@@ -367,7 +378,7 @@ const DeductiblesCeilingsTabForm = (props) => {
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className={classes.tableTitle}>
+              <TableCell component={StyledTableTitle}>
                 {formatMessage("DeductiblesCeilingsTabForm.MaxTable.surgeries")}
               </TableCell>
               <TableCell>
@@ -393,7 +404,7 @@ const DeductiblesCeilingsTabForm = (props) => {
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className={classes.tableTitle}>
+              <TableCell component={StyledTableTitle}>
                 {formatMessage("DeductiblesCeilingsTabForm.MaxTable.deliveries")}
               </TableCell>
               <TableCell>
@@ -419,7 +430,7 @@ const DeductiblesCeilingsTabForm = (props) => {
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className={classes.tableTitle}>
+              <TableCell component={StyledTableTitle}>
                 {formatMessage("DeductiblesCeilingsTabForm.MaxTable.hopitalizations")}
               </TableCell>
               <TableCell>
@@ -445,7 +456,7 @@ const DeductiblesCeilingsTabForm = (props) => {
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className={classes.tableTitle}>
+              <TableCell component={StyledTableTitle}>
                 {formatMessage("DeductiblesCeilingsTabForm.MaxTable.antenatal")}
               </TableCell>
               <TableCell>
@@ -471,7 +482,7 @@ const DeductiblesCeilingsTabForm = (props) => {
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell className={classes.tableTitle}>
+              <TableCell component={StyledTableTitle}>
                 {formatMessage("DeductiblesCeilingsTabForm.MaxTable.visits")}
               </TableCell>
               <TableCell>
