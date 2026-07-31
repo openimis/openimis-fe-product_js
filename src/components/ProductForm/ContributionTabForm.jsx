@@ -1,16 +1,20 @@
 import React from "react";
-import { Grid } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/styles";
+import { Grid } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { combine, useTranslations, NumberInput, useModulesManager } from "@openimis/fe-core";
 import SectionTitle from "../SectionTitle";
 
+const StyledItem = styled('div')(({ theme }) => ({
+  ...theme.paper?.item ?? {},
+}));
+
 const ContributionTabForm = (props) => {
-  const { edited, onEditedChanged, readOnly, classes } = props;
+  const { edited, onEditedChanged, readOnly } = props;
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product.ContributionTabForm", modulesManager);
   return (
     <Grid container>
-      <Grid item xs={3} className={classes.item}>
+      <Grid size={3} component={StyledItem}>
         <NumberInput
           module="product"
           min={0}
@@ -20,7 +24,7 @@ const ContributionTabForm = (props) => {
           onChange={(lumpSum) => onEditedChanged({ ...edited, lumpSum })}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid size={3} component={StyledItem}>
         <NumberInput
           module="product"
           min={0}
@@ -30,7 +34,7 @@ const ContributionTabForm = (props) => {
           onChange={(premiumAdult) => onEditedChanged({ ...edited, premiumAdult })}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid size={3} component={StyledItem}>
         <NumberInput
           module="product"
           min={0}
@@ -40,7 +44,7 @@ const ContributionTabForm = (props) => {
           onChange={(premiumChild) => onEditedChanged({ ...edited, premiumChild })}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid size={3} component={StyledItem}>
         <NumberInput
           module="product"
           label="maxInstallments"
@@ -50,7 +54,7 @@ const ContributionTabForm = (props) => {
           onChange={(maxInstallments) => onEditedChanged({ ...edited, maxInstallments })}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid size={3} component={StyledItem}>
         <NumberInput
           module="product"
           min={0}
@@ -60,7 +64,7 @@ const ContributionTabForm = (props) => {
           onChange={(registrationLumpSum) => onEditedChanged({ ...edited, registrationLumpSum })}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid size={3} component={StyledItem}>
         <NumberInput
           module="product"
           min={0}
@@ -70,7 +74,7 @@ const ContributionTabForm = (props) => {
           onChange={(registrationFee) => onEditedChanged({ ...edited, registrationFee })}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid size={3} component={StyledItem}>
         <NumberInput
           module="product"
           min={0}
@@ -80,7 +84,7 @@ const ContributionTabForm = (props) => {
           onChange={(generalAssemblyLumpSum) => onEditedChanged({ ...edited, generalAssemblyLumpSum })}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid size={3} component={StyledItem}>
         <NumberInput
           module="product"
           min={0}
@@ -90,12 +94,12 @@ const ContributionTabForm = (props) => {
           onChange={(generalAssemblyFee) => onEditedChanged({ ...edited, generalAssemblyFee })}
         />
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <SectionTitle label={formatMessage("discountsSectionTitle")} />
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Grid container>
-          <Grid item xs={3} className={classes.item}>
+          <Grid size={3} component={StyledItem}>
             <NumberInput
               module="product"
               min={0}
@@ -105,7 +109,7 @@ const ContributionTabForm = (props) => {
               onChange={(renewalDiscountPeriod) => onEditedChanged({ ...edited, renewalDiscountPeriod })}
             />
           </Grid>
-          <Grid item xs={3} className={classes.item}>
+          <Grid size={3} component={StyledItem}>
             <NumberInput
               module="product"
               min={0}
@@ -117,9 +121,9 @@ const ContributionTabForm = (props) => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Grid container>
-          <Grid item xs={3} className={classes.item}>
+          <Grid size={3} component={StyledItem}>
             <NumberInput
               module="product"
               min={0}
@@ -129,7 +133,7 @@ const ContributionTabForm = (props) => {
               onChange={(enrolmentDiscountPeriod) => onEditedChanged({ ...edited, enrolmentDiscountPeriod })}
             />
           </Grid>
-          <Grid item xs={3} className={classes.item}>
+          <Grid size={3} component={StyledItem}>
             <NumberInput
               module="product"
               min={0}
@@ -141,10 +145,10 @@ const ContributionTabForm = (props) => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <SectionTitle label={formatMessage("graceSectionTitle")} />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid size={3} component={StyledItem}>
         <NumberInput
           module="product"
           min={0}
@@ -155,7 +159,7 @@ const ContributionTabForm = (props) => {
           displayZero={true}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid size={3} component={StyledItem}>
         <NumberInput
           module="product"
           min={0}
@@ -166,7 +170,7 @@ const ContributionTabForm = (props) => {
           displayZero={true}
         />
       </Grid>
-      <Grid item xs={3} className={classes.item}>
+      <Grid size={3} component={StyledItem}>
         <NumberInput
           module="product"
           min={0}
@@ -182,10 +186,4 @@ const ContributionTabForm = (props) => {
   );
 };
 
-const styles = (theme) => ({
-  item: theme.paper.item,
-});
-
-const enhance = combine(withTheme, withStyles(styles));
-
-export default enhance(ContributionTabForm);
+export default ContributionTabForm;

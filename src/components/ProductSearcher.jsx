@@ -1,26 +1,29 @@
 import React, { useState, useCallback } from "react";
 import { useProductsQuery } from "../hooks";
-import { withTheme, withStyles } from "@material-ui/core/styles";
+import { styled } from "@mui/material/styles";
 import { Searcher, useTranslations, combine, useModulesManager, ConfirmDialog } from "@openimis/fe-core";
 import ProductFilters from "./ProductFilters";
-import { Tooltip, Button } from "@material-ui/core";
-import { Tab as TabIcon, Delete as DeleteIcon } from "@material-ui/icons";
-import FileCopyIcon from '@material-ui/icons/FileCopy';
+import { Tooltip, Button } from "@mui/material";
+import { GetIconComponent } from "@openimis/fe-core";
+const TabIcon = GetIconComponent("Tab")
+const DeleteIcon = GetIconComponent("Delete")
+
+const FileCopyIcon = GetIconComponent("FileCopy");
+
+const StyledHorizontalButtonContainer = styled('div')(({ theme }) => ({
+  ...theme.buttonContainer?.horizontal ?? {},
+}));
 
 const isRowDisabled = (_, row) => Boolean(row.validityTo);
 const formatLocation = (location) => (location ? `${location.code} - ${location.name}` : null);
 
-const styles = (theme) => ({
-  horizontalButtonContainer: theme.buttonContainer.horizontal,
-});
-
 const ProductSearcher = (props) => {
-  const { cacheFiltersKey, classes, onDelete, canDelete, onDoubleClick, onDuplicate, canDuplicate } = props;
+  const { cacheFiltersKey, onDelete, canDelete, onDoubleClick, onDuplicate, canDuplicate } = props;
   const modulesManager = useModulesManager();
   const { formatMessage, formatDateFromISO, formatMessageWithValues } = useTranslations("product", modulesManager);
   const [filters, setFilters] = useState({});
   const [productToDelete, setProductToDelete] = useState(null);
-  const { data, isLoading, error, refetch } = useProductsQuery({ filters }, { skip: true, keepStale: true });
+  const { data, isLoading, error, refetch } = useProductsQuery({ filters }, { keepStale: true });
   const filtersToQueryParam = useCallback((state) => {
     let params = {};
     if (!state.beforeCursor && !state.afterCursor) {
@@ -83,7 +86,7 @@ const ProductSearcher = (props) => {
 
       (p) =>
         !filters.showHistory?.value ? (
-          <div className={classes.horizontalButtonContainer}>
+          <StyledHorizontalButtonContainer>
             <Tooltip title={formatMessage("ProductSearcher.openNewTab")}>
               <Button startIcon={<TabIcon />} onClick={() => onDoubleClick(p, true)}>
                 {formatMessage("ProductSearcher.openNewTabButton")}
@@ -103,7 +106,7 @@ const ProductSearcher = (props) => {
                 </Button>
               </Tooltip>
             )}
-          </div>
+          </StyledHorizontalButtonContainer>
         ) : null,
     ];
   }, []);
@@ -142,6 +145,6 @@ const ProductSearcher = (props) => {
   );
 };
 
-const enhance = combine(withTheme, withStyles(styles));
+const enhance = combine();
 
 export default enhance(ProductSearcher);

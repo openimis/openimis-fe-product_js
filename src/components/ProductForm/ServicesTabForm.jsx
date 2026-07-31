@@ -1,18 +1,17 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useIntl } from "react-intl";
-import _ from "lodash";
-
 import {
   useTranslations,
   useModulesManager,
   formatMessage as globalFormatMessage,
   PublishedComponent,
 } from "@openimis/fe-core";
-import { getLimitType, getPriceOrigin, loadProductItems } from "../../utils";
+import {getLimitType, getPriceOrigin, loadProductServices} from "../../utils";
+import _ from "lodash";
 import GenericItemsTabForm from "./GenericItemsTabForm";
 
-const ItemsTabForm = (props) => {
+const ServicesTabForm = (props) => {
   const { edited, edited_id, onEditedChanged, limitType, priceOrigin, getLimitValueSwitch, readOnly } = props;
   const modulesManager = useModulesManager();
   const intl = useIntl();
@@ -20,11 +19,11 @@ const ItemsTabForm = (props) => {
   const { formatMessage } = useTranslations("product", modulesManager);
   const [isLoading, setLoading] = useState(false);
 
-  const itemColumns = useMemo(
+  const columns = useMemo(
     () => [
       {
         field: "code",
-        valueGetter: (params) => params.row.item.code,
+        valueGetter: (value, row) => row?.service?.code ?? "",
         renderCell: (params) => <strong>{params.value}</strong>,
         headerName: formatMessage("ItemsOrServicesGrid.code"),
         width: 100,
@@ -33,7 +32,7 @@ const ItemsTabForm = (props) => {
       },
       {
         field: "name",
-        valueGetter: (params) => params.row.item.name,
+        valueGetter: (value, row) => row?.service?.name ?? "",
         renderCell: (params) => (
           <span title={params.value} className="ellipsis">
             {params.value}
@@ -44,45 +43,51 @@ const ItemsTabForm = (props) => {
       },
       {
         field: "type",
-        valueGetter: (params) => globalFormatMessage(intl, "medical", `itemType.${params.row.item.type}`),
+        valueGetter: (value, row) =>
+          row?.service?.type
+            ? globalFormatMessage(
+                intl,
+                "medical",
+                `serviceType.${row.service.type}`
+              )
+            : "",
         headerName: globalFormatMessage(intl, "medical", "itemType"),
         width: 120,
       },
       {
-        field: "package",
-        valueGetter: (params) => params.row.item.package,
-        headerName: formatMessage("ItemsOrServicesGrid.package"),
+        field: "level",
+        valueGetter: (value, row) => row?.service?.level ?? "",
+        headerName: formatMessage("ItemsOrServicesGrid.level"),
         width: 180,
       },
       {
         field: "price",
-        valueGetter: (params) => params.row.item.price,
+        valueGetter: (value, row) => row?.service?.price ?? 0,
         headerName: formatMessage("ItemsOrServicesGrid.price"),
         width: 90,
         disableColumnMenu: true,
       },
     ],
-    [],
+    [formatMessage, intl],
   );
 
   useEffect(() => {
-    if (!edited.items && edited_id) {
+    if (!edited.services && edited_id) {
       setLoading(true);
-      loadProductItems(edited_id, dispatch).then((items) => {
+      loadProductServices(edited_id, dispatch).then((services) => {
         setLoading(false);
-        onEditedChanged({ ...edited, items, hasEditedItems: true });
+        onEditedChanged({ ...edited, services, hasEditedServices: true });
       });
     }
   }, []);
 
-  const onChange = (items) => {
-    onEditedChanged({ ...edited, items, hasEditedItems: true });
+  const onChange = (services) => {
+    onEditedChanged({ ...edited, services, hasEditedServices: true });
   };
-
   const onAdd = (selection) => {
-    const newItems = selection.map((item) => ({
-      id: item.id,
-      item,
+    const newServices = selection.map((service) => ({
+      id: service.id,
+      service,
       priceOrigin: getPriceOrigin(priceOrigin),
       limitationType: getLimitType(limitType),
       limitationTypeR: getLimitType(limitType),
@@ -94,33 +99,33 @@ const ItemsTabForm = (props) => {
       limitChildR: getLimitValueSwitch(limitType),
       limitChildE: getLimitValueSwitch(limitType),
     }));
-    onChange(newItems.concat(edited.items ?? []));
+    onChange(newServices.concat(edited.services ?? []));
   };
 
-  const itemsKeys = useMemo(() => _.map(edited.items, "id"), [edited.items]);
-  const filterDialogOptions = (options) => options.filter((o) => !itemsKeys.includes(o.id));
+  const servicesKeys = useMemo(() => _.map(edited.services, "id"), [edited.services]);
+  const filterDialogOptions = (options) => options.filter((o) => !servicesKeys.includes(o.id));
 
   return (
     <GenericItemsTabForm
-      itemColumns={itemColumns}
+      itemColumns={columns}
       isLoading={isLoading}
-      rows={edited.items ?? []}
+      rows={edited.services ?? []}
       onChange={onChange}
-      readOnly={readOnly}
-      addButtonLabel={formatMessage("ItemsOrServicesGrid.addItemsButton")}
       onAdd={onAdd}
+      readOnly={readOnly}
+      addButtonLabel={formatMessage("ItemsOrServicesGrid.addServicesButton")}
       getLimitValueSwitch={getLimitValueSwitch}
       Picker={(props) => (
         <PublishedComponent
           filterOptions={filterDialogOptions}
-          extraFragment="price type name package code uuid"
+          extraFragment="price type name level code uuid"
           fullWidth
           multiple
-          pubRef="medical.ItemPicker"
+          pubRef="medical.ServicePicker"
           {...props}
         />
       )}
     />
   );
 };
-export default ItemsTabForm;
+export default ServicesTabForm;

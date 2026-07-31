@@ -1,6 +1,8 @@
 # openIMIS Frontend Product reference module
-
 This repository holds the files of the openIMIS Frontend Product reference module.
+
+
+
 It is dedicated to be deployed as a module of [openimis-fe_js](https://github.com/openimis/openimis-fe_js).
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
@@ -26,3 +28,6 @@ None (Administration module providing menu entries to proxied pages for products
 - `product.ProductPicker`: Picker that returns products matching the string entered by the user.
 - `product.hooks.useProductsQuery`: Hook to get a filtered connection on products
 - `product.hooks.useProductQuery`: Hook to get a product with all its fields
+
+## Configurations Options
+- `productCodeMaxLength`: Maximum length of the product code (default: 8)

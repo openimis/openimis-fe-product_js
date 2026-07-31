@@ -8,6 +8,7 @@
   "product.Product.none": "None",
   "product.name": "Name",
   "product.code": "Code",
+  "product.codeTooLong": "Product code must not exceed 8 characters",
   "product.region": "Region",
   "product.dateFrom": "Date From",
   "product.dateTo": "Date To",

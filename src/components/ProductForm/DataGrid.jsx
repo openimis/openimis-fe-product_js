@@ -1,38 +1,38 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import _ from "lodash";
 
-import { IconButton } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/DeleteOutlined";
-import SaveIcon from "@material-ui/icons/Save";
-import CancelIcon from "@material-ui/icons/Close";
-import { DataGrid as MuiDataGrid } from "@mui/x-data-grid";
+import { IconButton } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { GetIconComponent } from "@openimis/fe-core";
+
+const EditIcon = GetIconComponent("Edit")
+
+const DeleteIcon = GetIconComponent("DeleteOutlined")
+const SaveIcon = GetIconComponent("Save")
+const CancelIcon = GetIconComponent("Close")
+import { DataGrid as MuiDataGrid, useGridApiContext } from "@mui/x-data-grid";
 
 import { ErrorBoundary, useTranslations, useModulesManager } from "@openimis/fe-core";
 
-const useActionsStyles = makeStyles((theme) => ({
-  root: {
-    display: "inline-flex",
-    alignItems: "center",
-    gap: theme.spacing(1),
-    color: theme.palette.text.secondary,
-  },
+const StyledActionsRoot = styled('div')(({ theme }) => ({
+  display: "inline-flex",
+  alignItems: "center",
+  gap: theme.spacing(1),
+  color: theme.palette.text.secondary,
 }));
 
 const CellActions = (props) => {
-  const { api, id, onRowDelete } = props;
-  const classes = useActionsStyles();
-  const isInEditMode = api.getRowMode(id) === "edit";
+  const { id, onRowDelete } = props;
+  const apiRef = useGridApiContext();
+  const isInEditMode = apiRef.current.getRowMode(id) === "edit";
 
   const handleEditClick = (event) => {
     event.stopPropagation();
-    api.setRowMode(id, "edit");
+    apiRef.current.startRowEditMode({ id });
   };
   const handleSaveClick = (event) => {
     event.stopPropagation();
-    api.commitRowChange(id);
-    api.setRowMode(id, "view");
+    apiRef.current.stopRowEditMode({ id });
   };
   const handleDeleteClick = (event) => {
     event.stopPropagation();
@@ -40,18 +40,18 @@ const CellActions = (props) => {
   };
   const handleCancelClick = (event) => {
     event.stopPropagation();
-    api.setRowMode(id, "view");
+    apiRef.current.stopRowEditMode({ id, ignoreModifications: true });
 
-    const row = api.getRow(id);
+    const row = apiRef.current.getRow(id);
     if (row.isNew) {
-      api.updateRows([{ id, _action: "delete" }]);
+      apiRef.current.updateRows([{ id, _action: "delete" }]);
       onRowDelete(id, event);
     }
   };
 
   if (isInEditMode) {
     return (
-      <div className={classes.root}>
+      <StyledActionsRoot>
         <IconButton color="primary" size="small" aria-label="save" onClick={handleSaveClick}>
           <SaveIcon fontSize="small" />
         </IconButton>
@@ -59,20 +59,18 @@ const CellActions = (props) => {
           color="inherit"
           size="small"
           aria-label="cancel"
-          className={classes.textPrimary}
           onClick={handleCancelClick}
         >
           <CancelIcon fontSize="small" />
         </IconButton>
-      </div>
+      </StyledActionsRoot>
     );
   }
 
   return (
-    <div className={classes.root}>
+    <StyledActionsRoot>
       <IconButton
         color="inherit"
-        className={classes.textPrimary}
         size="small"
         aria-label="edit"
         onClick={handleEditClick}
@@ -82,7 +80,7 @@ const CellActions = (props) => {
       <IconButton color="inherit" size="small" aria-label="delete" onClick={handleDeleteClick}>
         <DeleteIcon fontSize="small" />
       </IconButton>
-    </div>
+    </StyledActionsRoot>
   );
 };
 
@@ -143,7 +141,7 @@ const DataGrid = (props) => {
   const getLastedEditedRowId = (prevRows, currentRows) => {
     for (const key of Object.keys(currentRows)) {
       if (prevRows && prevRows.hasOwnProperty(key)) {
-        if (!_.isEqual(prevRows[key], currentRows[key])){
+        if (!_.isEqual(prevRows[key], currentRows[key])) {
           return key;
         }
       }

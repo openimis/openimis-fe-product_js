@@ -1,9 +1,12 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { Fab } from "@material-ui/core";
-import { withTheme, withStyles } from "@material-ui/styles";
-import AddIcon from "@material-ui/icons/Add";
+import { Fab } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { GetIconComponent } from "@openimis/fe-core";
+
+const AddIcon = GetIconComponent("Add")
+
 
 import {
   combine,
@@ -18,13 +21,16 @@ import { RIGHT_PRODUCT_DELETE, RIGHT_PRODUCT_ADD, RIGHT_PRODUCT_DUPLICATE} from 
 import { useProductDeleteMutation } from "../hooks";
 import ProductSearcher from "../components/ProductSearcher";
 
-const styles = (theme) => ({
-  page: theme.page,
-  fab: theme.fab,
-});
+const StyledPage = styled('div')(({ theme }) => ({
+  ...theme.page ?? {},
+}));
+
+const StyledFab = styled('div')(({ theme }) => ({
+  ...theme.fab ?? {},
+}));
 
 const ProductsPage = (props) => {
-  const { classes, history } = props;
+  const { history } = props;
   const modulesManager = useModulesManager();
   const dispatch = useDispatch();
   const rights = useSelector((state) => state.core.user?.i_user?.rights ?? []);
@@ -55,7 +61,7 @@ const ProductsPage = (props) => {
   };
 
   return (
-    <div className={classes.page}>
+    <StyledPage>
       <ProductSearcher
         onDelete={onDelete}
         canDelete={canDelete}
@@ -65,17 +71,18 @@ const ProductsPage = (props) => {
       />
       {rights.includes(RIGHT_PRODUCT_ADD) &&
         withTooltip(
-          <div className={classes.fab}>
+          <StyledFab>
             <Fab color="primary" onClick={() => historyPush(modulesManager, history, "product.newProduct")}>
               <AddIcon />
             </Fab>
-          </div>,
+          </StyledFab>,
           formatMessage("ProductsPage.addNewProduct"),
         )}
-    </div>
+    </StyledPage>
   );
 };
 
-const enhance = combine(withTheme, withStyles(styles), withHistory);
+const enhance = combine(withHistory);
 
+export { StyledPage };
 export default enhance(ProductsPage);
