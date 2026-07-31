@@ -3,7 +3,6 @@ import { useProductsQuery } from "../hooks";
 import { styled } from "@mui/material/styles";
 import { Searcher, useTranslations, combine, useModulesManager, ConfirmDialog } from "@openimis/fe-core";
 import ProductFilters from "./ProductFilters";
-import { Tooltip, Button } from "@mui/material";
 import { GetIconComponent, ActionMenu } from "@openimis/fe-core";
 const TabIcon = GetIconComponent("Tab")
 const DeleteIcon = GetIconComponent("Delete")
