@@ -1,9 +1,16 @@
 import React, { useState, useCallback } from "react";
 import { useProductsQuery } from "../hooks";
 import { styled } from "@mui/material/styles";
-import { Searcher, useTranslations, combine, useModulesManager, ConfirmDialog } from "@openimis/fe-core";
+import { 
+  Searcher, 
+  useTranslations, 
+  combine, 
+  useModulesManager, 
+  ConfirmDialog, 
+  GetIconComponent, 
+  ActionMenu 
+} from "@openimis/fe-core";
 import ProductFilters from "./ProductFilters";
-import { GetIconComponent, ActionMenu } from "@openimis/fe-core";
 const TabIcon = GetIconComponent("Tab")
 const DeleteIcon = GetIconComponent("Delete")
 
