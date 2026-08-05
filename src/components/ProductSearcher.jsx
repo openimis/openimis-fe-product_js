@@ -114,7 +114,7 @@ const ProductSearcher = (props) => {
                   onClick: () => setProductToDelete(p),
                   tooltip: formatMessage("ProductSearcher.deleteProductTooltip")
                 }
-              ]}
+              ].filter(Boolean)}
           />
           </StyledHorizontalButtonContainer>
         ) : null,
