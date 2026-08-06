@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect, useDispatch } from "react-redux";
 
 import { Grid } from "@material-ui/core";
@@ -22,6 +22,7 @@ import {
   productCodeValidationClear,
 } from "../../actions";
 import SectionTitle from "../SectionTitle";
+import { PRODUCT_CODE_MAX_LENGTH } from "../../constants"
 
 const styles = (theme) => ({
   item: theme.paper.item,
@@ -43,6 +44,7 @@ const MainPanelForm = (props) => {
   const dispatch = useDispatch();
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product.FormMainPanel", modulesManager);
+  const [codeLengthError, setCodeLengthError] = useState(null);
 
   useEffect(() => {
     if (edited?.id) dispatch(fetchProduct(modulesManager, { "productId": edited.id }));
@@ -55,6 +57,15 @@ const MainPanelForm = (props) => {
     return true;
   };
 
+  const handleCodeChange = (code) => {
+    onEditedChanged({ ...edited, code });
+    if (code && code.length > PRODUCT_CODE_MAX_LENGTH) {
+      setCodeLengthError("product.codeTooLong");
+    } else {
+      setCodeLengthError(null);
+    }
+  };
+
   return (
     <Grid container direction="row">
       <Grid item xs={3} className={classes.item}>
@@ -65,14 +76,14 @@ const MainPanelForm = (props) => {
           clearAction={productCodeValidationClear}
           setValidAction={productCodeSetValid}
           shouldValidate={shouldValidate}
-          codeTakenLabel="product.alreadyTaken"
+          codeTakenLabel={codeLengthError ? "product.codeTooLong" : "product.alreadyTaken"}
           readOnly={readOnly}
           isValid={isProductCodeValid}
           isValidating={isProductCodeValidating}
-          validationError={productCodeValidationError}
+          validationError={codeLengthError || productCodeValidationError}
           label="product.code"
           module="product"
-          onChange={(code) => onEditedChanged({ ...edited, code })}
+          onChange={handleCodeChange}
           required={true}
           value={edited?.code ?? ""}
         />
