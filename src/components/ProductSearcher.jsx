@@ -1,10 +1,16 @@
 import React, { useState, useCallback } from "react";
 import { useProductsQuery } from "../hooks";
 import { styled } from "@mui/material/styles";
-import { Searcher, useTranslations, combine, useModulesManager, ConfirmDialog } from "@openimis/fe-core";
+import { 
+  Searcher, 
+  useTranslations, 
+  combine, 
+  useModulesManager, 
+  ConfirmDialog, 
+  GetIconComponent, 
+  ActionMenu 
+} from "@openimis/fe-core";
 import ProductFilters from "./ProductFilters";
-import { Tooltip, Button } from "@mui/material";
-import { GetIconComponent } from "@openimis/fe-core";
 const TabIcon = GetIconComponent("Tab")
 const DeleteIcon = GetIconComponent("Delete")
 
@@ -87,25 +93,29 @@ const ProductSearcher = (props) => {
       (p) =>
         !filters.showHistory?.value ? (
           <StyledHorizontalButtonContainer>
-            <Tooltip title={formatMessage("ProductSearcher.openNewTab")}>
-              <Button startIcon={<TabIcon />} onClick={() => onDoubleClick(p, true)}>
-                {formatMessage("ProductSearcher.openNewTabButton")}
-              </Button>
-            </Tooltip>
-            {canDuplicate(p) && (
-              <Tooltip title={formatMessage("ProductSearcher.duplicateProductTooltip")}>
-                <Button startIcon={<FileCopyIcon />} onClick={() => onDuplicate(p, true)}>
-                  {formatMessage("ProductSearcher.duplicateProductButton")}
-                </Button>
-              </Tooltip>
-            )}
-            {canDelete(p) && (
-              <Tooltip title={formatMessage("ProductSearcher.deleteProductTooltip")}>
-                <Button startIcon={<DeleteIcon />} onClick={() => setProductToDelete(p)}>
-                  {formatMessage("ProductSearcher.deleteProductButton")}
-                </Button>
-              </Tooltip>
-            )}
+            <ActionMenu
+              actions={[
+                {
+                  icon: <TabIcon fontSize="small"/>,
+                  label: formatMessage("ProductSearcher.openNewTabButton"),
+                  onClick: () => onDoubleClick(p, true),
+                  tooltip: formatMessage("ProductSearcher.openNewTab")
+                },
+                canDuplicate(p) && {
+                  icon: <FileCopyIcon fontSize="small"/>,
+                  label: formatMessage("ProductSearcher.duplicateProductButton"),
+                  onClick: () => onDuplicate(p, true),
+                  tooltip: formatMessage("ProductSearcher.duplicateProductTooltip")
+                },
+                canDelete(p) && {
+                  divider: true,
+                  icon: <DeleteIcon fontSize="small"/>,
+                  label: formatMessage("ProductSearcher.deleteProductButton"),
+                  onClick: () => setProductToDelete(p),
+                  tooltip: formatMessage("ProductSearcher.deleteProductTooltip")
+                }
+              ].filter(Boolean)}
+          />
           </StyledHorizontalButtonContainer>
         ) : null,
     ];
