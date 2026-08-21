@@ -50,13 +50,16 @@ const TabsForm = (props) => {
 
   useEffect(() => {
     if (!isLoadingLimitDefaults && !isLoadedLimitDefaults) {
-      setPriceOrigin(dataLimitDefaults.limitDefaults.priceOrigin?? 'P')
-      setLimitType(dataLimitDefaults.limitDefaults.limitType?? 'C')
-      setCoInsuranceDefaultValue(dataLimitDefaults.limitDefaults.defaultLimitCoInsuranceValue?? 100)
-      setFixedDefaultValue(dataLimitDefaults.limitDefaults.defaultLimitFixedValue?? 0)
-      setLoadedLimitDefaults(true)
+      const limitDefaults = dataLimitDefaults?.limitDefaults;
+      if (limitDefaults) {
+        setPriceOrigin(limitDefaults.priceOrigin ?? 'P');
+        setLimitType(limitDefaults.limitType ?? 'C');
+        setCoInsuranceDefaultValue(limitDefaults.defaultLimitCoInsuranceValue ?? 100);
+        setFixedDefaultValue(limitDefaults.defaultLimitFixedValue ?? 0);
+      }
+      setLoadedLimitDefaults(true);
     }
-  }, [dataLimitDefaults, isLoadingLimitDefaults]);
+  }, [dataLimitDefaults, isLoadingLimitDefaults, isLoadedLimitDefaults]);
 
   const getLimitValueSwitch = (limitType) => {
       if (limitType === 'F' || limitType === LIMIT_TYPES.F) {
