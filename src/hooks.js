@@ -182,6 +182,7 @@ export const usePageDisplayRulesQuery = (config) => {
     }
   }
   `,
+    {},
     config,
   );
 
@@ -205,6 +206,7 @@ export const useLimitDefaultsQuery = (config) => {
     }
   }
   `,
+    {},
     config,
   );
 
