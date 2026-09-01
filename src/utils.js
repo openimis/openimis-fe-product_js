@@ -100,11 +100,11 @@ export const toFormValues = (product, shouldDuplicate) => {
   };
 };
 
-export const rulesToFormValues = (rules) => {
+export const rulesToFormValues = (rules = {}) => {
   return {
     ...rules,
-    minLimitValue: Number(rules.minLimitValue) ?? 0.0,
-    maxLimitValue: Number(rules.maxLimitValue) ?? 100.0,
+    minLimitValue: rules?.minLimitValue != null ? Number(rules.minLimitValue) : 0.0,
+    maxLimitValue: rules?.maxLimitValue != null ? Number(rules.maxLimitValue) : 100.0,
   };
 };
 

@@ -74,7 +74,7 @@ const ProductDetailsPage = (props) => {
       setLoaded(true);
     }
     if (!isLoadingRules) {
-      setValuesRules(rulesToFormValues(dataRules.pageDisplayRules ?? {}));
+      setValuesRules(rulesToFormValues(dataRules?.pageDisplayRules ?? {}));
       setLoadedRules(true);
     }
   }, [data, isLoading, dataRules, isLoadingRules]);
