@@ -121,12 +121,13 @@ const ItemsTabForm = (props) => {
 
   useEffect(() => {
     if (!isLoadingRules && !isLoadedRules) {
-      setValuesRules(rulesToFormValues(dataRules.pageDisplayRules ?? {}));
-      setMinValue(valuesRules.minLimitValue)
-      setMaxValue(valuesRules.maxLimitValue)
+      const rules = rulesToFormValues(dataRules?.pageDisplayRules ?? {});
+      setValuesRules(rules)
+      setMinValue(rules.minLimitValue)
+      setMaxValue(rules.maxLimitValue)
       setLoadedRules(true)
     }
-  }, [dataRules, isLoadingRules]);
+  }, [dataRules, isLoadingRules, isLoadedRules]);
 
   const columns = useMemo(
     () => [
