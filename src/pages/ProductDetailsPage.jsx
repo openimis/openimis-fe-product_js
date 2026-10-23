@@ -80,10 +80,9 @@ const ProductDetailsPage = (props) => {
     }
   }, [data, isLoading, dataRules, isLoadingRules]);
 
-  const isProductChanged = !_.isEqual(
-    _.omit(data, ['ageMinimal', 'ageMaximal', 'gracePeriodRenewal']),
-    _.omit(values, ['ageMinimal', 'ageMaximal', 'gracePeriodRenewal'])
-  );
+  // Compare with the loaded product as the form normalises it: toFormValues fills
+  // defaults for null fields, so the raw query data never equals the form values.
+  const isProductChanged = !_.isEqual(toFormValues(data ?? {}, shouldBeDuplicated), values);
 
   return (
     <>
