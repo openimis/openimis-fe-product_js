@@ -22,6 +22,12 @@ import { rulesToFormValues } from "../../utils";
 import DataGrid from "./DataGrid";
 import ProductItemsDialog from "./ProductItemsDialog";
 
+const LIMITS_BY_TYPE_FIELD = {
+  limitationType: [LIMIT_ADULT, LIMIT_CHILD],
+  limitationTypeE: [LIMIT_ADULT_E, LIMIT_CHILD_E],
+  limitationTypeR: [LIMIT_ADULT_R, LIMIT_CHILD_R],
+};
+
 const StyledItem = styled('div')(({ theme }) => ({
   ...theme.paper?.item ?? {},
 }));
@@ -96,28 +102,18 @@ const ItemsTabForm = (props) => {
   };
 
 
-  const bindLimitTypesWithDefaultValues = (itemsOrServices, prevItemsOrServices) => {
-    Object.keys(itemsOrServices).forEach(key => {
-      for (const prop in itemsOrServices[key]) {
-        if (prevItemsOrServices && prevItemsOrServices.hasOwnProperty(key) && prevItemsOrServices[key].hasOwnProperty(prop)) {
-          if ((!prevItemsOrServices[key].hasOwnProperty(prop) || itemsOrServices[key][prop] !== prevItemsOrServices[key][prop])) {
-            if (prop === "limitationType") {
-              itemsOrServices[key].limitAdult.value = getLimitValueSwitch(itemsOrServices[key][prop].value)
-              itemsOrServices[key].limitChild.value = getLimitValueSwitch(itemsOrServices[key][prop].value)
-            }
-            else if (prop === "limitationTypeE") {
-              itemsOrServices[key].limitAdultE.value = getLimitValueSwitch(itemsOrServices[key][prop].value)
-              itemsOrServices[key].limitChildE.value = getLimitValueSwitch(itemsOrServices[key][prop].value)
-            }
-            else if (prop === "limitationTypeR") {
-              itemsOrServices[key].limitAdultR.value = getLimitValueSwitch(itemsOrServices[key][prop].value)
-              itemsOrServices[key].limitChildR.value = getLimitValueSwitch(itemsOrServices[key][prop].value)
-            }
-          }
-        }
+  // A new limitation type resets the limits it governs to that type's default.
+  const applyLimitTypeDefaults = (newRow, oldRow) => {
+    const row = { ...newRow };
+    Object.entries(LIMITS_BY_TYPE_FIELD).forEach(([typeField, limitFields]) => {
+      if (newRow[typeField] !== oldRow?.[typeField]) {
+        limitFields.forEach((limitField) => {
+          row[limitField] = getLimitValueSwitch(newRow[typeField]);
+        });
       }
-    })
-  }
+    });
+    return row;
+  };
 
   useEffect(() => {
     if (!isLoadingRules && !isLoadedRules) {
@@ -281,7 +277,7 @@ const ItemsTabForm = (props) => {
                 density="compact"
                 rows={rows}
                 readOnly={readOnly}
-                bindLimitTypesWithDefaultValues={bindLimitTypesWithDefaultValues}
+                processRow={applyLimitTypeDefaults}
               />
             )}
           </ErrorBoundary>
