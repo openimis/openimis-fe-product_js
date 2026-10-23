@@ -83,11 +83,12 @@ const ItemsTabForm = (props) => {
     }
   }
 
-  const parserLimits = (value, params, fieldName) => {
-    const limitationType = getLimitationTypeForFieldName(params.row, fieldName);
+  // MUI X v7+ calls valueParser(value, row): the row itself, no longer params.row.
+  const parserLimits = (value, row, fieldName) => {
+    const limitationType = getLimitationTypeForFieldName(row, fieldName);
     value = Number(value);
 
-    const itemOrServiceValue = Number(params?.row?.service?.price || params?.row?.item?.price || MAX_VALUE);
+    const itemOrServiceValue = Number(row?.service?.price || row?.item?.price || MAX_VALUE);
     const isLimitTypeC = limitationType === LIMIT_TYPES.C;
     const isValueGreaterThanMax = isLimitTypeC ? value > MAX_VALUE : value > itemOrServiceValue;
     const isValueLessThanMin = value < MIN_VALUE;

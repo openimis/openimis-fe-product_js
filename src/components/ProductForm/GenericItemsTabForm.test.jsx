@@ -42,21 +42,41 @@ const row = {
 // The default limit a type gets: 100 (%) for co-insurance, 0 for a fixed amount.
 const getLimitValueSwitch = (type) => (type === CO_INSURANCE ? 100 : 0);
 
+const renderTab = (rows, onChange) => renderWithProviders(
+  <div style={{ height: 400, width: 2400 }}>
+    <GenericItemsTabForm
+      rows={rows}
+      itemColumns={[]}
+      onChange={onChange}
+      onAdd={vi.fn()}
+      getLimitValueSwitch={getLimitValueSwitch}
+      addButtonLabel="Add"
+    />
+  </div>,
+);
+
 describe('GenericItemsTabForm', () => {
+  it('keeps a fixed-amount limit above 100 when it is below the item price', async () => {
+    const onChange = vi.fn();
+    renderTab([{ ...row, item: { price: 5000 } }], onChange);
+    const user = userEvent.setup();
+
+    await user.click(await screen.findByRole('button', { name: 'edit' }));
+    // Number cells in column order: the six limits first, adult limit leading.
+    const editRow = screen.getAllByRole('row').find((r) => within(r).queryAllByRole('spinbutton').length);
+    const [limitAdult] = within(editRow).getAllByRole('spinbutton');
+    await user.clear(limitAdult);
+    await user.type(limitAdult, '3000');
+    await user.click(screen.getByRole('button', { name: 'save' }));
+
+    await waitFor(() => expect(onChange).toHaveBeenCalled());
+    const [saved] = onChange.mock.calls.at(-1)[0];
+    expect(Number(saved.limitAdult)).toBe(3000);
+  });
+
   it('resets the limits governed by a limitation type when that type changes', async () => {
     const onChange = vi.fn();
-    renderWithProviders(
-      <div style={{ height: 400, width: 2400 }}>
-        <GenericItemsTabForm
-          rows={[row]}
-          itemColumns={[]}
-          onChange={onChange}
-          onAdd={vi.fn()}
-          getLimitValueSwitch={getLimitValueSwitch}
-          addButtonLabel="Add"
-        />
-      </div>,
-    );
+    renderTab([row], onChange);
     const user = userEvent.setup();
 
     await user.click(await screen.findByRole('button', { name: 'edit' }));
