@@ -75,10 +75,15 @@ const DeductiblesCeilingsTabForm = (props) => {
   };
 
   useEffect(() => {
-    if (!edited.ceilingType) {
-      onEditedChanged({ ...edited, ceilingType: product?.ceilingType || "INSUREE" });
+    if (edited.ceilingType) return;
+    // Only a new product defaults to Insuree. A saved one waits for fetchProduct: defaulting
+    // it while the request runs would re-save its deductibles and ceilings as Insuree.
+    if (!edited.uuid) {
+      onEditedChanged({ ...edited, ceilingType: "INSUREE" });
+    } else if (product?.ceilingType) {
+      onEditedChanged({ ...edited, ceilingType: product.ceilingType });
     }
-  }, []);
+  }, [edited.uuid, edited.ceilingType, product?.ceilingType]);
 
   useEffect(() => {}, [isSplit]);
   return (
