@@ -102,6 +102,7 @@ export const GRAPHQL_USE_PRODUCT_PRODUCT_FRAGMENT = `
     enrolmentDiscountPerc
     enrolmentDiscountPeriod
     ceilingInterpretation
+    ceilingType
 
     gracePeriodEnrolment
     gracePeriodRenewal
