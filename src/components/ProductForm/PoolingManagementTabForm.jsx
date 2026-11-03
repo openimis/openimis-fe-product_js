@@ -58,10 +58,12 @@ const CycleInput = React.memo((props) => {
     const computedCycle = currentValue.date && currentValue.month
       ? `${Number(currentValue.date).toString().padStart(2, "0")}-${Number(currentValue.month).toString().padStart(2, "0")}`
       : null;
-    if (computedCycle !== value) {
+    // A new product has no cycle yet (undefined): reporting null for it would reset the
+    // value, and the [value] effect above would then erase the day being typed.
+    if (computedCycle !== (value ?? null)) {
       onChange(computedCycle);
     }
-  }, [currentValue.date, currentValue.month, value]);
+  }, [currentValue.date, currentValue.month, value, onChange]);
 
   const { date } = currentValue;
   return (

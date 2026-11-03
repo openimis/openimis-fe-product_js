@@ -1,5 +1,4 @@
-import React, { useState, useMemo, useRef, useEffect } from "react";
-import _ from "lodash";
+import React, { useMemo } from "react";
 
 import { IconButton } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -93,27 +92,17 @@ const DataGrid = (props) => {
     density,
     readOnly,
     rows = [],
-    bindLimitTypesWithDefaultValues,
+    processRow,
   } = props;
-  const [editRowsModel, setEditRowsModel] = useState({});
-  const [rowId, setRowId] = useState(null);
   const modulesManager = useModulesManager();
   const { formatMessage } = useTranslations("product.DataGrid", modulesManager);
-  const prevItemsOrServicesRef = useRef();
 
   const preventRowEdit = (_, event) => (event.defaultMuiPrevented = true);
-  const onRowEditCommit = (id, event) => {
-    const idx = _.findIndex(rows, { id });
-    const newRow = { ...rows[idx] };
-    if (Object.keys(editRowsModel).length !== 0) {
-      for (const [key, field] of Object.entries(editRowsModel[id])) {
-        newRow[key] = field.value;
-      }
-    }
-
-    const newRows = [...rows];
-    newRows.splice(idx, 1, newRow);
-    onChange(newRows);
+  // MUI X v6+ hands the saved row here; the v4 editRowsModel / onRowEditCommit props are ignored.
+  const processRowUpdate = (newRow, oldRow) => {
+    const row = processRow ? processRow(newRow, oldRow) : newRow;
+    onChange(rows.map((x) => (x.id === row.id ? row : x)));
+    return row;
   };
 
   const onRowDelete = (id) => {
@@ -138,43 +127,17 @@ const DataGrid = (props) => {
     ];
   }, [props.columns, readOnly, rows]);
 
-  const getLastedEditedRowId = (prevRows, currentRows) => {
-    for (const key of Object.keys(currentRows)) {
-      if (prevRows && prevRows.hasOwnProperty(key)) {
-        if (!_.isEqual(prevRows[key], currentRows[key])) {
-          return key;
-        }
-      }
-    }
-    return Object.keys(currentRows)[0];
-  }
-
-  useEffect(() => {
-    if (rowId) {
-      onRowEditCommit(rowId)
-    }
-  }, [editRowsModel])
-
-  const handleEditRowsModel = (itemsOrServices) => {
-    setRowId(getLastedEditedRowId(prevItemsOrServicesRef.current, itemsOrServices));
-    bindLimitTypesWithDefaultValues(itemsOrServices, prevItemsOrServicesRef.current);
-    setEditRowsModel(itemsOrServices);
-    prevItemsOrServicesRef.current = itemsOrServices;
-  }
-
   return (
     <ErrorBoundary>
       <MuiDataGrid
         error={error}
         onRowEditStart={preventRowEdit}
         onRowEditStop={preventRowEdit}
-        onRowEditCommit={onRowEditCommit}
+        processRowUpdate={processRowUpdate}
         loading={isLoading}
         columns={columns}
         density={density}
         editMode="row"
-        editRowsModel={editRowsModel}
-        onEditRowsModelChange={handleEditRowsModel}
         className={className}
         rows={rows}
       />
