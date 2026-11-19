@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import moment from "moment";
 
 import { TextField, Tooltip } from "@mui/material";
@@ -6,6 +6,10 @@ import { TextField, Tooltip } from "@mui/material";
 import { Autocomplete, useModulesManager, useTranslations } from "@openimis/fe-core";
 import { DATE_FORMAT, EMPTY_STRING, PRODUCT_QUANTITY_LIMIT } from "../constants";
 import { useProductsQuery } from "../hooks";
+
+// The variables while the picker is closed and has never been opened: the query is skipped,
+// and unchanged variables keep it from fetching when the props change.
+const NOT_OPENED = {};
 
 const ProductPicker = (props) => {
   const {
@@ -26,9 +30,23 @@ const ProductPicker = (props) => {
   } = props;
 
   const modulesManager = useModulesManager();
-  const [filters, setFilters] = useState({
-    location: locationId,
-  });
+  // The search the user asked for: undefined until the picker is opened, null when it opens
+  // with nothing typed. The query variables are derived from it and from the props, so a
+  // location or enrolment date that arrives after the user typed (the policy form renders
+  // before its family is fetched) searches again.
+  const [search, setSearch] = useState();
+  const filters = useMemo(() => {
+    if (search === undefined) return NOT_OPENED;
+    const date = moment(enrollmentDate);
+    return {
+      first: PRODUCT_QUANTITY_LIMIT,
+      search: search ?? undefined,
+      location: locationId,
+      // No enrolment date (null) yet: no date filter rather than an invalid DateTime, which
+      // the backend rejects, leaving the picker with no options.
+      ...(date.isValid() && { dateFrom: date.format(DATE_FORMAT), dateTo: date.format(DATE_FORMAT) }),
+    };
+  }, [search, locationId, enrollmentDate]);
   const [currentString, setCurrentString] = useState(EMPTY_STRING);
   const { formatMessage, formatMessageWithValues } = useTranslations("product", modulesManager);
   const {
@@ -52,15 +70,7 @@ const ProductPicker = (props) => {
       setCurrentString={setCurrentString}
       filterOptions={filter}
       filterSelectedOptions={filterSelectedOptions}
-      onInputChange={(search) =>
-        setFilters(() => ({
-          first: PRODUCT_QUANTITY_LIMIT,
-          search,
-          location: locationId,
-          dateFrom: moment(enrollmentDate).format(DATE_FORMAT),
-          dateTo: moment(enrollmentDate).format(DATE_FORMAT),
-        }))
-      }
+      onInputChange={(typed) => setSearch(typed ?? null)}
       renderInput={(inputProps) => (
         <Tooltip
           title={
