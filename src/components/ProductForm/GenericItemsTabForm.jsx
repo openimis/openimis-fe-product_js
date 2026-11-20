@@ -29,7 +29,7 @@ const LIMITS_BY_TYPE_FIELD = {
 };
 
 const StyledItem = styled('div')(({ theme }) => ({
-  ...theme.paper?.item ?? {},
+  ...(theme.paper?.item ?? {}),
 }));
 
 const StyledDataGridWrapper = styled('div')(({ theme }) => ({
