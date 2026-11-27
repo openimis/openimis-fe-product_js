@@ -191,8 +191,14 @@ const ItemsTabForm = (props) => {
           value != null
             ? Number(value).toFixed(2)
             : "0.00",
-        valueParser: (value, row) =>
-          parserLimits(value, row, fieldName),
+        // MUI X 9 shows the parsed value back in the edit input on every
+        // keystroke, so clamping there turned "3" into "0.00" before "000"
+        // could follow. Keep the typed text while editing; clamp on save.
+        valueParser: (value) => value,
+        valueSetter: (value, row) => ({
+          ...row,
+          [fieldName]: parserLimits(value, row, fieldName),
+        }),
       })),
 
       ...[
