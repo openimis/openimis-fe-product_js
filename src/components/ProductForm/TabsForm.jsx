@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useRef} from "react";
-import { Tab, Tabs, Paper } from "@mui/material";
+import { Tabs, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useTranslations, combine } from "@openimis/fe-core";
+import { useTranslations, combine, Tab } from "@openimis/fe-core";
 import ItemsTabForm from "./ItemsTabForm";
 import ContributionTabForm from "./ContributionTabForm";
 import PoolingManagementTabForm from "./PoolingManagementTabForm";
@@ -11,11 +11,11 @@ import {useLimitDefaultsQuery} from "../../hooks";
 import {LIMIT_TYPES, PRICE_ORIGINS} from "../../constants";
 
 const StyledPaper = styled('div')(({ theme }) => ({
-  ...theme.paper?.paper ?? {},
+  ...(theme.paper?.paper ?? {}),
 }));
 
 const StyledHeader = styled('div')(({ theme }) => ({
-  ...theme.paper?.header ?? {},
+  ...(theme.paper?.header ?? {}),
 }));
 
 const CurrentTab = (props) => {

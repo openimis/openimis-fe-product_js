@@ -17,7 +17,7 @@ const DeleteIcon = GetIconComponent("Delete")
 const FileCopyIcon = GetIconComponent("FileCopy");
 
 const StyledHorizontalButtonContainer = styled('div')(({ theme }) => ({
-  ...theme.buttonContainer?.horizontal ?? {},
+  ...(theme.buttonContainer?.horizontal ?? {}),
 }));
 
 const isRowDisabled = (_, row) => Boolean(row.validityTo);

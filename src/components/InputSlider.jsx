@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 import { combine, NumberInput } from "@openimis/fe-core";
 
 const StyledRoot = styled('div')(({ theme }) => ({
-  ...theme.paper?.item ?? {},
+  ...(theme.paper?.item ?? {}),
   paddingBlock: 0,
 }));
 
@@ -33,7 +33,9 @@ const InputSlider = (props) => {
           {required && "*"}
         </Typography>
       )}
-      <Grid container alignItems="center" spacing={2} component={StyledRoot}>
+      <Grid container spacing={2} component={StyledRoot} sx={{
+        alignItems: "center"
+      }}>
         <Grid size={4}>
           <Slider disabled={readOnly} value={value ?? 0} onChange={handleSlideChange} />
         </Grid>
