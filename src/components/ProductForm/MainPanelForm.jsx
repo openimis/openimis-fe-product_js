@@ -25,7 +25,7 @@ import SectionTitle from "../SectionTitle";
 import { PRODUCT_CODE_MAX_LENGTH } from "../../constants";
 
 const StyledItem = styled('div')(({ theme }) => ({
-  ...theme.paper?.item ?? {},
+  ...(theme.paper?.item ?? {}),
 }));
 
 const MainPanelForm = (props) => {
